@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - South
   - North
+  - Wall
   layers:
   - Default
   - TransparentFX
