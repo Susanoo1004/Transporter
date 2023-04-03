@@ -11,11 +11,14 @@ public class CheckCollisons : MonoBehaviour
     private Rigidbody m_PlayerRigidbody;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Wall"))
+        //if (other.)
         {
-            Debug.Log("Pre wall" + m_PlayerRigidbody.velocity);
-            m_PlayerRigidbody.velocity = new Vector3(0, -1, 0);
-            // Debug.Log("Post wall" + m_PlayerRigidbody.velocity);
+            
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        
     }
 }
