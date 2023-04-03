@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class PlayerBehaviour : MonoBehaviour
 {
     private Vector3 m_Move = new();
     private Vector3 m_LastMove = new();
+
+
+    
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -18,7 +22,7 @@ public class PlayerBehaviour : MonoBehaviour
     Transform m_Hand;
 
     [SerializeField]
-    private float m_Speed;
+    private float m_Accelerate;
 
     [SerializeField]
     private float m_DashPower;
@@ -26,14 +30,15 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_JumpHeight;
 
+    [SerializeField]
+    private float m_MaxSpeed;
+
     private bool m_IsDahing = false;
     private float m_DashCd;
 
     private bool m_IsJumping = false;
 
     private bool m_IsGrounded { get { return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f); } }
-    private bool m_IsOnWallRight { get { return Physics.Raycast(m_Hand.transform.position, Vector3.right, 0.1f); } }
-    private bool m_IsOnWallLeft { get { return Physics.Raycast(m_Hand.transform.position, Vector3.left, 0.1f); } }
 
     private void Awake()
     {
@@ -50,7 +55,6 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Rigidbody.AddForce(m_Move * m_Speed * Time.deltaTime);
 
         if (m_Move != Vector3.zero)
         {
@@ -68,6 +72,10 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void FixedUpdate()
     {
+
+        if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)) )
+            m_Rigidbody.AddForce(m_Move * m_Accelerate);
+
         if (m_IsDahing)
             Dash();
 
@@ -92,7 +100,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true && (m_IsGrounded == true || m_IsOnWallRight == true || m_IsOnWallLeft == true))
+        if (_context.ReadValueAsButton() == true && (m_IsGrounded == true))
         {
             m_IsJumping = true;
         }
