@@ -9,9 +9,6 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector3 m_Move = new();
     private Vector3 m_LastMove = new();
 
-
-    
-
     Animator m_Animator;
     Rigidbody m_Rigidbody;
 
@@ -37,8 +34,10 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DashCd;
 
     private bool m_IsJumping = false;
-
     private bool m_IsGrounded { get { return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f); } }
+
+    public bool m_IsStuckLeft;
+    public bool m_IsStuckRight;
 
     private void Awake()
     {
@@ -56,6 +55,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
 
+
         if (m_Move != Vector3.zero)
         {
             Quaternion ToRotation = Quaternion.LookRotation(m_Move, Vector3.up);
@@ -72,9 +72,16 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void FixedUpdate()
     {
-
         if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)) )
-            m_Rigidbody.AddForce(m_Move * m_Accelerate);
+        {
+            if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1))
+            {
+                m_Rigidbody.AddForce(m_Move * m_Accelerate);
+            }
+        }
+        
+        m_IsStuckRight = false;
+        m_IsStuckLeft = false;
 
         if (m_IsDahing)
             Dash();
@@ -115,5 +122,18 @@ public class PlayerBehaviour : MonoBehaviour
     {
         m_Rigidbody.AddForce(m_LastMove * m_DashPower, ForceMode.Impulse);
         m_IsDahing = false;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts) 
+        {
+            if (Vector3.Angle(contact.normal, Vector3.up) == 90f)
+            {
+                m_IsStuckLeft = Mathf.Sign(contact.normal.x) == 1;
+                m_IsStuckRight = Mathf.Sign(contact.normal.x) == -1;
+                break;
+            }
+        }
     }
 }
