@@ -11,6 +11,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
+    CapsuleCollider m_Collider;
 
     [SerializeField]
     Transform m_Feet;
@@ -33,28 +34,42 @@ public class PlayerBehaviour : MonoBehaviour
     private bool m_IsDahing = false;
     private float m_DashCd;
 
-    private bool m_IsJumping = false;
-    private bool m_IsGrounded { get { return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f); } }
+    public bool m_IsJumping = false;
 
-    public bool m_IsStuckLeft;
-    public bool m_IsStuckRight;
+    private bool m_IsGrounded { get {
+            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, 0.05f); } }
+
+    private bool m_IsStuckLeft;
+    private bool m_IsStuckRight;
+
+    private GameObject m_StandingOnObject { get {
+        Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
+        Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
+        Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+        if (CenterHit.transform.gameObject == null)
+            return RightHit.transform.gameObject == null ? LeftHit.transform.gameObject : RightHit.transform.gameObject;
+        return CenterHit.transform.gameObject;
+    } }
+
 
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_Collider = GetComponent<CapsuleCollider>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
 
         if (m_Move != Vector3.zero)
         {
@@ -72,6 +87,7 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void FixedUpdate()
     {
+
         if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)) )
         {
             if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1))
