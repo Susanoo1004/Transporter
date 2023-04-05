@@ -22,10 +22,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -107,39 +105,39 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1562}
+      Script: {instanceID: 1588}
     - Class: 114
-      Script: {instanceID: 2182}
+      Script: {instanceID: 2208}
     - Class: 114
-      Script: {instanceID: 2310}
+      Script: {instanceID: 2336}
     - Class: 114
-      Script: {instanceID: 2616}
+      Script: {instanceID: 2642}
     - Class: 114
-      Script: {instanceID: 2842}
+      Script: {instanceID: 2868}
     - Class: 114
-      Script: {instanceID: 3396}
+      Script: {instanceID: 3422}
     - Class: 114
-      Script: {instanceID: 3768}
+      Script: {instanceID: 3794}
     - Class: 114
-      Script: {instanceID: 4204}
+      Script: {instanceID: 4230}
     - Class: 114
-      Script: {instanceID: 4472}
+      Script: {instanceID: 4498}
     - Class: 114
-      Script: {instanceID: 4846}
+      Script: {instanceID: 4872}
     - Class: 114
-      Script: {instanceID: 5236}
+      Script: {instanceID: 5262}
     - Class: 114
-      Script: {instanceID: 5678}
+      Script: {instanceID: 5704}
     - Class: 114
-      Script: {instanceID: 5848}
+      Script: {instanceID: 5874}
     - Class: 114
-      Script: {instanceID: 6000}
+      Script: {instanceID: 6026}
     - Class: 114
-      Script: {instanceID: 6344}
+      Script: {instanceID: 6370}
     - Class: 114
-      Script: {instanceID: 7752}
+      Script: {instanceID: 7778}
     - Class: 114
-      Script: {instanceID: 7782}
+      Script: {instanceID: 7808}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -938,4 +936,4 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: D:/Banane_2-5D_Build_Proto_03/My project (3).exe
+  playerPath: D:/Banane_2-5D_Build_Proto_04/My project (3).exe
