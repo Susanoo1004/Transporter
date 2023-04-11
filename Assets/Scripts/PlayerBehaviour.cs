@@ -45,12 +45,16 @@ public class PlayerBehaviour : MonoBehaviour
     private bool m_IsStuckRight;
 
     private GameObject m_StandingOnObject { get {
-        Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-        Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-        Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
-        if (CenterHit.transform.gameObject == null)
-            return RightHit.transform.gameObject == null ? LeftHit.transform.gameObject : RightHit.transform.gameObject;
-        return CenterHit.transform.gameObject;
+        bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
+        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
+        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+        if (center)
+            return CenterHit.transform.gameObject;
+        if (left)
+            return LeftHit.transform.gameObject;
+        if (right)
+            return RightHit.transform.gameObject;
+        return null;
     } }
 
 
@@ -104,6 +108,15 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (m_IsJumping)
             Jump();
+
+        if (m_IsGrounded)
+        {
+            Rigidbody rigidbody = m_StandingOnObject.GetComponent<Rigidbody>();
+            if (rigidbody)
+            {
+                m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
+            }
+        }
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
