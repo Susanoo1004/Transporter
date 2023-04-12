@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
+    CapsuleCollider m_Collider;
 
     [SerializeField]
     Transform m_Feet;
@@ -18,7 +20,7 @@ public class PlayerBehaviour : MonoBehaviour
     Transform m_Hand;
 
     [SerializeField]
-    private float m_Speed;
+    private float m_Accelerate;
 
     [SerializeField]
     private float m_DashPower;
@@ -26,31 +28,52 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_JumpHeight;
 
+    [SerializeField]
+    private float m_MaxSpeed;
+
     private bool m_IsDahing = false;
     private float m_DashCd;
 
-    private bool m_IsJumping = false;
+    public bool m_IsJumping = false;
 
-    private bool m_IsGrounded { get { return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f); } }
-    private bool m_IsOnWallRight { get { return Physics.Raycast(m_Hand.transform.position, Vector3.right, 0.1f); } }
-    private bool m_IsOnWallLeft { get { return Physics.Raycast(m_Hand.transform.position, Vector3.left, 0.1f); } }
+    private bool m_IsGrounded { get {
+            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, 0.05f); } }
+
+    private bool m_IsStuckLeft;
+    private bool m_IsStuckRight;
+
+    private GameObject m_StandingOnObject { get {
+        bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
+        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
+        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+        if (center)
+            return CenterHit.transform.gameObject;
+        if (left)
+            return LeftHit.transform.gameObject;
+        if (right)
+            return RightHit.transform.gameObject;
+        return null;
+    } }
+
 
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_Collider = GetComponent<CapsuleCollider>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_Rigidbody.AddForce(m_Move * m_Speed * Time.deltaTime);
 
         if (m_Move != Vector3.zero)
         {
@@ -68,11 +91,32 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void FixedUpdate()
     {
+
+        if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)) )
+        {
+            if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1))
+            {
+                m_Rigidbody.AddForce(m_Move * m_Accelerate);
+            }
+        }
+        
+        m_IsStuckRight = false;
+        m_IsStuckLeft = false;
+
         if (m_IsDahing)
             Dash();
 
         if (m_IsJumping)
             Jump();
+
+        if (m_IsGrounded)
+        {
+            Rigidbody rigidbody = m_StandingOnObject.GetComponent<Rigidbody>();
+            if (rigidbody)
+            {
+                m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
+            }
+        }
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
@@ -92,7 +136,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true && (m_IsGrounded == true || m_IsOnWallRight == true || m_IsOnWallLeft == true))
+        if (_context.ReadValueAsButton() == true && (m_IsGrounded == true))
         {
             m_IsJumping = true;
         }
@@ -107,5 +151,18 @@ public class PlayerBehaviour : MonoBehaviour
     {
         m_Rigidbody.AddForce(m_LastMove * m_DashPower, ForceMode.Impulse);
         m_IsDahing = false;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts) 
+        {
+            if (Vector3.Angle(contact.normal, Vector3.up) == 90f)
+            {
+                m_IsStuckLeft = Mathf.Sign(contact.normal.x) == 1;
+                m_IsStuckRight = Mathf.Sign(contact.normal.x) == -1;
+                break;
+            }
+        }
     }
 }
