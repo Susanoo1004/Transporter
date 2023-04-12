@@ -26,13 +26,24 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DashPower;
 
     [SerializeField]
-    private float m_JumpHeight;
+    private float m_MinJumpForce;
+
+    [SerializeField]
+    private float m_MaxJumpForce;
+
+    [SerializeField]
+    private float m_JumpTime;
+    private float m_JumpTimer;
 
     [SerializeField]
     private float m_MaxSpeed;
 
-    private bool m_IsDahing = false;
-    private float m_DashCd;
+    [SerializeField]
+    private float m_DashCooldownDuration;
+
+    private float m_DashCooldown;
+
+    private bool m_IsDashing = false;
 
     public bool m_IsJumping = false;
 
@@ -48,6 +59,8 @@ public class PlayerBehaviour : MonoBehaviour
         bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
         bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
         bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+        
+          /*
         if (center)
             return CenterHit.transform.gameObject;
         if (left)
@@ -55,6 +68,9 @@ public class PlayerBehaviour : MonoBehaviour
         if (right)
             return RightHit.transform.gameObject;
         return null;
+        */
+
+        return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
     } }
 
 
@@ -82,11 +98,11 @@ public class PlayerBehaviour : MonoBehaviour
             m_LastMove = m_Move;
         }
 
-        if (m_DashCd > 0)
-        {
-            m_DashCd -= Time.deltaTime;
-            return;
-        }
+        if (m_DashCooldown > 0)
+            m_DashCooldown -= Time.deltaTime;
+
+        if (m_JumpTimer > 0)
+            m_JumpTimer -= Time.deltaTime;
     }
     
     private void FixedUpdate()
@@ -94,16 +110,16 @@ public class PlayerBehaviour : MonoBehaviour
 
         if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)) )
         {
-            if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1))
+            if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || m_IsGrounded)
             {
-                m_Rigidbody.AddForce(m_Move * m_Accelerate);
+                m_Rigidbody.AddForce(m_Move * m_Accelerate, ForceMode.Acceleration);
             }
         }
         
         m_IsStuckRight = false;
         m_IsStuckLeft = false;
 
-        if (m_IsDahing)
+        if (m_IsDashing)
             Dash();
 
         if (m_IsJumping)
@@ -127,36 +143,49 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true && m_DashCd <= 0)
+        if (_context.ReadValueAsButton() == true && m_DashCooldown <= 0)
         {
-            m_IsDahing = true;
-            m_DashCd = 2.0f;
+            m_IsDashing = true;
+            m_DashCooldown = m_DashCooldownDuration;
         }
     }
 
     public void OnJump(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true && (m_IsGrounded == true))
+        if (_context.ReadValueAsButton() == true)
         {
-            m_IsJumping = true;
+            if (m_IsGrounded == true)
+            {
+                m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
+                m_JumpTimer = m_JumpTime;
+                m_IsJumping = true; 
+            }
+        }
+        else
+        {
+            m_IsJumping = false;
         }
     }
 
     public void Jump()
     {
-        m_Rigidbody.AddForce(new Vector3(0, m_JumpHeight, 0), ForceMode.Impulse);
-        m_IsJumping = false;
+        m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer/(m_JumpTime*1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
+
+        if (m_JumpTimer < 0)
+            m_IsJumping = false;
     }
     public void Dash()
     {
-        m_Rigidbody.AddForce(m_LastMove * m_DashPower, ForceMode.Impulse);
-        m_IsDahing = false;
+        m_Rigidbody.velocity = Vector3.zero;
+        m_Rigidbody.AddForce(m_LastMove * m_DashPower, ForceMode.VelocityChange);
+        m_IsDashing = false;
     }
 
     private void OnCollisionStay(Collision collision)
     {
         foreach (ContactPoint contact in collision.contacts) 
         {
+            // wall Collision
             if (Vector3.Angle(contact.normal, Vector3.up) == 90f)
             {
                 m_IsStuckLeft = Mathf.Sign(contact.normal.x) == 1;
