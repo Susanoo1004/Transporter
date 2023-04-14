@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,11 +21,20 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     Transform m_Hand;
 
+
+    [Header("Movement")]
     [SerializeField]
     private float m_Accelerate;
 
     [SerializeField]
+    private float m_MaxSpeed;
+
+    [SerializeField]
     private float m_DashPower;
+
+    [SerializeField]
+    private float m_DashCooldownDuration;
+    private float m_DashCooldown;
 
     [SerializeField]
     private float m_MinJumpForce;
@@ -35,19 +46,35 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_JumpTime;
     private float m_JumpTimer;
 
-    [SerializeField]
-    private float m_MaxSpeed;
-
-    [SerializeField]
-    private float m_DashCooldownDuration;
-
-    private float m_DashCooldown;
-
     private bool m_IsDashing = false;
 
-    public bool m_IsJumping = false;
+    private bool m_IsJumping = false;
 
-    private bool m_IsGrounded { get {
+    [Header("Magnet")]
+    [SerializeField]
+    private Transform m_Magnet;
+    private MagnetBehaviour m_MagnetBehaviour;
+
+    [SerializeField]
+    private float m_HoverTime;
+
+    [SerializeField]
+    private float m_ThrowDistance;
+
+    [SerializeField]
+    private float m_ThrowTime;
+
+    [SerializeField]
+    private float m_PullTime;
+
+
+    private bool HasMagnet { get { return m_Magnet.parent == transform; } }
+
+    ////////////
+
+    private Vector2 m_Aim;
+
+    private bool IsGrounded { get {
             return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
                 || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, 0.05f)
                 || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, 0.05f); } }
@@ -74,11 +101,18 @@ public class PlayerBehaviour : MonoBehaviour
     } }
 
 
+    private void OnValidate()
+    {
+        m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
+        m_MagnetBehaviour.HoverTime = m_HoverTime;
+    }
+
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<CapsuleCollider>();
+        m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
     }
 
     // Start is called before the first frame update
@@ -90,7 +124,6 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (m_Move != Vector3.zero)
         {
             Quaternion ToRotation = Quaternion.LookRotation(m_Move, Vector3.up);
@@ -103,17 +136,27 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (m_JumpTimer > 0)
             m_JumpTimer -= Time.deltaTime;
+        /*
+        if (!HasMagnet && m_MagnetBehaviour.TravelTimer <= 0 && m_MagnetBehaviour.HoverTimer <= 0)
+        {
+            m_Magnet.GetComponent<BoxCollider>().enabled = false;
+            m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
+            m_MagnetBehaviour.TravelTime = m_PullTime;
+            m_MagnetBehaviour.TravelTimer = m_PullTime;
+            m_MagnetBehaviour.HoverTimer = 0;
+            
+            m_Magnet.SetParent(transform, true);
+            m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
+        }
+            */
     }
     
     private void FixedUpdate()
     {
-
         if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)) )
         {
-            if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || m_IsGrounded)
-            {
+            if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
                 m_Rigidbody.AddForce(m_Move * m_Accelerate, ForceMode.Acceleration);
-            }
         }
         
         m_IsStuckRight = false;
@@ -125,13 +168,11 @@ public class PlayerBehaviour : MonoBehaviour
         if (m_IsJumping)
             Jump();
 
-        if (m_IsGrounded)
+        if (IsGrounded)
         {
             Rigidbody rigidbody = m_StandingOnObject.GetComponent<Rigidbody>();
             if (rigidbody)
-            {
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
-            }
         }
     }
 
@@ -154,7 +195,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (_context.ReadValueAsButton() == true)
         {
-            if (m_IsGrounded == true)
+            if (IsGrounded == true)
             {
                 m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
                 m_JumpTimer = m_JumpTime;
@@ -165,6 +206,43 @@ public class PlayerBehaviour : MonoBehaviour
         {
             m_IsJumping = false;
         }
+    }
+
+    public void OnMagnetThrow(InputAction.CallbackContext _context)
+    {
+        if (_context.started)
+        {
+            if (HasMagnet)
+            {
+                m_Magnet.transform.localPosition = new Vector3(0f, -0.2f, 0f);
+                m_Magnet.transform.rotation = new Quaternion(0, 0, 0, 0);
+                m_Magnet.SetParent(null, true);
+                m_Magnet.GetComponent<BoxCollider>().enabled = true;
+                m_Magnet.GetComponent<Rigidbody>().isKinematic = false;
+
+                m_MagnetBehaviour.Target = transform.position + new Vector3(m_Aim.x, m_Aim.y, 0) * m_ThrowDistance;
+                m_MagnetBehaviour.TravelTime = m_ThrowTime;
+                m_MagnetBehaviour.TravelTimer = m_ThrowTime;
+                m_MagnetBehaviour.HoverTimer = m_HoverTime;
+                m_MagnetBehaviour.IsThrowing = true;
+            }
+            else
+            {
+                m_Magnet.GetComponent<BoxCollider>().enabled = false; 
+                m_MagnetBehaviour.TravelTime = m_PullTime;
+                m_MagnetBehaviour.TravelTimer = m_PullTime;
+                m_MagnetBehaviour.IsThrowing = false;
+                m_MagnetBehaviour.HoverTimer = 0;
+            }
+        }
+    }
+
+    public void OnAim(InputAction.CallbackContext _context)
+    {
+        if (GetComponent<PlayerInput>().defaultActionMap == "Keyboard")
+            m_Aim =  (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
+        else
+            m_Aim = _context.ReadValue<Vector2>().normalized;
     }
 
     public void Jump()

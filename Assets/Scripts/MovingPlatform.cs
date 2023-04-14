@@ -69,6 +69,9 @@ public class MovingPlatform : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (m_PathPositions.Length <= 0)
+            return;
+
         Vector2 distance = m_PathPositions[m_Index] - (Vector2)transform.localToWorldMatrix.GetPosition();
         Vector2 direction = distance.normalized;
 
@@ -81,7 +84,7 @@ public class MovingPlatform : MonoBehaviour
             if (m_Index == m_PathPositions.Length)
                 m_Index = 0;
 
-            if (!m_LoopBack && m_Index == 0)
+            if (!m_LoopBack && m_Index == 0 && m_PathPositions.Length > 1)
             {
                 System.Array.Reverse(m_PathPositions);
                 m_Index++;
