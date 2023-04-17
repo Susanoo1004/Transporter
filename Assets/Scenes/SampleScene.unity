@@ -1458,6 +1458,7 @@ MonoBehaviour:
   m_JumpHeight: 9
   m_MaxSpeed: 6
   PlayerLife: 10
+  m_CanDoubleJump: 1
   m_HasTakenExplosion: 0
   m_PlayerLifeText: {fileID: 1658038644}
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
@@ -1601,10 +1602,17 @@ GameObject:
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
+<<<<<<< HEAD
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1160830154
+=======
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1254286130
+>>>>>>> 85c25ef (Scene Update)
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
