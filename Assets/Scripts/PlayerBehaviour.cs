@@ -3,24 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    private Vector3 m_Move = new();
-    private Vector3 m_LastMove = new();
-
-    Animator m_Animator;
-    Rigidbody m_Rigidbody;
     CapsuleCollider m_Collider;
 
+    [Header("Body")]
     [SerializeField]
-    Transform m_Feet;
-
-    [SerializeField]
-    Transform m_Hand;
-
+    private Transform m_Feet;
 
     [Header("Movement")]
     [SerializeField]
@@ -46,9 +39,32 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_JumpTime;
     private float m_JumpTimer;
 
-    private bool m_IsDashing = false;
-
     private bool m_IsJumping = false;
+    private bool m_CanDoubleJump;
+
+    private bool m_IsDashing = false;
+    private float m_DashCd;
+
+    private Vector3 m_Move = new();
+    private Vector3 m_LastMove = new();
+
+    [HideInInspector] 
+    public byte PlayerLife = 10;
+
+    // To move into UI
+    [SerializeField]
+    TMP_Text m_PlayerLifeText;
+
+    private Animator m_Animator;
+
+    private Rigidbody m_Rigidbody;
+
+    private bool m_IsGrounded { get { return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.2f); } }
+
+    private bool m_IsStuckLeft;
+    private bool m_IsStuckRight;
+    [HideInInspector]
+    public bool m_HasTakenExplosion;
 
     [Header("Magnet")]
     [SerializeField]
@@ -67,12 +83,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_PullTime;
 
+    private Vector2 m_Aim;
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
-
-    ////////////
-
-    private Vector2 m_Aim;
 
     private bool IsGrounded { get {
             return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
@@ -119,12 +132,16 @@ public class PlayerBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        m_PlayerLifeText.text = "Player Life Point : ";
     }
 
     // Update is called once per frame
     void Update()
     {
+        m_Animator.SetFloat("SpeedX", m_Move.x);
+
+        m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
+
         if (m_Move != Vector3.zero)
         {
             Quaternion ToRotation = Quaternion.LookRotation(m_Move, Vector3.up);
@@ -158,10 +175,23 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void FixedUpdate()
     {
-        if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)) )
+        if(m_HasTakenExplosion) 
         {
-            if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                m_Rigidbody.AddForce(m_Move * m_Accelerate, ForceMode.Acceleration);
+            if(m_IsGrounded) 
+            {
+                m_HasTakenExplosion = false;
+            }
+        }
+        else
+        {
+            if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
+            {
+                if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1))
+                {
+                    Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
+                    m_Rigidbody.velocity = Velocity;
+                }
+            }
         }
         
         m_IsStuckRight = false;
@@ -178,6 +208,8 @@ public class PlayerBehaviour : MonoBehaviour
             Rigidbody rigidbody = m_StandingOnObject.GetComponent<Rigidbody>();
             if (rigidbody)
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
+
+            m_CanDoubleJump = true;
         }
     }
 
@@ -198,14 +230,14 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true)
+        if (_context.ReadValueAsButton() == true && (IsGrounded == true || m_CanDoubleJump == true))
         {
-            if (IsGrounded == true)
-            {
-                m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
-                m_JumpTimer = m_JumpTime;
-                m_IsJumping = true; 
-            }
+            if (m_IsGrounded == false) 
+                m_CanDoubleJump = false;
+
+            m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
+            m_JumpTimer = m_JumpTime;
+            m_IsJumping = true; 
         }
         else
         {
@@ -253,11 +285,19 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Jump()
     {
+        if (!IsGrounded)
+        {
+            Vector3 velocity = m_Rigidbody.velocity;
+            velocity.y = 0;
+            m_Rigidbody.velocity = velocity;
+        }
+
         m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer/(m_JumpTime*1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
 
         if (m_JumpTimer < 0)
             m_IsJumping = false;
     }
+
     public void Dash()
     {
         m_Rigidbody.velocity = Vector3.zero;
