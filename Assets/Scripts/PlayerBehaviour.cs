@@ -92,9 +92,6 @@ public class PlayerBehaviour : MonoBehaviour
                 || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, 0.05f)
                 || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, 0.05f); } }
 
-    private bool m_IsStuckLeft;
-    private bool m_IsStuckRight;
-
     private GameObject m_StandingOnObject { get {
         bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
         bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
