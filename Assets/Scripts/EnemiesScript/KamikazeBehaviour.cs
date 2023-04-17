@@ -73,18 +73,6 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
-
-        if (ShowExplosionRange) 
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, m_ExplosionRadius);
-            Gizmos.color = Color.white;
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

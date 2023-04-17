@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using TMPro;
@@ -116,8 +117,14 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.ThrowForce = m_ThrowForce;
     }
 
-    public bool m_IsStuckLeft;
-    public bool m_IsStuckRight;
+    private bool m_IsStuckLeft;
+    private bool m_IsStuckRight;
+    [HideInInspector]
+    public bool m_HasTakenExplosion;
+
+    // To move into UI
+    [SerializeField]
+    TMP_Text m_PlayerLifeText;
 
     private void Awake()
     {
@@ -139,7 +146,6 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetFloat("SpeedX", m_Move.x);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
-
 
         if (m_Move != Vector3.zero)
         {
