@@ -59,7 +59,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_HoverTime;
 
     [SerializeField]
-    private float m_ThrowDistance;
+    private float m_ThrowForce;
 
     [SerializeField]
     private float m_ThrowTime;
@@ -105,6 +105,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
         m_MagnetBehaviour.HoverTime = m_HoverTime;
+        m_MagnetBehaviour.ThrowForce = m_ThrowForce;
     }
 
     private void Awake()
@@ -136,19 +137,23 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (m_JumpTimer > 0)
             m_JumpTimer -= Time.deltaTime;
-        /*
-        if (!HasMagnet && m_MagnetBehaviour.TravelTimer <= 0 && m_MagnetBehaviour.HoverTimer <= 0)
+
+        if (!HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
         {
-            m_Magnet.GetComponent<BoxCollider>().enabled = false;
-            m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
-            m_MagnetBehaviour.TravelTime = m_PullTime;
-            m_MagnetBehaviour.TravelTimer = m_PullTime;
-            m_MagnetBehaviour.HoverTimer = 0;
-            
-            m_Magnet.SetParent(transform, true);
-            m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
+            if (m_MagnetBehaviour.IsThrowing)
+            {
+                m_Magnet.GetComponent<BoxCollider>().enabled = false;
+                m_MagnetBehaviour.PullTime = m_PullTime;
+                m_MagnetBehaviour.TravelTimer = m_PullTime;
+                m_MagnetBehaviour.IsThrowing = false;
+            }
+            else if (m_MagnetBehaviour.TravelTimer <= 0)
+            {
+                m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
+                m_Magnet.SetParent(transform, true);
+                m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
+            }
         }
-            */
     }
     
     private void FixedUpdate()
@@ -219,17 +224,18 @@ public class PlayerBehaviour : MonoBehaviour
                 m_Magnet.SetParent(null, true);
                 m_Magnet.GetComponent<BoxCollider>().enabled = true;
                 m_Magnet.GetComponent<Rigidbody>().isKinematic = false;
+                m_Magnet.GetComponent<Rigidbody>().velocity = m_Rigidbody.velocity;
 
-                m_MagnetBehaviour.Target = transform.position + new Vector3(m_Aim.x, m_Aim.y, 0) * m_ThrowDistance;
-                m_MagnetBehaviour.TravelTime = m_ThrowTime;
+                m_MagnetBehaviour.Aim = new Vector3(m_Aim.x, m_Aim.y, 0);
                 m_MagnetBehaviour.TravelTimer = m_ThrowTime;
                 m_MagnetBehaviour.HoverTimer = m_HoverTime;
                 m_MagnetBehaviour.IsThrowing = true;
+                m_MagnetBehaviour.ThrowForce = m_ThrowForce;
             }
-            else
+            else if (m_MagnetBehaviour.TravelTimer <= 0)
             {
                 m_Magnet.GetComponent<BoxCollider>().enabled = false; 
-                m_MagnetBehaviour.TravelTime = m_PullTime;
+                m_MagnetBehaviour.PullTime = m_PullTime;
                 m_MagnetBehaviour.TravelTimer = m_PullTime;
                 m_MagnetBehaviour.IsThrowing = false;
                 m_MagnetBehaviour.HoverTimer = 0;

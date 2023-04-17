@@ -19,13 +19,23 @@ public class MagnetBehaviour : MonoBehaviour
     [SerializeField]
     private Material m_NegativeMaterial;
 
+    [HideInInspector]
+    public float ThrowForce;
+    [HideInInspector]
     public float HoverTime;
+    [HideInInspector]
     public float HoverTimer;
-    public float TravelTime;
+    [HideInInspector]
+    public float PullTime;
+    [HideInInspector]
     public float TravelTimer;
+    [HideInInspector]
     public bool IsThrowing;
 
-    public Vector3 Target;
+    [HideInInspector]
+    public Vector3 Aim;
+
+    private Vector3 m_LastPosition;
 
     private bool HasMagnet { get { return transform.parent == m_Player.transform; } }
 
@@ -60,7 +70,10 @@ public class MagnetBehaviour : MonoBehaviour
         if (TravelTimer > 0)
             TravelTimer -= Time.deltaTime;
         else if (HoverTimer > 0)
+        {
             HoverTimer -= Time.deltaTime;
+            m_LastPosition = transform.position;
+        }
     }
 
     private void FixedUpdate()
@@ -69,17 +82,11 @@ public class MagnetBehaviour : MonoBehaviour
         {
             if (!IsThrowing) // Coming Back
             {
-                // a deplacer avec un transform et un lerp
-
-                Vector3 distance = m_Player.position - transform.position;
-
-                m_Rigidbody.velocity = distance.normalized * distance.magnitude / TravelTime;
+                transform.position = Vector3.Lerp(m_LastPosition, m_Player.position, 1-TravelTimer/PullTime);
             }
             else // Throwing
             {
-                Vector3 distance = Target - transform.position;
-
-                m_Rigidbody.velocity = distance.normalized * distance.magnitude / TravelTime;
+                m_Rigidbody.AddForce(Aim * ThrowForce, ForceMode.Acceleration);
             }
         }
         else //if (HoverTimer > 0)
