@@ -73,6 +73,12 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_HoverTime;
 
     [SerializeField]
+    private float m_AttractionTime;
+
+    [SerializeField]
+    private float m_RepulsiveForce;
+
+    [SerializeField]
     private float m_ThrowForce;
 
     [SerializeField]
@@ -108,13 +114,6 @@ public class PlayerBehaviour : MonoBehaviour
         return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
     } }
 
-
-    private void OnValidate()
-    {
-        m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
-        m_MagnetBehaviour.HoverTime = m_HoverTime;
-        m_MagnetBehaviour.ThrowForce = m_ThrowForce;
-    }
 
     private void Awake()
     {
@@ -153,18 +152,9 @@ public class PlayerBehaviour : MonoBehaviour
         if (!HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
         {
             if (m_MagnetBehaviour.IsThrowing)
-            {
-                m_Magnet.GetComponent<BoxCollider>().enabled = false;
-                m_MagnetBehaviour.PullTime = m_PullTime;
-                m_MagnetBehaviour.TravelTimer = m_PullTime;
-                m_MagnetBehaviour.IsThrowing = false;
-            }
+                SetPullProperties();
             else if (m_MagnetBehaviour.TravelTimer <= 0)
-            {
-                m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
-                m_Magnet.SetParent(transform, true);
-                m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
-            }
+                AttachMagnet();
         }
     }
     
@@ -250,28 +240,9 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started)
         {
             if (HasMagnet)
-            {
-                m_Magnet.transform.localPosition = new Vector3(0f, -0.2f, 0f);
-                m_Magnet.transform.rotation = new Quaternion(0, 0, 0, 0);
-                m_Magnet.SetParent(null, true);
-                m_Magnet.GetComponent<BoxCollider>().enabled = true;
-                m_Magnet.GetComponent<Rigidbody>().isKinematic = false;
-                m_Magnet.GetComponent<Rigidbody>().velocity = m_Rigidbody.velocity;
-
-                m_MagnetBehaviour.Aim = new Vector3(m_Aim.x, m_Aim.y, 0);
-                m_MagnetBehaviour.TravelTimer = m_ThrowTime;
-                m_MagnetBehaviour.HoverTimer = m_HoverTime;
-                m_MagnetBehaviour.IsThrowing = true;
-                m_MagnetBehaviour.ThrowForce = m_ThrowForce;
-            }
+                SetThrowProperties();
             else if (m_MagnetBehaviour.TravelTimer <= 0)
-            {
-                m_Magnet.GetComponent<BoxCollider>().enabled = false; 
-                m_MagnetBehaviour.PullTime = m_PullTime;
-                m_MagnetBehaviour.TravelTimer = m_PullTime;
-                m_MagnetBehaviour.IsThrowing = false;
-                m_MagnetBehaviour.HoverTimer = 0;
-            }
+                SetPullProperties();
         }
     }
 
@@ -307,5 +278,42 @@ public class PlayerBehaviour : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void SetThrowProperties()
+    {
+        m_Magnet.transform.localPosition = new Vector3(0f, -0.2f, 0f);
+        m_Magnet.transform.rotation = new Quaternion(0, 0, 0, 0);
+        m_Magnet.SetParent(null, true);
+        m_Magnet.GetComponent<BoxCollider>().enabled = true;
+        m_Magnet.GetComponent<SphereCollider>().enabled = true;
+        m_Magnet.GetComponent<Rigidbody>().isKinematic = false;
+        m_Magnet.GetComponent<Rigidbody>().velocity = m_Rigidbody.velocity;
+
+        m_MagnetBehaviour.Aim = new Vector3(m_Aim.x, m_Aim.y, 0);
+        m_MagnetBehaviour.TravelTimer = m_ThrowTime;
+        m_MagnetBehaviour.HoverTimer = m_HoverTime;
+        m_MagnetBehaviour.IsThrowing = true;
+        m_MagnetBehaviour.ThrowForce = m_ThrowForce;
+        m_MagnetBehaviour.RepulsiveForce = m_RepulsiveForce;
+    }
+
+    private void SetPullProperties()
+    {
+        m_Magnet.GetComponent<BoxCollider>().enabled = false;
+        m_Magnet.GetComponent<SphereCollider>().enabled = false;
+        m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
+
+        m_MagnetBehaviour.PullTime = m_PullTime;
+        m_MagnetBehaviour.TravelTimer = m_PullTime;
+        m_MagnetBehaviour.IsThrowing = false;
+        m_MagnetBehaviour.HoverTimer = 0;
+    }
+
+    private void AttachMagnet()
+    {
+        m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
+        m_Magnet.SetParent(transform, true);
+        m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
     }
 }

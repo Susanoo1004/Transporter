@@ -20,6 +20,12 @@ public class MagnetBehaviour : MonoBehaviour
     private Material m_NegativeMaterial;
 
     [HideInInspector]
+    public float RepulsiveForce;
+    [HideInInspector]
+    public float AttractionTime;
+    [HideInInspector]
+    public float AttractionTimer;
+    [HideInInspector]
     public float ThrowForce;
     [HideInInspector]
     public float HoverTime;
@@ -32,17 +38,23 @@ public class MagnetBehaviour : MonoBehaviour
     [HideInInspector]
     public bool IsThrowing;
 
+
+    [HideInInspector]
+    public Transform MagnetizedObject;
+    private Vector3 m_LastMagnetizedObjectPosition;
+
     [HideInInspector]
     public Vector3 Aim;
 
     private Vector3 m_LastPosition;
 
     private bool HasMagnet { get { return transform.parent == m_Player.transform; } }
-
+    public bool HasMagnetizedObject { get { return MagnetizedObject != null; } }
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        MagnetizedObject = null;
     }
 
     // Start is called before the first frame update
@@ -68,11 +80,19 @@ public class MagnetBehaviour : MonoBehaviour
             GetComponent<Renderer>().material = m_NegativeMaterial;
     
         if (TravelTimer > 0)
+        {
             TravelTimer -= Time.deltaTime;
+        }
         else if (HoverTimer > 0)
         {
             HoverTimer -= Time.deltaTime;
             m_LastPosition = transform.position;
+        }
+
+        if (AttractionTimer > 0)
+        {
+            AttractionTimer -= Time.deltaTime;
+            m_LastMagnetizedObjectPosition = MagnetizedObject.position;
         }
     }
 
@@ -92,6 +112,61 @@ public class MagnetBehaviour : MonoBehaviour
         else //if (HoverTimer > 0)
         {
             m_Rigidbody.velocity = Vector3.zero;
+        }
+
+        if (HasMagnetizedObject)
+        {
+            if (AttractionTimer > 0)
+            {
+                AttractionTimer -= Time.fixedDeltaTime;
+                MagnetizedObject.position = Vector3.Lerp(m_LastMagnetizedObjectPosition, transform.position, 1-AttractionTimer/AttractionTime);
+            }
+            else
+            {
+                MagnetizedObject.SetParent(transform, true);
+                MagnetizedObject.localPosition = Vector3.zero;
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        TravelTimer = 0;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out MagneticObject magneticObject))
+        {
+            TravelTimer = 0;
+
+            MagneticObject.Polarity polarity = IsPositive ? MagneticObject.Polarity.POSITIVE : MagneticObject.Polarity.NEGATIVE;
+
+
+            if (magneticObject.AffectSelf)
+            {
+                if (polarity == magneticObject.polarity) // Repulse
+                {
+                    if (other.TryGetComponent(out Rigidbody rigidbody))
+                        rigidbody.AddForce(Aim * RepulsiveForce, ForceMode.VelocityChange);
+                }
+                else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
+                      || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE) // Attract
+                {
+                    AttractionTimer = AttractionTime;
+                    MagnetizedObject = magneticObject.transform;
+
+                    if (other.TryGetComponent(out Rigidbody rigidbody))
+                        rigidbody.isKinematic = true;
+                    if (other.TryGetComponent(out Collider collider))
+                        collider.isTrigger = true;
+                }
+            }
+
+            if (magneticObject.AffectPlayer) 
+            {
+                // no idea yet lol
+            }
         }
     }
 }
