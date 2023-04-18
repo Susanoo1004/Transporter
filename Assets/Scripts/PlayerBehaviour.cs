@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    CapsuleCollider m_Collider;
+    BoxCollider m_Collider;
 
     [Header("Body")]
     [SerializeField]
@@ -59,8 +59,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private Rigidbody m_Rigidbody;
 
-    private bool m_IsGrounded { get { return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.2f); } }
-
     private bool m_IsStuckLeft;
     private bool m_IsStuckRight;
     [HideInInspector]
@@ -89,13 +87,13 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool IsGrounded { get {
             return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, 0.05f); } }
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f); } }
 
     private GameObject m_StandingOnObject { get {
         bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.radius, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.radius, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
+        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
         
           /*
         if (center)
@@ -122,7 +120,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_Collider = GetComponent<CapsuleCollider>();
+        m_Collider = GetComponent<BoxCollider>();
         m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
     }
 
@@ -174,20 +172,20 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if(m_HasTakenExplosion) 
         {
-            if(m_IsGrounded) 
-            {
+            if(IsGrounded) 
                 m_HasTakenExplosion = false;
-            }
         }
         else
         {
             if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
-                if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1))
-                {
-                    Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
-                    m_Rigidbody.velocity = Velocity;
-                }
+                   if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
+                    {
+                        m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
+
+                        //Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
+                        //m_Rigidbody.velocity = Velocity;
+                    }
             }
         }
         
@@ -227,19 +225,24 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true && (IsGrounded == true || m_CanDoubleJump == true))
+        if (_context.started && (IsGrounded == true || m_CanDoubleJump == true))
         {
-            if (m_IsGrounded == false) 
+            if (!IsGrounded)
+            {
+                Vector3 velocity = m_Rigidbody.velocity;
+                velocity.y = 0;
+                m_Rigidbody.velocity = velocity;
                 m_CanDoubleJump = false;
+            }
 
             m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
             m_JumpTimer = m_JumpTime;
-            m_IsJumping = true; 
         }
+
+        if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
+            m_IsJumping = true;
         else
-        {
             m_IsJumping = false;
-        }
     }
 
     public void OnMagnetThrow(InputAction.CallbackContext _context)
@@ -282,17 +285,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Jump()
     {
-        if (!IsGrounded)
-        {
-            Vector3 velocity = m_Rigidbody.velocity;
-            velocity.y = 0;
-            m_Rigidbody.velocity = velocity;
-        }
-
         m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer/(m_JumpTime*1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
-
-        if (m_JumpTimer < 0)
-            m_IsJumping = false;
     }
 
     public void Dash()
