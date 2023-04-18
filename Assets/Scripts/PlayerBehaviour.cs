@@ -116,6 +116,9 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.ThrowForce = m_ThrowForce;
     }
 
+    public bool m_IsStuckLeft;
+    public bool m_IsStuckRight;
+
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
@@ -136,6 +139,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetFloat("SpeedX", m_Move.x);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
+
 
         if (m_Move != Vector3.zero)
         {
