@@ -95,12 +95,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4261504524889656959}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< HEAD
   m_Script: {fileID: 11500000, guid: 2468d6548068424459a68cba925178c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Speed: 1.5
   m_LoopBack: 0
   m_StopDuration: 2
+=======
+  m_Script: {fileID: 11500000, guid: b0ce429cdb40ab54382860bd3c5ae8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Speed: 2
+  m_LoopBack: 0
+  m_StopDuration: 1
+>>>>>>> fc7191a513367508fda8c3022c809afedc998011
   m_PathPositions: []
 --- !u!65 &4261504524889656957
 BoxCollider:
