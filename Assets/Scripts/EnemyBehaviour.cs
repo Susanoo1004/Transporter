@@ -41,7 +41,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     protected virtual void MyUpdate()
@@ -51,10 +51,10 @@ public class EnemyBehaviour : MonoBehaviour
         else
             FocusPlayer();
 
-         if (m_EnemyHP >= 250)
+        if (m_EnemyHP >= 250)
             m_EnemyHP = 0;
 
-         if (m_EnemyHP == 0)
+        if (m_EnemyHP == 0)
             Destroy(gameObject);
     }
 

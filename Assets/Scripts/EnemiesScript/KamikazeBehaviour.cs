@@ -7,17 +7,19 @@ public class KamikazeBehaviour : EnemyBehaviour
 {
     private bool IsExploding;
 
-    private bool ShowExplosionRange;
+    private bool HasJump;
 
     [Header("Explosion")]
     [SerializeField]
     private float m_DetonationRadius;
 
     [SerializeField]
-    private float m_ExplosionRadius;
+    private float m_JumpForce;
 
     [SerializeField]
     private float m_ExplosionKnocknack;
+
+    public Transform player;
 
     private void Awake()
     {
@@ -55,21 +57,35 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
         else
         {
-            ShowExplosionRange = true;
+            GetComponent<NavMeshAgent>().enabled = false;
+            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down/2);
+            if (!HasJump)
+            {
+                transform.position += Vector3.up/5;
+                GetComponent<Rigidbody>().AddForce(vecBetweenTargetandKamikaze.normalized * m_JumpForce, ForceMode.VelocityChange);
+                HasJump = true;
+            }
 
             m_HitCD -= Time.deltaTime;
-            
-            if (m_HitCD > 0)
+
+            if (vecBetweenTargetandKamikaze.magnitude >= 2.8f && m_HitCD > 0.0f)
                 return;
 
-            if (Vector3.Distance(transform.position, m_Target.transform.position) < m_ExplosionRadius)
-                m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= 2;
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
+           foreach (Collider collider in colliders)
+           {
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= 2;
 
-            // To add an explosion force
-            m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack, transform.position + Vector3.down, m_ExplosionRadius);
-            m_Target.GetComponent<PlayerBehaviour>().m_HasTakenExplosion = true;
+                    // To add an explosion force
+                    m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack * Time.fixedDeltaTime, transform.position + Vector3.down, 1);
+                    m_Target.GetComponent<PlayerBehaviour>().m_HasTakenExplosion = true;
+                    break;
+                }
+           }
 
-            Destroy(gameObject);
+           Destroy(gameObject);
         }
     }
 
@@ -82,18 +98,10 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
         }
- 
+
     }
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
-
-        if (ShowExplosionRange) 
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, m_ExplosionRadius);
-            Gizmos.color = Color.white;
-        }
- 
     }
 }

@@ -48,8 +48,8 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector3 m_Move = new();
     private Vector3 m_LastMove = new();
 
-    [SerializeField]
-    private float m_MaxJumpForce;
+    [HideInInspector]
+    public byte PlayerLife = 10;
 
     // To move into UI
     [SerializeField]
@@ -57,11 +57,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private Animator m_Animator;
 
-    private bool m_IsJumping = false;
-    private bool m_CanDoubleJump;
-
-    private bool m_IsDashing = false;
-    private float m_DashCd;
+    private Rigidbody m_Rigidbody;
 
     private bool m_IsStuckLeft;
     private bool m_IsStuckRight;
@@ -89,28 +85,37 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
-    private bool IsGrounded { get {
+    private bool IsGrounded
+    {
+        get
+        {
             return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f); } }
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, 0.05f);
+        }
+    }
 
-    private GameObject m_StandingOnObject { get {
-        bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
-        
-          /*
-        if (center)
-            return CenterHit.transform.gameObject;
-        if (left)
-            return LeftHit.transform.gameObject;
-        if (right)
-            return RightHit.transform.gameObject;
-        return null;
-        */
+    private GameObject m_StandingOnObject
+    {
+        get
+        {
+            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
+            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
+            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
 
-        return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
-    } }
+            /*
+          if (center)
+              return CenterHit.transform.gameObject;
+          if (left)
+              return LeftHit.transform.gameObject;
+          if (right)
+              return RightHit.transform.gameObject;
+          return null;
+          */
+
+            return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
+        }
+    }
 
 
     private void OnValidate()
@@ -119,66 +124,6 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.HoverTime = m_HoverTime;
         m_MagnetBehaviour.ThrowForce = m_ThrowForce;
     }
-
-    private bool m_IsStuckLeft;
-    private bool m_IsStuckRight;
-    [HideInInspector]
-    public bool m_HasTakenExplosion;
-
-    [Header("Magnet")]
-    [SerializeField]
-    private Transform m_Magnet;
-    private MagnetBehaviour m_MagnetBehaviour;
-
-    [SerializeField]
-    private float m_HoverTime;
-
-    [SerializeField]
-    private float m_ThrowForce;
-
-    [SerializeField]
-    private float m_ThrowTime;
-
-    [SerializeField]
-    private float m_PullTime;
-
-    private Vector2 m_Aim;
-
-    private bool HasMagnet { get { return m_Magnet.parent == transform; } }
-
-    private bool IsGrounded { get {
-            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f); } }
-
-    private GameObject m_StandingOnObject { get {
-        bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
-        
-          /*
-        if (center)
-            return CenterHit.transform.gameObject;
-        if (left)
-            return LeftHit.transform.gameObject;
-        if (right)
-            return RightHit.transform.gameObject;
-        return null;
-        */
-
-        return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
-    } }
-
-
-    private void OnValidate()
-    {
-        m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
-        m_MagnetBehaviour.HoverTime = m_HoverTime;
-        m_MagnetBehaviour.ThrowForce = m_ThrowForce;
-    }
-
-    public bool m_IsStuckLeft;
-    public bool m_IsStuckRight;
 
     private void Awake()
     {
@@ -200,7 +145,6 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetFloat("SpeedX", m_Move.x);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
-
 
         if (m_Move != Vector3.zero)
         {
@@ -232,28 +176,28 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
     }
-    
+
     private void FixedUpdate()
     {
-        if(m_HasTakenExplosion) 
+        if (m_HasTakenExplosion)
         {
-            if(IsGrounded) 
+            if (IsGrounded)
                 m_HasTakenExplosion = false;
         }
         else
         {
             if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
-                   if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                    {
-                        m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
+                if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
+                {
+                    m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
 
-                        //Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
-                        //m_Rigidbody.velocity = Velocity;
-                    }
+                    //Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
+                    //m_Rigidbody.velocity = Velocity;
+                }
             }
         }
-        
+
         m_IsStuckRight = false;
         m_IsStuckLeft = false;
 
@@ -276,7 +220,7 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnMovement(InputAction.CallbackContext _context)
     {
         Vector2 move = _context.ReadValue<Vector2>();
-        m_Move = new Vector3(move.x , 0, 0);
+        m_Move = new Vector3(move.x, 0, 0);
     }
 
     public void OnDash(InputAction.CallbackContext _context)
@@ -331,7 +275,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
             else if (m_MagnetBehaviour.TravelTimer <= 0)
             {
-                m_Magnet.GetComponent<BoxCollider>().enabled = false; 
+                m_Magnet.GetComponent<BoxCollider>().enabled = false;
                 m_MagnetBehaviour.PullTime = m_PullTime;
                 m_MagnetBehaviour.TravelTimer = m_PullTime;
                 m_MagnetBehaviour.IsThrowing = false;
@@ -343,14 +287,14 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnAim(InputAction.CallbackContext _context)
     {
         if (GetComponent<PlayerInput>().defaultActionMap == "Keyboard")
-            m_Aim =  (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
+            m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
 
     public void Jump()
     {
-        m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer/(m_JumpTime*1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer / (m_JumpTime * 1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
     }
 
     public void Dash()
@@ -362,7 +306,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        foreach (ContactPoint contact in collision.contacts) 
+        foreach (ContactPoint contact in collision.contacts)
         {
             // wall Collision
             if (Vector3.Angle(contact.normal, Vector3.up) == 90f)

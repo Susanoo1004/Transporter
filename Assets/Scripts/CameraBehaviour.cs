@@ -11,15 +11,14 @@ public class CameraBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         Vector3 cameraPos = m_Target.position;
-        cameraPos.y += 5.0f;
-
+        cameraPos.y += 2.0f;
         cameraPos.z -= 20.0f;
         transform.position = cameraPos;
         transform.LookAt(m_Target.position);

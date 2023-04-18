@@ -6,13 +6,14 @@ using UnityEngine.AI;
 
 public class BoxerBehaviour : EnemyBehaviour
 {
-    bool IsPatrolling = true;
+
 
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
         m_EnemyHP = 2;
     }
+
     // Start is called before the first frame update
     void Start()
     {
