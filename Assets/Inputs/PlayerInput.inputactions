@@ -128,6 +128,7 @@
                     "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
+<<<<<<< HEAD
                 }
             ]
         },
@@ -258,17 +259,28 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
                 }
             ]
         },
         {
             "name": "Keyboard",
-            "id": "dd12b084-85fd-4e9e-a7b6-c4b51fca312f",
+            "id": "05294e72-51c6-435f-bd0b-3cc44f3fb562",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "b9ff4ce9-48d3-43bd-89e7-b1e735530b2e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Dash",
                     "type": "Button",
-                    "id": "3d99225f-5f37-49ef-9dd4-4d4e5411d960",
+                    "id": "d0d88d4e-b130-4622-8485-26fff02d5710",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -277,50 +289,101 @@
                 {
                     "name": "Jump",
                     "type": "Button",
-                    "id": "afdee423-7ef5-4866-ad62-971273dbde49",
+                    "id": "9a2c841e-45b8-4646-879f-559f38307ce5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Throw Magnet",
+                    "type": "Button",
+                    "id": "7fdb2974-cb80-4eef-a726-82a548d8161c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Value",
+                    "id": "51bfbf6d-dd80-4c14-aa7d-21b6b220f515",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "2D Vector",
-                    "id": "269d3838-54cc-41a6-8a5e-e399a79a6270",
+                    "id": "58e85aba-199e-4718-b715-59cc801cd3bb",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Movement",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "left",
-                    "id": "123ef41b-450d-4e89-a738-ea6739c5c891",
+                    "id": "abaa3cb6-17e4-4ea2-97e1-abf8a26f7634",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "right",
-                    "id": "68c85139-5916-4537-aa2d-7a0db6b35ac6",
+                    "id": "3f537785-8c5f-4199-9107-53aa29e9a1e5",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "",
-                    "id": "3d2e60e3-e607-4c5f-a442-487327bd6e46",
+                    "id": "a823028c-8474-4a61-8558-331a500282f3",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f5f8448-64ea-4747-8c24-2500915545b3",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throw Magnet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "759164de-57ef-4cb2-bad5-94255aee4e84",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a73da35e-6f4c-4401-bce7-4f74d1178051",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",

@@ -188,6 +188,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!1 &424880104
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +199,159 @@ GameObject:
   m_Component:
   - component: {fileID: 424880105}
   m_Layer: 0
+<<<<<<< HEAD
   m_Name: BoxerWaypoint
+=======
+  m_Name: Cube (2)
+  m_TagString: Wall
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &337379577
+=======
+--- !u!65 &312085734
+>>>>>>> d8071a3 (Fix problem with the wall)
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+  m_GameObject: {fileID: 337379576}
+=======
+  m_GameObject: {fileID: 312085732}
+>>>>>>> d8071a3 (Fix problem with the wall)
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+<<<<<<< HEAD
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &337379578
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337379576}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &337379579
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337379576}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &337379580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337379576}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 3.8894389, y: 5.56, z: -10.456062}
+  m_LocalScale: {x: 1, y: 10, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &337379581
+=======
+  m_Size: {x: 5, y: 1, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &312085735
+>>>>>>> d8071a3 (Fix problem with the wall)
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+  m_GameObject: {fileID: 337379576}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+=======
+  m_GameObject: {fileID: 312085732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 5, y: 1, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &312085736
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312085732}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+>>>>>>> d8071a3 (Fix problem with the wall)
+--- !u!1 &343807786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 343807787}
+  - component: {fileID: 343807790}
+  - component: {fileID: 343807789}
+  m_Layer: 0
+  m_Name: Capsule
+>>>>>>> 2b1d010 (Add camera following the player)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -533,14 +686,31 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   m_LocalRotation: {x: 0.3070837, y: 0.63694555, z: -0.3070837, w: 0.63694555}
+<<<<<<< HEAD
   m_LocalPosition: {x: -17, y: 41.69892, z: -10.456062}
+=======
+<<<<<<< HEAD
+  m_LocalPosition: {x: -17, y: 41.69892, z: -10.456062}
+=======
+  m_LocalPosition: {x: -17, y: 27.3, z: -10.456062}
+>>>>>>> 2b1d010 (Add camera following the player)
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 128.521, y: -90, z: -180}
 --- !u!1 &859649309
+=======
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 128.521, y: -90, z: -180}
+--- !u!1 &720755023
+>>>>>>> 2b1d010 (Add camera following the player)
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -572,6 +742,7 @@ Transform:
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LocalPosition: {x: 20, y: 1.5, z: 0}
 =======
   m_LocalPosition: {x: 59.24, y: -8.36, z: 0.54}
@@ -579,6 +750,9 @@ Transform:
 =======
   m_LocalPosition: {x: 59.24, y: -7.36, z: 0.54}
 >>>>>>> b6e0f54 (finish kamikaze enemy (left to add assets and animations) and add damage to boxer and kamaikaze (though i add hp on player))
+=======
+  m_LocalPosition: {x: 20, y: 1.5, z: 0}
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -614,6 +788,7 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 859649309}
   serializedVersion: 2
   m_Mass: 1
@@ -723,6 +898,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!1 &884596772
 GameObject:
 >>>>>>> c74815f (began to create the kamikaze, left to add a zone for the explosion)
@@ -800,6 +976,12 @@ Transform:
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 >>>>>>> c74815f (began to create the kamikaze, left to add a zone for the explosion)
+=======
+=======
+  m_GameObject: {fileID: 720755023}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+>>>>>>> d8071a3 (Fix problem with the wall)
+>>>>>>> 14605af (Trying to fix merge conflict)
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,12 +1066,17 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Father: {fileID: 0}
   m_RootOrder: 4
 =======
   m_Father: {fileID: 1012904924}
   m_RootOrder: 0
 >>>>>>> c74815f (began to create the kamikaze, left to add a zone for the explosion)
+=======
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194230
 MonoBehaviour:
@@ -919,6 +1106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 1088834652}
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 --- !u!1 &1012904923
@@ -962,6 +1150,8 @@ Transform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 >>>>>>> c74815f (began to create the kamikaze, left to add a zone for the explosion)
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
 --- !u!1001 &1038345174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1204,6 +1394,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9500000, guid: cf3910b7639e12447827e45f63f60201, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cf3910b7639e12447827e45f63f60201, type: 3}
+=======
+>>>>>>> d8071a3 (Fix problem with the wall)
 --- !u!1 &1088834647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,19 +1406,27 @@ GameObject:
   m_Component:
   - component: {fileID: 1088834652}
 <<<<<<< HEAD
+<<<<<<< HEAD
   - component: {fileID: 1088834654}
 =======
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
+=======
+  - component: {fileID: 1088834654}
+>>>>>>> 14605af (Trying to fix merge conflict)
   - component: {fileID: 1088834650}
   - component: {fileID: 1088834649}
   - component: {fileID: 1088834648}
   - component: {fileID: 1088834653}
+<<<<<<< HEAD
 <<<<<<< HEAD
   m_Layer: 6
 =======
   - component: {fileID: 1088834654}
   m_Layer: 0
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
+=======
+  m_Layer: 6
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_Name: Player (1)
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1453,15 +1653,29 @@ MonoBehaviour:
   m_ThrowTime: 0.5
   m_PullTime: 0.5
 =======
+<<<<<<< HEAD
   m_Accelerate: 6
+=======
+  m_Hand: {fileID: 1446508686}
+  m_Accelerate: 20
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_DashPower: 8
   m_JumpHeight: 9
+<<<<<<< HEAD
+  m_MaxSpeed: 10
+  m_IsStuckLeft: 0
+  m_IsStuckRight: 0
+>>>>>>> d8071a3 (Fix problem with the wall)
+=======
   m_MaxSpeed: 6
   PlayerLife: 10
-  m_CanDoubleJump: 1
   m_HasTakenExplosion: 0
   m_PlayerLifeText: {fileID: 1658038644}
+<<<<<<< HEAD
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
+=======
+>>>>>>> parent of 85c25ef (Scene Update)
+>>>>>>> 14605af (Trying to fix merge conflict)
 --- !u!54 &1088834650
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1490,6 +1704,7 @@ Transform:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LocalPosition: {x: -22.08, y: 11.28, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
 =======
@@ -1505,11 +1720,20 @@ Transform:
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
 >>>>>>> c74815f (began to create the kamikaze, left to add a zone for the explosion)
+=======
+  m_LocalPosition: {x: -22.08, y: 11.28, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+=======
+  m_LocalPosition: {x: -17.6, y: 10.78, z: -10.45606}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+>>>>>>> d8071a3 (Fix problem with the wall)
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1788741367}
   - {fileID: 1254286130}
   - {fileID: 1780938212}
+<<<<<<< HEAD
 <<<<<<< HEAD
   m_Father: {fileID: 0}
   m_RootOrder: 7
@@ -1521,6 +1745,11 @@ Transform:
 =======
   m_RootOrder: 3
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
+=======
+  m_Father: {fileID: 0}
+<<<<<<< HEAD
+  m_RootOrder: 7
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!95 &1088834653
 Animator:
@@ -1610,25 +1839,35 @@ GameObject:
 =======
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1254286130
+<<<<<<< HEAD
 >>>>>>> 85c25ef (Scene Update)
+=======
+>>>>>>> parent of 85c25ef (Scene Update)
+>>>>>>> 14605af (Trying to fix merge conflict)
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_GameObject: {fileID: 1160830153}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0.03, y: 4.7799997, z: -18.2}
   m_LocalScale: {x: 3, y: 1, z: 1}
+<<<<<<< HEAD
 =======
   m_GameObject: {fileID: 1254286129}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.28, z: 0.47}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
 >>>>>>> ab92e5c (Enemy works, just need to add the graphics part)
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 312085733}
@@ -1790,6 +2029,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3c8fd668f69e14da14c2592773097c, type: 3}
+<<<<<<< HEAD
+=======
+=======
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> d8071a3 (Fix problem with the wall)
+>>>>>>> 14605af (Trying to fix merge conflict)
 --- !u!1 &1254286129
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,6 +2158,9 @@ BoxCollider:
   m_Enabled: 0
   serializedVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_Size: {x: 1.0000002, y: 0.99999994, z: 1.0000002}
   m_Center: {x: 0, y: 0.00000023841858, z: 0.0000038146973}
 --- !u!135 &1254286136
@@ -1943,10 +2192,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+<<<<<<< HEAD
 --- !u!1 &1506574302
 =======
   m_Radius: 0.5000001
   m_Center: {x: 0, y: 0, z: 0}
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
 --- !u!1 &1506574302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,14 +2223,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506574302}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 75.82922, y: 15.278923, z: -2.4298239}
+  m_LocalPosition: {x: 20, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2101065742}
   - {fileID: 62205072}
-  m_Father: {fileID: 1012904924}
-  m_RootOrder: 8
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1658038642
 GameObject:
@@ -2115,6 +2367,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658038642}
   m_CullTransparentMesh: 1
+<<<<<<< HEAD
 --- !u!1 &1659343629
 >>>>>>> c74815f (began to create the kamikaze, left to add a zone for the explosion)
 GameObject:
@@ -2284,6 +2537,8 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658038642}
   m_CullTransparentMesh: 1
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
 --- !u!1 &1758747057
 GameObject:
   m_ObjectHideFlags: 0
@@ -2349,6 +2604,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Father: {fileID: 0}
   m_RootOrder: 8
 =======
@@ -2359,6 +2615,10 @@ Transform:
 =======
   m_RootOrder: 5
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
+=======
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1763224103
 GameObject:
@@ -2473,16 +2733,21 @@ Transform:
   m_GameObject: {fileID: 1788741366}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LocalPosition: {x: 0, y: -1, z: -0.06}
 =======
   m_LocalPosition: {x: 0, y: -0.89, z: -0.06}
 >>>>>>> c74815f (began to create the kamikaze, left to add a zone for the explosion)
+=======
+  m_LocalPosition: {x: 0, y: -1, z: -0.06}
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1088834652}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 --- !u!1 &1888978552
@@ -2517,6 +2782,8 @@ Transform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
+=======
+>>>>>>> 14605af (Trying to fix merge conflict)
 --- !u!1 &1901429686
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,10 +2976,14 @@ RectTransform:
   - {fileID: 1658038643}
   m_Father: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_RootOrder: 0
 =======
   m_RootOrder: 1
 >>>>>>> 371d55f (Add the Unity Packages folder to the project)
+=======
+  m_RootOrder: 0
+>>>>>>> 14605af (Trying to fix merge conflict)
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2755,7 +3026,209 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!114 &2041615805
+=======
+--- !u!1 &1814305775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1814305776}
+  - component: {fileID: 1814305778}
+  - component: {fileID: 1814305777}
+  m_Layer: 1
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1814305776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814305775}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 521201308}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1814305777
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814305775}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1814305778
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814305775}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1901429686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1901429690}
+  - component: {fileID: 1901429689}
+  - component: {fileID: 1901429688}
+  - component: {fileID: 1901429687}
+  m_Layer: 0
+  m_Name: Cube (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1901429687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901429686}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1901429688
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901429686}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1901429689
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901429686}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1901429690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901429686}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.38, y: 4.78, z: -10.49}
+  m_LocalScale: {x: 1, y: 8, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2066652355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2066652358}
+  - component: {fileID: 2066652357}
+  - component: {fileID: 2066652356}
+  m_Layer: 0
+  m_Name: VisualScripting SceneVariables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2066652356
+>>>>>>> d8071a3 (Fix problem with the wall)
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

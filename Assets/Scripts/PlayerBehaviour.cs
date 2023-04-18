@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using TMPro;
@@ -49,8 +48,8 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector3 m_Move = new();
     private Vector3 m_LastMove = new();
 
-    [HideInInspector] 
-    public byte PlayerLife = 10;
+    [SerializeField]
+    private float m_MaxJumpForce;
 
     // To move into UI
     [SerializeField]
@@ -58,7 +57,11 @@ public class PlayerBehaviour : MonoBehaviour
 
     private Animator m_Animator;
 
-    private Rigidbody m_Rigidbody;
+    private bool m_IsJumping = false;
+    private bool m_CanDoubleJump;
+
+    private bool m_IsDashing = false;
+    private float m_DashCd;
 
     private bool m_IsStuckLeft;
     private bool m_IsStuckRight;
@@ -122,9 +125,60 @@ public class PlayerBehaviour : MonoBehaviour
     [HideInInspector]
     public bool m_HasTakenExplosion;
 
-    // To move into UI
+    [Header("Magnet")]
     [SerializeField]
-    TMP_Text m_PlayerLifeText;
+    private Transform m_Magnet;
+    private MagnetBehaviour m_MagnetBehaviour;
+
+    [SerializeField]
+    private float m_HoverTime;
+
+    [SerializeField]
+    private float m_ThrowForce;
+
+    [SerializeField]
+    private float m_ThrowTime;
+
+    [SerializeField]
+    private float m_PullTime;
+
+    private Vector2 m_Aim;
+
+    private bool HasMagnet { get { return m_Magnet.parent == transform; } }
+
+    private bool IsGrounded { get {
+            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f); } }
+
+    private GameObject m_StandingOnObject { get {
+        bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
+        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
+        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+        
+          /*
+        if (center)
+            return CenterHit.transform.gameObject;
+        if (left)
+            return LeftHit.transform.gameObject;
+        if (right)
+            return RightHit.transform.gameObject;
+        return null;
+        */
+
+        return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
+    } }
+
+
+    private void OnValidate()
+    {
+        m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
+        m_MagnetBehaviour.HoverTime = m_HoverTime;
+        m_MagnetBehaviour.ThrowForce = m_ThrowForce;
+    }
+
+    public bool m_IsStuckLeft;
+    public bool m_IsStuckRight;
 
     private void Awake()
     {
@@ -146,6 +200,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetFloat("SpeedX", m_Move.x);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
+
 
         if (m_Move != Vector3.zero)
         {
