@@ -19,12 +19,13 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private float m_ExplosionKnocknack;
 
-    public Transform player;
+    private Animator m_Animator;
 
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
         m_EnemyHP = 1;
+        m_Animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -37,6 +38,7 @@ public class KamikazeBehaviour : EnemyBehaviour
     void Update()
     {
         MyUpdate();
+        m_Animator.SetFloat("SpeedX", m_NavAgent.speed);
     }
 
     public override void FocusPlayer()
@@ -57,13 +59,25 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
         else
         {
-            GetComponent<NavMeshAgent>().enabled = false;
-            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down/2);
-            if (!HasJump)
+            m_Animator.Play("Explode");
+            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down);
+            m_Animator.SetFloat("SpeedX", 1);
+
+            if (!m_Target.GetComponent<PlayerBehaviour>().IsGrounded)
             {
-                transform.position += Vector3.up/5;
-                GetComponent<Rigidbody>().AddForce(vecBetweenTargetandKamikaze.normalized * m_JumpForce, ForceMode.VelocityChange);
-                HasJump = true;
+                m_Animator.applyRootMotion = false;
+                m_NavAgent.enabled = false;
+
+                if (!HasJump)
+                {
+                    transform.position += Vector3.up / 2;
+                    GetComponent<Rigidbody>().AddForce(vecBetweenTargetandKamikaze.normalized * m_JumpForce, ForceMode.VelocityChange);
+                    HasJump = true;
+                }
+            }
+            else
+            {
+                m_NavAgent.SetDestination(m_Target.transform.position);
             }
 
             m_HitCD -= Time.deltaTime;
@@ -71,7 +85,7 @@ public class KamikazeBehaviour : EnemyBehaviour
             if (vecBetweenTargetandKamikaze.magnitude >= 2.8f && m_HitCD > 0.0f)
                 return;
 
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
+           Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
            foreach (Collider collider in colliders)
            {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -79,12 +93,11 @@ public class KamikazeBehaviour : EnemyBehaviour
                     m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= 2;
 
                     // To add an explosion force
-                    m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack * Time.fixedDeltaTime, transform.position + Vector3.down, 1);
-                    m_Target.GetComponent<PlayerBehaviour>().m_HasTakenExplosion = true;
+                    // m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack * Time.fixedDeltaTime, transform.position + Vector3.down, 2);
+                    // m_Target.GetComponent<PlayerBehaviour>().m_HasTakenExplosion = true;
                     break;
                 }
            }
-
            Destroy(gameObject);
         }
     }

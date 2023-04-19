@@ -85,7 +85,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
-    private bool IsGrounded
+    public bool IsGrounded
     {
         get
         {
@@ -102,16 +102,6 @@ public class PlayerBehaviour : MonoBehaviour
             bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
             bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
             bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
-
-            /*
-          if (center)
-              return CenterHit.transform.gameObject;
-          if (left)
-              return LeftHit.transform.gameObject;
-          if (right)
-              return RightHit.transform.gameObject;
-          return null;
-          */
 
             return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
         }
@@ -142,7 +132,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Animator.SetFloat("SpeedX", m_Move.x);
+        m_Animator.SetFloat("SpeedX", m_Rigidbody.velocity.x/2);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
 
@@ -191,9 +181,6 @@ public class PlayerBehaviour : MonoBehaviour
                 if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
                 {
                     m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-
-                    //Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
-                    //m_Rigidbody.velocity = Velocity;
                 }
             }
         }
