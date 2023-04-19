@@ -41,6 +41,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool m_IsJumping = false;
     private bool m_CanDoubleJump;
+    private bool m_OnJump;
 
     private bool m_IsDashing = false;
     private float m_DashCd;
@@ -89,9 +90,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         get
         {
-            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, 0.05f);
+            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.025f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, 0.025f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, 0.025f);
         }
     }
 
@@ -133,6 +134,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
         m_Animator.SetFloat("SpeedX", m_Rigidbody.velocity.x/2);
+        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y/2);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
 
@@ -201,6 +203,13 @@ public class PlayerBehaviour : MonoBehaviour
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
 
             m_CanDoubleJump = true;
+
+            if (m_OnJump)
+            {
+                Debug.Log("Land");
+                m_Animator.SetBool("Landed", true);
+                m_OnJump = false;
+            }
         }
     }
 
@@ -221,6 +230,16 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext _context)
     {
+        if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
+        {
+            m_IsJumping = true;
+            m_OnJump = true;
+        }
+        else
+        {
+            m_IsJumping = false;
+        }
+
         if (_context.started && (IsGrounded == true || m_CanDoubleJump == true))
         {
             if (!IsGrounded)
@@ -235,10 +254,6 @@ public class PlayerBehaviour : MonoBehaviour
             m_JumpTimer = m_JumpTime;
         }
 
-        if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
-            m_IsJumping = true;
-        else
-            m_IsJumping = false;
     }
 
     public void OnMagnetThrow(InputAction.CallbackContext _context)
@@ -281,9 +296,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Jump()
     {
+        m_Animator.Play("Jump");
         m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer / (m_JumpTime * 1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
     }
-
+    
     public void Dash()
     {
         m_Rigidbody.velocity = Vector3.zero;

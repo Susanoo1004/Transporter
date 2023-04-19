@@ -71,7 +71,10 @@ public class KamikazeBehaviour : EnemyBehaviour
                 if (!HasJump)
                 {
                     transform.position += Vector3.up / 2;
-                    GetComponent<Rigidbody>().AddForce(vecBetweenTargetandKamikaze.normalized * m_JumpForce, ForceMode.VelocityChange);
+
+                    Rigidbody rb = GetComponent<Rigidbody>();
+                    rb.AddForce(Vector3.up * 2, ForceMode.VelocityChange);
+                    rb.AddForce(vecBetweenTargetandKamikaze.normalized * m_JumpForce, ForceMode.VelocityChange);
                     HasJump = true;
                 }
             }
