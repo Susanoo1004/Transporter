@@ -136,22 +136,25 @@ public class MagnetBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (HasMagnetizedObject)
+            return;
+
         if (other.TryGetComponent(out MagneticObject magneticObject))
         {
             TravelTimer = 0;
 
             MagneticObject.Polarity polarity = IsPositive ? MagneticObject.Polarity.POSITIVE : MagneticObject.Polarity.NEGATIVE;
 
-
             if (magneticObject.AffectSelf)
             {
-                if (polarity == magneticObject.polarity) // Repulse
+                if (polarity == magneticObject.polarity || magneticObject.polarity == MagneticObject.Polarity.BOTH_REPULSIVE) // Repulse
                 {
                     if (other.TryGetComponent(out Rigidbody rigidbody))
                         rigidbody.AddForce(Aim * RepulsiveForce, ForceMode.VelocityChange);
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
-                      || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE) // Attract
+                      || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE
+                      || magneticObject.polarity == MagneticObject.Polarity.BOTH_ATTRACTIVE) // Attract
                 {
                     AttractionTimer = AttractionTime;
                     MagnetizedObject = magneticObject.transform;
@@ -167,6 +170,9 @@ public class MagnetBehaviour : MonoBehaviour
             {
                 // no idea yet lol
             }
+
+            GetComponent<SphereCollider>().enabled = false;
+
         }
     }
 }

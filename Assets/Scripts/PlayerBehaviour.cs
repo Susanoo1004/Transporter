@@ -240,9 +240,26 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started)
         {
             if (HasMagnet)
-                SetThrowProperties();
+            {
+                if (m_MagnetBehaviour.HasMagnetizedObject)
+                    ThrowMagnetizedObject();
+                else
+                    SetThrowProperties();
+            }
             else if (m_MagnetBehaviour.TravelTimer <= 0)
+            {
                 SetPullProperties();
+            }
+        }
+    }
+
+    public void OnChangePolarity(InputAction.CallbackContext _context)
+    {
+        if (_context.started && HasMagnet)
+        {
+            m_MagnetBehaviour.IsPositive = !m_MagnetBehaviour.IsPositive;
+            if (m_MagnetBehaviour.HasMagnetizedObject)
+                DropMagnetizedObject();
         }
     }
 
@@ -315,5 +332,46 @@ public class PlayerBehaviour : MonoBehaviour
         m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
         m_Magnet.SetParent(transform, true);
         m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
+    }
+
+    private void ThrowMagnetizedObject()
+    {
+        m_MagnetBehaviour.MagnetizedObject.SetParent(null, true);
+        m_MagnetBehaviour.MagnetizedObject.position = new Vector3(m_MagnetBehaviour.MagnetizedObject.position.x,
+                                                                  m_MagnetBehaviour.MagnetizedObject.position.y,
+                                                                  0);
+        m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0,0,0,0);
+
+        if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
+        {
+            rigidbody.isKinematic = false;
+            rigidbody.velocity = m_Rigidbody.velocity;
+            rigidbody.AddForce(m_Aim * m_RepulsiveForce, ForceMode.VelocityChange);
+        }
+        if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Collider collider))
+            collider.isTrigger = false;
+
+
+        m_MagnetBehaviour.MagnetizedObject = null;
+    }
+
+    private void DropMagnetizedObject()
+    {
+        m_MagnetBehaviour.MagnetizedObject.SetParent(null, true);
+        m_MagnetBehaviour.MagnetizedObject.position = new Vector3(m_MagnetBehaviour.MagnetizedObject.position.x,
+                                                                  m_MagnetBehaviour.MagnetizedObject.position.y,
+                                                                  0);
+        m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
+
+        if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
+        {
+            rigidbody.velocity = m_Rigidbody.velocity;
+            rigidbody.isKinematic = false;
+        }
+        if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Collider collider))
+            collider.isTrigger = false;
+
+
+        m_MagnetBehaviour.MagnetizedObject = null;
     }
 }
