@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
+using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,34 +20,40 @@ public class MagnetBehaviour : MonoBehaviour
     [SerializeField]
     private Material m_NegativeMaterial;
 
-    [HideInInspector]
+    //[HideInInspector]
     public float RepulsiveForce;
-    [HideInInspector]
+    //[HideInInspector]
     public float AttractionTime;
-    [HideInInspector]
+    //[HideInInspector]
+    public float PlayerAttractionSpeed;
+    //[HideInInspector]
     public float AttractionTimer;
-    [HideInInspector]
+    //[HideInInspector]
     public float ThrowForce;
-    [HideInInspector]
+    //[HideInInspector]
     public float HoverTime;
-    [HideInInspector]
+    //[HideInInspector]
     public float HoverTimer;
-    [HideInInspector]
+    //[HideInInspector]
     public float PullTime;
-    [HideInInspector]
+    //[HideInInspector]
     public float TravelTimer;
-    [HideInInspector]
+    //[HideInInspector]
     public bool IsThrowing;
+    //[HideInInspector]
+    public bool IsPlayerMagnatized;
 
 
-    [HideInInspector]
+    //[HideInInspector]
     public Transform MagnetizedObject;
     private Vector3 m_LastMagnetizedObjectPosition;
+
+    private Vector3 m_LastPosition;
+    private Vector3 m_LastPlayerPosition;
 
     [HideInInspector]
     public Vector3 Aim;
 
-    private Vector3 m_LastPosition;
 
     private bool HasMagnet { get { return transform.parent == m_Player.transform; } }
     public bool HasMagnetizedObject { get { return MagnetizedObject != null; } }
@@ -79,21 +86,26 @@ public class MagnetBehaviour : MonoBehaviour
         else
             GetComponent<Renderer>().material = m_NegativeMaterial;
     
-        if (TravelTimer > 0)
+        if (!IsPlayerMagnatized)
         {
-            TravelTimer -= Time.deltaTime;
-        }
-        else if (HoverTimer > 0)
-        {
-            HoverTimer -= Time.deltaTime;
-            m_LastPosition = transform.position;
+            if (AttractionTimer > 0)
+            {
+                AttractionTimer -= Time.deltaTime;
+            }
+
+            if (TravelTimer > 0)
+            {
+                TravelTimer -= Time.deltaTime;
+            }
+            else if (HoverTimer > 0)
+            {
+                HoverTimer -= Time.deltaTime;
+                m_LastPosition = transform.position;
+            }
         }
 
-        if (AttractionTimer > 0)
-        {
-            AttractionTimer -= Time.deltaTime;
+        if (HasMagnetizedObject)
             m_LastMagnetizedObjectPosition = MagnetizedObject.position;
-        }
     }
 
     private void FixedUpdate()
@@ -101,20 +113,17 @@ public class MagnetBehaviour : MonoBehaviour
         if (TravelTimer > 0)
         {
             if (!IsThrowing) // Coming Back
-            {
                 transform.position = Vector3.Lerp(m_LastPosition, m_Player.position, 1-TravelTimer/PullTime);
-            }
             else // Throwing
-            {
                 m_Rigidbody.AddForce(Aim * ThrowForce, ForceMode.Acceleration);
-            }
         }
         else //if (HoverTimer > 0)
         {
             m_Rigidbody.velocity = Vector3.zero;
         }
 
-        if (HasMagnetizedObject)
+
+        if (HasMagnetizedObject && !IsPlayerMagnatized)
         {
             if (AttractionTimer > 0)
             {
@@ -126,6 +135,33 @@ public class MagnetBehaviour : MonoBehaviour
                 MagnetizedObject.SetParent(transform, true);
                 MagnetizedObject.localPosition = Vector3.zero;
             }
+        }
+
+        if (HasMagnetizedObject && IsPlayerMagnatized)
+        {
+            Vector3 distance = transform.position - m_Player.position;
+            Vector3 direction = distance.normalized;
+
+            if (!m_Player.TryGetComponent(out BoxCollider boxCollider))
+                return;
+
+            Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.7f;
+            
+            int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
+
+            if (Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x/2, direction, out RaycastHit hit, distance.magnitude, layer) && hit.transform.gameObject != MagnetizedObject.gameObject)
+            {
+                MagnetizedObject = null;
+                IsPlayerMagnatized = false;
+            }
+            else
+            {
+                if (m_Player.TryGetComponent(out Rigidbody rigidbody))
+                    rigidbody.velocity = direction * PlayerAttractionSpeed;
+            }
+
+            
+
         }
     }
 
@@ -166,12 +202,30 @@ public class MagnetBehaviour : MonoBehaviour
                 }
             }
 
+
             if (magneticObject.AffectPlayer) 
             {
-                // no idea yet lol
+                if (polarity == magneticObject.polarity || magneticObject.polarity == MagneticObject.Polarity.BOTH_REPULSIVE) // Repulse
+                {
+                    Vector3 direction = (m_Player.position - transform.position).normalized;
+
+                    if (m_Player.TryGetComponent(out Rigidbody rigidbody))
+                    {
+                        if (Vector3.Angle(direction, rigidbody.velocity) > 90)
+                            rigidbody.velocity = Vector3.zero;
+                        rigidbody.AddForce(direction * RepulsiveForce, ForceMode.VelocityChange);
+                    }
+                }
+                else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
+                      || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE
+                      || magneticObject.polarity == MagneticObject.Polarity.BOTH_ATTRACTIVE) // Attract
+                {
+                    IsPlayerMagnatized = true;
+                    MagnetizedObject = magneticObject.transform;
+                }
             }
 
-            GetComponent<SphereCollider>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
 
         }
     }

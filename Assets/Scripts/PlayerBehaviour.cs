@@ -76,6 +76,9 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_AttractionTime;
 
     [SerializeField]
+    private float m_PlayerAttractionSpeed;
+
+    [SerializeField]
     private float m_RepulsiveForce;
 
     [SerializeField]
@@ -136,12 +139,20 @@ public class PlayerBehaviour : MonoBehaviour
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
 
-        if (m_Move != Vector3.zero)
+        if (m_MagnetBehaviour.IsPlayerMagnatized)
+        {
+            Vector3 direction = m_Magnet.position - transform.position;
+
+            Quaternion ToRotation = Quaternion.LookRotation(direction, Vector3.Cross(direction, Vector3.forward));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080 * Time.deltaTime);
+        }
+        else if (m_Move != Vector3.zero)
         {
             Quaternion ToRotation = Quaternion.LookRotation(m_Move, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080 * Time.deltaTime);
             m_LastMove = m_Move;
         }
+
 
         if (m_DashCooldown > 0)
             m_DashCooldown -= Time.deltaTime;
@@ -149,7 +160,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (m_JumpTimer > 0)
             m_JumpTimer -= Time.deltaTime;
 
-        if (!HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
+        if (!m_MagnetBehaviour.IsPlayerMagnatized && !HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
         {
             if (m_MagnetBehaviour.IsThrowing)
                 SetPullProperties();
@@ -160,22 +171,26 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void FixedUpdate()
     {
-        if(m_HasTakenExplosion) 
-        {
-            if(IsGrounded) 
-                m_HasTakenExplosion = false;
-        }
-        else
-        {
-            if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
-            {
-                   if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                    {
-                        m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
 
-                        //Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
-                        //m_Rigidbody.velocity = Velocity;
-                    }
+        if (!m_MagnetBehaviour.IsPlayerMagnatized)
+        {
+            if(m_HasTakenExplosion) 
+            {
+                if(IsGrounded) 
+                    m_HasTakenExplosion = false;
+            }
+            else
+            {
+                if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
+                {
+                       if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
+                        {
+                            m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
+
+                            //Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
+                            //m_Rigidbody.velocity = Velocity;
+                        }
+                }
             }
         }
         
@@ -310,6 +325,8 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.Aim = new Vector3(m_Aim.x, m_Aim.y, 0);
         m_MagnetBehaviour.TravelTimer = m_ThrowTime;
         m_MagnetBehaviour.HoverTimer = m_HoverTime;
+        m_MagnetBehaviour.AttractionTime = m_AttractionTime;
+        m_MagnetBehaviour.PlayerAttractionSpeed = m_PlayerAttractionSpeed;
         m_MagnetBehaviour.IsThrowing = true;
         m_MagnetBehaviour.ThrowForce = m_ThrowForce;
         m_MagnetBehaviour.RepulsiveForce = m_RepulsiveForce;
