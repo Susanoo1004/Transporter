@@ -1167,6 +1167,7 @@ MonoBehaviour:
   m_ThrowForce: 80
   m_ThrowTime: 0.5
   m_PullTime: 0.5
+  m_AnimatorCancelTimer: 0.1
 --- !u!54 &1088834650
 Rigidbody:
   m_ObjectHideFlags: 0

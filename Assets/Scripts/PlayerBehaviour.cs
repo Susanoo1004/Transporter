@@ -86,6 +86,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
+    public float m_AnimatorCancelTimer = 0.1f;
+
     public bool IsGrounded
     {
         get
@@ -206,9 +208,15 @@ public class PlayerBehaviour : MonoBehaviour
 
             if (m_OnJump)
             {
-                Debug.Log("Land");
-                m_Animator.SetBool("Landed", true);
-                m_OnJump = false;
+                m_AnimatorCancelTimer -= Time.deltaTime;
+                Debug.Log("SUUUU");
+
+                if (m_AnimatorCancelTimer < 0.0f)
+                {
+                    m_Animator.SetBool("Landed", true);
+                    m_AnimatorCancelTimer = 0.1f;
+                    m_OnJump = false;
+                }
             }
         }
     }
