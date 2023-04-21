@@ -167,6 +167,11 @@ public class PlayerBehaviour : MonoBehaviour
                 m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
             }
         }
+
+        if (PlayerLife == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void FixedUpdate()
