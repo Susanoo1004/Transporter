@@ -7,14 +7,14 @@ public class KamikazeBehaviour : EnemyBehaviour
 {
     private bool IsExploding;
 
-    private bool ShowExplosionRange;
+    private bool HasJump;
 
     [Header("Explosion")]
     [SerializeField]
     private float m_DetonationRadius;
 
     [SerializeField]
-    private float m_ExplosionRadius;
+    private float m_JumpForce;
 
     [SerializeField]
     private float m_ExplosionKnocknack;
@@ -23,6 +23,7 @@ public class KamikazeBehaviour : EnemyBehaviour
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
         m_EnemyHP = 1;
+        m_Animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -35,6 +36,7 @@ public class KamikazeBehaviour : EnemyBehaviour
     void Update()
     {
         MyUpdate();
+        m_Animator.SetFloat("SpeedX", m_NavAgent.speed);
     }
 
     public override void FocusPlayer()
@@ -55,21 +57,49 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
         else
         {
-            ShowExplosionRange = true;
+            m_Animator.Play("Explode");
+            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down);
+            m_Animator.SetFloat("SpeedX", 1);
+
+            if (!m_Target.GetComponent<PlayerBehaviour>().IsGrounded)
+            {
+                m_Animator.applyRootMotion = false;
+                m_NavAgent.enabled = false;
+
+                if (!HasJump)
+                {
+                    transform.position += Vector3.up / 2;
+
+                    Rigidbody rb = GetComponent<Rigidbody>();
+                    rb.AddForce(Vector3.up * 2, ForceMode.VelocityChange);
+                    rb.AddForce(vecBetweenTargetandKamikaze.normalized * m_JumpForce, ForceMode.VelocityChange);
+                    HasJump = true;
+                }
+            }
+            else
+            {
+                m_NavAgent.SetDestination(m_Target.transform.position);
+            }
 
             m_HitCD -= Time.deltaTime;
-            
-            if (m_HitCD > 0)
+
+            if (vecBetweenTargetandKamikaze.magnitude >= 2.8f && m_HitCD > 0.0f)
                 return;
 
-            if (Vector3.Distance(transform.position, m_Target.transform.position) < m_ExplosionRadius)
-                m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= 2;
+           Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
+           foreach (Collider collider in colliders)
+           {
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= 2;
 
-            // To add an explosion force
-            m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack, transform.position + Vector3.down, m_ExplosionRadius);
-            m_Target.GetComponent<PlayerBehaviour>().m_HasTakenExplosion = true;
-
-            Destroy(gameObject);
+                    // To add an explosion force
+                    // m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack * Time.fixedDeltaTime, transform.position + Vector3.down, 2);
+                    // m_Target.GetComponent<PlayerBehaviour>().m_HasTakenExplosion = true;
+                    break;
+                }
+           }
+           Destroy(gameObject);
         }
     }
 
@@ -82,17 +112,10 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
         }
- 
+
     }
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
-
-        if (ShowExplosionRange) 
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, m_ExplosionRadius);
-            Gizmos.color = Color.white;
-        }
     }
 }

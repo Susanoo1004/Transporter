@@ -9,6 +9,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected NavMeshAgent m_NavAgent;
 
+    protected Animator m_Animator;
+
     public Transform[] m_NavPoints;
 
     [SerializeField]
@@ -21,9 +23,6 @@ public class EnemyBehaviour : MonoBehaviour
     protected bool IsPatrolling = true;
 
     protected byte m_EnemyHP;
-
-    // [SerializeField]
-    // private Animator m_Animator;
 
     int index;
 
@@ -41,7 +40,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     protected virtual void MyUpdate()
@@ -51,10 +50,10 @@ public class EnemyBehaviour : MonoBehaviour
         else
             FocusPlayer();
 
-         if (m_EnemyHP >= 250)
+        if (m_EnemyHP >= 250)
             m_EnemyHP = 0;
 
-         if (m_EnemyHP == 0)
+        if (m_EnemyHP == 0)
             Destroy(gameObject);
     }
 
