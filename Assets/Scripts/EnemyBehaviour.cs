@@ -9,6 +9,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected NavMeshAgent m_NavAgent;
 
+    protected Animator m_Animator;
+
     public Transform[] m_NavPoints;
 
     [SerializeField]
@@ -21,9 +23,6 @@ public class EnemyBehaviour : MonoBehaviour
     protected bool IsPatrolling = true;
 
     protected byte m_EnemyHP;
-
-    // [SerializeField]
-    // private Animator m_Animator;
 
     int index;
 

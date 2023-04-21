@@ -19,8 +19,6 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private float m_ExplosionKnocknack;
 
-    private Animator m_Animator;
-
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();

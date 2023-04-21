@@ -6,12 +6,11 @@ using UnityEngine.AI;
 
 public class BoxerBehaviour : EnemyBehaviour
 {
-
-
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
         m_EnemyHP = 2;
+        m_Animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -24,6 +23,7 @@ public class BoxerBehaviour : EnemyBehaviour
     void Update()
     {
         MyUpdate();
+        m_Animator.SetFloat("SpeedX", m_NavAgent.speed);
     }
 
     public override void FocusPlayer()
@@ -46,7 +46,7 @@ public class BoxerBehaviour : EnemyBehaviour
         if (other.CompareTag("Player"))
         {
             IsPatrolling = false;
-            m_NavAgent.speed = 2.5f;
+            m_NavAgent.speed = 3.0f;
             m_NavAgent.stoppingDistance = 1.75f;
             m_Target = other.gameObject;
         }
