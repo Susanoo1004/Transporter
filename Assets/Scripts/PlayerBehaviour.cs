@@ -211,10 +211,10 @@ public class PlayerBehaviour : MonoBehaviour
 
             m_CanDoubleJump = true;
 
+            // anim
             if (m_OnJump)
             {
                 m_AnimatorCancelTimer -= Time.deltaTime;
-                Debug.Log("SUUUU");
 
                 if (m_AnimatorCancelTimer < 0.0f)
                 {
