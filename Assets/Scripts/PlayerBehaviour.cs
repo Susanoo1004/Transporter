@@ -43,10 +43,9 @@ public class PlayerBehaviour : MonoBehaviour
     private bool m_CanDoubleJump;
 
     private bool m_IsDashing = false;
-    private float m_DashCd;
 
     private Vector3 m_Move = new();
-    private Vector3 m_LastMove = new();
+    private Vector3 m_LastMove = Vector3.right;
 
     [HideInInspector] 
     public byte PlayerLife = 10;
@@ -59,8 +58,9 @@ public class PlayerBehaviour : MonoBehaviour
 
     private Rigidbody m_Rigidbody;
 
-    private bool m_IsStuckLeft;
-    private bool m_IsStuckRight;
+    public bool m_IsStuckLeft;
+    public bool m_IsStuckRight;
+
     [HideInInspector]
     public bool m_HasTakenExplosion;
 
@@ -91,6 +91,9 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_PullTime;
 
     private Vector2 m_Aim;
+
+    [HideInInspector]
+    public Vector3 SurfaceNormal;
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
@@ -139,18 +142,33 @@ public class PlayerBehaviour : MonoBehaviour
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
 
-        if (m_MagnetBehaviour.IsPlayerMagnatized)
+
+        // Rotation in every case
+        // Player magnetized towards MagneticObject
+        if (m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
             Vector3 direction = m_Magnet.position - transform.position;
 
             Quaternion ToRotation = Quaternion.LookRotation(direction, Vector3.Cross(direction, Vector3.forward));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080 * Time.deltaTime);
         }
-        else if (m_Move != Vector3.zero)
+        // Player attached to magnetic object
+        else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
         {
-            Quaternion ToRotation = Quaternion.LookRotation(m_Move, Vector3.up);
+            Vector3 normal = m_MagnetBehaviour.GetPlayerAttachedObjectNormal;
+            if (normal != Vector3.zero)
+            {
+                Quaternion ToRotation = Quaternion.LookRotation(Vector3.Cross(normal, Vector3.forward), normal);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080 * Time.deltaTime);
+            }
+        }
+        // else
+        else
+        {
+            if (m_Move != Vector3.zero)
+                m_LastMove = m_Move;
+            Quaternion ToRotation = Quaternion.LookRotation(m_LastMove, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080 * Time.deltaTime);
-            m_LastMove = m_Move;
         }
 
 
@@ -160,19 +178,26 @@ public class PlayerBehaviour : MonoBehaviour
         if (m_JumpTimer > 0)
             m_JumpTimer -= Time.deltaTime;
 
-        if (!m_MagnetBehaviour.IsPlayerMagnatized && !HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
+        if (!m_MagnetBehaviour.IsPlayerMagnetized && !HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
         {
-            if (m_MagnetBehaviour.IsThrowing)
-                SetPullProperties();
-            else if (m_MagnetBehaviour.TravelTimer <= 0)
+            if (!m_MagnetBehaviour.IsPlayerAttached)
+            {
+                if (m_MagnetBehaviour.IsThrowing)
+                    SetPullProperties();
+                else if (m_MagnetBehaviour.TravelTimer <= 0)
+                    AttachMagnet();
+            }
+            else
+            {
                 AttachMagnet();
+            }
         }
     }
     
     private void FixedUpdate()
     {
 
-        if (!m_MagnetBehaviour.IsPlayerMagnatized)
+        if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
             if(m_HasTakenExplosion) 
             {
@@ -183,17 +208,27 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
                 {
-                       if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                        {
-                            m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-
-                            //Vector3 Velocity = new(m_Move.x * m_Accelerate, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z);
-                            //m_Rigidbody.velocity = Velocity;
-                        }
+                    if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
+                        m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
                 }
             }
         }
-        
+        else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
+        {
+            if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider) && transform.TryGetComponent(out BoxCollider boxCollider))
+                transform.position = collider.ClosestPointOnBounds(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
+            m_Rigidbody.velocity = Vector3.zero;
+            /*
+            if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider))
+                transform.position = collider.ClosestPoint(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
+            */
+
+            /*  MOUVEMENT
+            Vector3 direction = Vector3.Cross(m_MagnetBehaviour.GetPlayerAttachedObjectNormal, Vector3.forward).normalized;
+            m_Rigidbody.velocity = direction * m_Move.magnitude * m_MaxSpeed * 0.5f * Time.fixedDeltaTime;
+            */
+        }
+
         m_IsStuckRight = false;
         m_IsStuckLeft = false;
 
@@ -205,8 +240,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (IsGrounded)
         {
-            Rigidbody rigidbody = m_StandingOnObject.GetComponent<Rigidbody>();
-            if (rigidbody)
+            if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
 
             m_CanDoubleJump = true;
@@ -256,6 +290,10 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (HasMagnet)
             {
+                if (m_MagnetBehaviour.IsPlayerAttached)
+                    DettachPlayer();
+
+
                 if (m_MagnetBehaviour.HasMagnetizedObject)
                     ThrowMagnetizedObject();
                 else
@@ -273,8 +311,14 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started && HasMagnet)
         {
             m_MagnetBehaviour.IsPositive = !m_MagnetBehaviour.IsPositive;
+            
+            if (m_MagnetBehaviour.IsPlayerAttached)
+                DettachPlayer();
+
             if (m_MagnetBehaviour.HasMagnetizedObject)
                 DropMagnetizedObject();
+
+            m_MagnetBehaviour.IgnoreObject = null;
         }
     }
 
@@ -303,7 +347,7 @@ public class PlayerBehaviour : MonoBehaviour
         foreach (ContactPoint contact in collision.contacts) 
         {
             // wall Collision
-            if (Vector3.Angle(contact.normal, Vector3.up) == 90f)
+            if (Vector3.Angle(contact.normal, transform.up) == 90f)
             {
                 m_IsStuckLeft = Mathf.Sign(contact.normal.x) == 1;
                 m_IsStuckRight = Mathf.Sign(contact.normal.x) == -1;
@@ -342,6 +386,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.TravelTimer = m_PullTime;
         m_MagnetBehaviour.IsThrowing = false;
         m_MagnetBehaviour.HoverTimer = 0;
+        m_MagnetBehaviour.IgnoreObject = null;
     }
 
     private void AttachMagnet()
@@ -353,23 +398,31 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void ThrowMagnetizedObject()
     {
-        m_MagnetBehaviour.MagnetizedObject.SetParent(null, true);
-        m_MagnetBehaviour.MagnetizedObject.position = new Vector3(m_MagnetBehaviour.MagnetizedObject.position.x,
-                                                                  m_MagnetBehaviour.MagnetizedObject.position.y,
-                                                                  0);
-        m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0,0,0,0);
 
-        if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
+        if (m_MagnetBehaviour.IsPlayerMagnetized)
         {
-            rigidbody.isKinematic = false;
-            rigidbody.velocity = m_Rigidbody.velocity;
-            rigidbody.AddForce(m_Aim * m_RepulsiveForce, ForceMode.VelocityChange);
+            m_MagnetBehaviour.MagnetizedObject = null;
+            m_MagnetBehaviour.IsPlayerMagnetized = false;
         }
-        if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Collider collider))
-            collider.isTrigger = false;
+        else
+        {
+            m_MagnetBehaviour.MagnetizedObject.SetParent(null, true);
+            m_MagnetBehaviour.MagnetizedObject.position = new Vector3(m_MagnetBehaviour.MagnetizedObject.position.x,
+                                                                      m_MagnetBehaviour.MagnetizedObject.position.y,
+                                                                      0);
+            m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0,0,0,0);
 
+            if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
+            {
+                rigidbody.isKinematic = false;
+                rigidbody.velocity = m_Rigidbody.velocity;
+                rigidbody.AddForce(m_Aim * m_RepulsiveForce, ForceMode.VelocityChange);
+            }
+            if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Collider collider))
+                collider.isTrigger = false;
 
-        m_MagnetBehaviour.MagnetizedObject = null;
+            m_MagnetBehaviour.MagnetizedObject = null;
+        }
     }
 
     private void DropMagnetizedObject()
@@ -391,4 +444,12 @@ public class PlayerBehaviour : MonoBehaviour
 
         m_MagnetBehaviour.MagnetizedObject = null;
     }
+
+    private void DettachPlayer()
+    {
+        m_MagnetBehaviour.IsPlayerAttached = false;
+        m_MagnetBehaviour.PlayerAttachedObject = null;
+        m_Rigidbody.useGravity = true;
+    }
+
 }

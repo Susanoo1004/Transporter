@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
 using TMPro.EditorUtilities;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MagnetBehaviour : MonoBehaviour
 {
@@ -41,15 +44,26 @@ public class MagnetBehaviour : MonoBehaviour
     //[HideInInspector]
     public bool IsThrowing;
     //[HideInInspector]
-    public bool IsPlayerMagnatized;
+    public bool IsPlayerMagnetized;
+    //[HideInInspector]
+    public bool IsPlayerAttached;
+    //[HideInInspector]
+    public Transform PlayerAttachedObject;
 
+    public Vector3 GetPlayerAttachedObjectNormal { get {
+        if (PlayerAttachedObject != null && PlayerAttachedObject.TryGetComponent(out Collider collider))
+            return (m_Player.position - collider.ClosestPointOnBounds(m_Player.position)).normalized;
+        return Vector3.zero;
+    } }
+
+    //[HideInInspector]
+    public Transform IgnoreObject;
 
     //[HideInInspector]
     public Transform MagnetizedObject;
     private Vector3 m_LastMagnetizedObjectPosition;
 
     private Vector3 m_LastPosition;
-    private Vector3 m_LastPlayerPosition;
 
     [HideInInspector]
     public Vector3 Aim;
@@ -86,7 +100,7 @@ public class MagnetBehaviour : MonoBehaviour
         else
             GetComponent<Renderer>().material = m_NegativeMaterial;
     
-        if (!IsPlayerMagnatized)
+        if (!IsPlayerMagnetized)
         {
             if (AttractionTimer > 0)
             {
@@ -123,7 +137,7 @@ public class MagnetBehaviour : MonoBehaviour
         }
 
 
-        if (HasMagnetizedObject && !IsPlayerMagnatized)
+        if (HasMagnetizedObject && !IsPlayerMagnetized)
         {
             if (AttractionTimer > 0)
             {
@@ -137,27 +151,48 @@ public class MagnetBehaviour : MonoBehaviour
             }
         }
 
-        if (HasMagnetizedObject && IsPlayerMagnatized)
+        if (HasMagnetizedObject && IsPlayerMagnetized)
         {
             Vector3 distance = transform.position - m_Player.position;
             Vector3 direction = distance.normalized;
-
             if (!m_Player.TryGetComponent(out BoxCollider boxCollider))
                 return;
-
-            Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.7f;
-            
+            Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.9f;
             int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
-            if (Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x/2, direction, out RaycastHit hit, distance.magnitude, layer) && hit.transform.gameObject != MagnetizedObject.gameObject)
+            if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x/2, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == MagnetizedObject.gameObject)
             {
-                MagnetizedObject = null;
-                IsPlayerMagnatized = false;
+                distance = transform.position - m_Player.position;
+                direction = distance.normalized;
+
+                if (m_Player.TryGetComponent(out Rigidbody rigidbody))
+                {
+                    rigidbody.velocity = direction * PlayerAttractionSpeed;
+
+                    if ((direction * PlayerAttractionSpeed * Time.fixedDeltaTime).sqrMagnitude >= distance.sqrMagnitude)
+                    {
+                        rigidbody.velocity = Vector3.zero;
+
+                        PlayerAttachedObject = MagnetizedObject;
+                        IgnoreObject = MagnetizedObject;
+                        MagnetizedObject = null;
+                        IsPlayerMagnetized = false;
+                        IsPlayerAttached = true;
+                        boxCollider.isTrigger = false;
+
+                        if (PlayerAttachedObject.TryGetComponent(out Collider collider))
+                            m_Player.position = collider.ClosestPoint(transform.position) + GetPlayerAttachedObjectNormal * boxCollider.size.y/2;
+                    }
+                }
+                
             }
             else
             {
+                MagnetizedObject = null;
+                IsPlayerMagnetized = false;
+                boxCollider.isTrigger = false;
                 if (m_Player.TryGetComponent(out Rigidbody rigidbody))
-                    rigidbody.velocity = direction * PlayerAttractionSpeed;
+                    rigidbody.useGravity = true;
             }
 
             
@@ -172,7 +207,7 @@ public class MagnetBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (HasMagnetizedObject)
+        if (HasMagnetizedObject || other.transform == IgnoreObject)
             return;
 
         if (other.TryGetComponent(out MagneticObject magneticObject))
@@ -220,8 +255,23 @@ public class MagnetBehaviour : MonoBehaviour
                       || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE
                       || magneticObject.polarity == MagneticObject.Polarity.BOTH_ATTRACTIVE) // Attract
                 {
-                    IsPlayerMagnatized = true;
-                    MagnetizedObject = magneticObject.transform;
+
+                    if (m_Player.TryGetComponent(out BoxCollider boxCollider))
+                    {
+                        Vector3 distance = transform.position - m_Player.position;
+                        Vector3 direction = distance.normalized;
+                        Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.9f;
+                        int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
+
+                        if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x / 2, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == magneticObject.gameObject)
+                        {
+                            IsPlayerMagnetized = true;
+                            MagnetizedObject = magneticObject.transform;
+                            boxCollider.isTrigger = true;
+                            if (m_Player.TryGetComponent(out Rigidbody rb))
+                                rb.useGravity = false;
+                        }
+                    }
                 }
             }
 
