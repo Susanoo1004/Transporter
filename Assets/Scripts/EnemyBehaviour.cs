@@ -6,6 +6,15 @@ using static UnityEngine.GraphicsBuffer;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    [Header("Enemy")]
+    [SerializeField]
+    protected float m_HitFrequency;
+
+    [SerializeField]
+    protected byte m_EnemyLife;
+
+    [SerializeField]
+    protected byte m_EnemyDamage;
 
     protected NavMeshAgent m_NavAgent;
 
@@ -13,16 +22,12 @@ public class EnemyBehaviour : MonoBehaviour
 
     public Transform[] m_NavPoints;
 
-    [SerializeField]
-    protected float m_HitFrequency;
-
     protected GameObject m_Target;
 
     protected float m_HitCD;
 
     protected bool IsPatrolling = true;
 
-    protected byte m_EnemyHP;
 
     int index;
 
@@ -50,10 +55,10 @@ public class EnemyBehaviour : MonoBehaviour
         else
             FocusPlayer();
 
-        if (m_EnemyHP >= 250)
-            m_EnemyHP = 0;
+        if (m_EnemyLife >= 250)
+            m_EnemyLife = 0;
 
-        if (m_EnemyHP == 0)
+        if (m_EnemyLife == 0)
             Destroy(gameObject);
     }
 
