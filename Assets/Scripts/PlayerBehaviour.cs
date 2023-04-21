@@ -41,13 +41,14 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool m_IsJumping = false;
     private bool m_CanDoubleJump;
+    private bool m_OnJump;
 
     private bool m_IsDashing = false;
 
     private Vector3 m_Move = new();
     private Vector3 m_LastMove = Vector3.right;
 
-    [HideInInspector] 
+    [HideInInspector]
     public byte PlayerLife = 10;
 
     // To move into UI
@@ -97,28 +98,29 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
-    private bool IsGrounded { get {
-            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, 0.05f); } }
+    public float m_AnimatorCancelTimer = 0.1f;
 
-    private GameObject m_StandingOnObject { get {
-        bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-        bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-        bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z/2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
-        
-          /*
-        if (center)
-            return CenterHit.transform.gameObject;
-        if (left)
-            return LeftHit.transform.gameObject;
-        if (right)
-            return RightHit.transform.gameObject;
-        return null;
-        */
+    public bool IsGrounded
+    {
+        get
+        {
+            return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.025f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, 0.025f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, 0.025f);
+        }
+    }
 
-        return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
-    } }
+    private GameObject m_StandingOnObject
+    {
+        get
+        {
+            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
+            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
+            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+
+            return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
+        }
+    }
 
 
     private void Awake()
@@ -138,7 +140,8 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Animator.SetFloat("SpeedX", m_Move.x);
+        m_Animator.SetFloat("SpeedX", m_Rigidbody.velocity.x/2);
+        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y/2);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
 
@@ -192,8 +195,13 @@ public class PlayerBehaviour : MonoBehaviour
                 AttachMagnet();
             }
         }
+
+        if (PlayerLife == 0)
+        {
+            Destroy(gameObject);
+        }
     }
-    
+
     private void FixedUpdate()
     {
 
@@ -244,13 +252,26 @@ public class PlayerBehaviour : MonoBehaviour
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
 
             m_CanDoubleJump = true;
+
+            if (m_OnJump)
+            {
+                m_AnimatorCancelTimer -= Time.deltaTime;
+                Debug.Log("SUUUU");
+
+                if (m_AnimatorCancelTimer < 0.0f)
+                {
+                    m_Animator.SetBool("Landed", true);
+                    m_AnimatorCancelTimer = 0.1f;
+                    m_OnJump = false;
+                }
+            }
         }
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
     {
         Vector2 move = _context.ReadValue<Vector2>();
-        m_Move = new Vector3(move.x , 0, 0);
+        m_Move = new Vector3(move.x, 0, 0);
     }
 
     public void OnDash(InputAction.CallbackContext _context)
@@ -264,6 +285,16 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext _context)
     {
+        if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
+        {
+            m_IsJumping = true;
+            m_OnJump = true;
+        }
+        else
+        {
+            m_IsJumping = false;
+        }
+
         if (_context.started && (IsGrounded == true || m_CanDoubleJump == true))
         {
             if (!IsGrounded)
@@ -278,10 +309,6 @@ public class PlayerBehaviour : MonoBehaviour
             m_JumpTimer = m_JumpTime;
         }
 
-        if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
-            m_IsJumping = true;
-        else
-            m_IsJumping = false;
     }
 
     public void OnMagnetThrow(InputAction.CallbackContext _context)
@@ -325,16 +352,17 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnAim(InputAction.CallbackContext _context)
     {
         if (GetComponent<PlayerInput>().defaultActionMap == "Keyboard")
-            m_Aim =  (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
+            m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
 
     public void Jump()
     {
-        m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer/(m_JumpTime*1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        m_Animator.Play("Jump");
+        m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer / (m_JumpTime * 1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
     }
-
+    
     public void Dash()
     {
         m_Rigidbody.velocity = Vector3.zero;
@@ -344,7 +372,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        foreach (ContactPoint contact in collision.contacts) 
+        foreach (ContactPoint contact in collision.contacts)
         {
             // wall Collision
             if (Vector3.Angle(contact.normal, transform.up) == 90f)
