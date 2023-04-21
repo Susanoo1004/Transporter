@@ -3941,6 +3941,7 @@ MeshFilter:
   m_GameObject: {fileID: 1763224103}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &1766136065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4050,6 +4051,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3c8fd668f69e14da14c2592773097c, type: 3}
+=======
+>>>>>>> parent of e000920 (Fully Functional Magnet)
 =======
 >>>>>>> parent of e000920 (Fully Functional Magnet)
 --- !u!4 &1780938212 stripped
@@ -4587,6 +4590,7 @@ Transform:
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &2135186843
 GameObject:
   m_ObjectHideFlags: 0
@@ -4806,5 +4810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 774dd758c11c4da44b398276c669023f, type: 3}
+=======
+>>>>>>> parent of e000920 (Fully Functional Magnet)
 =======
 >>>>>>> parent of e000920 (Fully Functional Magnet)
