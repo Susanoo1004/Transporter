@@ -11,7 +11,7 @@ public class CameraBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -22,7 +22,5 @@ public class CameraBehaviour : MonoBehaviour
         cameraPos.z -= 20.0f;
         transform.position = cameraPos;
         transform.LookAt(m_Target.position);
-
-
     }
 }

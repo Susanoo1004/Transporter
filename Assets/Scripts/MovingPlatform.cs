@@ -38,7 +38,7 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        for (int i = 0; i < m_PathPositions.Length; ++i) 
+        for (int i = 0; i < m_PathPositions.Length; ++i)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(m_PathPositions[i], 0.2f);
@@ -55,7 +55,7 @@ public class MovingPlatform : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      
+
     }
 
     // Update is called once per frame

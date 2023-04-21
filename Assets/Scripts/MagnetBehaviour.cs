@@ -48,7 +48,7 @@ public class MagnetBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     private void OnValidate()
@@ -66,7 +66,7 @@ public class MagnetBehaviour : MonoBehaviour
             GetComponent<Renderer>().material = m_PositiveMaterial;
         else
             GetComponent<Renderer>().material = m_NegativeMaterial;
-    
+
         if (TravelTimer > 0)
             TravelTimer -= Time.deltaTime;
         else if (HoverTimer > 0)
@@ -82,7 +82,7 @@ public class MagnetBehaviour : MonoBehaviour
         {
             if (!IsThrowing) // Coming Back
             {
-                transform.position = Vector3.Lerp(m_LastPosition, m_Player.position, 1-TravelTimer/PullTime);
+                transform.position = Vector3.Lerp(m_LastPosition, m_Player.position, 1 - TravelTimer / PullTime);
             }
             else // Throwing
             {
