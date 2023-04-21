@@ -22,7 +22,6 @@ public class KamikazeBehaviour : EnemyBehaviour
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
-        m_EnemyHP = 1;
         m_Animator = GetComponent<Animator>();
     }
 
@@ -91,7 +90,7 @@ public class KamikazeBehaviour : EnemyBehaviour
            {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
-                    m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= 2;
+                    m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_EnemyDamage;
 
                     // To add an explosion force
                     // m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack * Time.fixedDeltaTime, transform.position + Vector3.down, 2);
