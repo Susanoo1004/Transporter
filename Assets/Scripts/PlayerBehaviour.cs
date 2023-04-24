@@ -198,7 +198,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (PlayerLife == 0)
         {
-            Destroy(gameObject);
+            m_Animator.Play("Dead");
+            m_Animator.GetComponent<PlayerInput>().defaultActionMap = "Menu";
         }
     }
 
