@@ -41,7 +41,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool m_IsJumping = false;
     private bool m_CanDoubleJump;
-    private bool m_OnJump;
 
     private bool m_IsDashing = false;
 
@@ -140,11 +139,11 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Animator.SetFloat("SpeedX", m_Rigidbody.velocity.x/2);
+        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x/2));
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y/2);
+        m_Animator.SetBool("Jump", m_IsJumping);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
-
 
         // Rotation in every case
         // Player magnetized towards MagneticObject
@@ -254,18 +253,11 @@ public class PlayerBehaviour : MonoBehaviour
 
             m_CanDoubleJump = true;
 
-            // anim
-            if (m_OnJump)
-            {
-                m_AnimatorCancelTimer -= Time.deltaTime;
-
-                if (m_AnimatorCancelTimer < 0.0f)
-                {
-                    m_Animator.SetBool("Landed", true);
-                    m_AnimatorCancelTimer = 0.1f;
-                    m_OnJump = false;
-                }
-            }
+            m_Animator.SetBool("Landed", true);
+        }
+        else
+        {
+            m_Animator.SetBool("Landed", false);
         }
     }
 
@@ -287,14 +279,9 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnJump(InputAction.CallbackContext _context)
     {
         if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
-        {
             m_IsJumping = true;
-            m_OnJump = true;
-        }
         else
-        {
             m_IsJumping = false;
-        }
 
         if (_context.started && (IsGrounded == true || m_CanDoubleJump == true))
         {
