@@ -143,8 +143,8 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x/2));
-        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y/2);
+        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
+        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
@@ -202,7 +202,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (PlayerLife == 0)
         {
             m_Animator.Play("Dead");
-            m_Animator.GetComponent<PlayerInput>().defaultActionMap = "Menu";
+            m_Animator.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
         }
     }
 
@@ -250,9 +250,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             m_Animator.SetBool("Landed", true);
-            
-            
-            
+ 
         }
         else
         {

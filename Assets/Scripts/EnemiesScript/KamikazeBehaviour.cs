@@ -60,6 +60,9 @@ public class KamikazeBehaviour : EnemyBehaviour
             Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down);
             m_Animator.SetFloat("SpeedX", 1);
 
+            m_Animator.applyRootMotion = true;
+            m_NavAgent.enabled = true;
+
             if (!m_Target.GetComponent<PlayerBehaviour>().IsGrounded)
             {
                 m_Animator.applyRootMotion = false;
@@ -90,7 +93,15 @@ public class KamikazeBehaviour : EnemyBehaviour
            {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
-                    m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_EnemyDamage;
+                    PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
+                    if (playerBehaviour.PlayerLife < m_EnemyDamage)
+                    {
+                        playerBehaviour.PlayerLife = 0;
+                        break;
+                    }
+
+                    playerBehaviour.PlayerLife -= m_EnemyDamage;
+                    m_Target.GetComponent<Animator>().Play("Hurt");
                     break;
                 }
            }

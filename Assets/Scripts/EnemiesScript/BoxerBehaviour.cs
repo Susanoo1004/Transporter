@@ -39,9 +39,16 @@ public class BoxerBehaviour : EnemyBehaviour
             if (m_HitCD > 0)
                 return;
 
+            PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
+            if (playerBehaviour.PlayerLife < m_EnemyDamage)
+            {
+                playerBehaviour.PlayerLife = 0;
+                return;
+            }
+
             m_Animator.Play("Hit");
             m_Target.GetComponent<Animator>().Play("Hurt");
-            m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_EnemyDamage;
+            playerBehaviour.PlayerLife -= m_EnemyDamage;
             m_HitCD = m_HitFrequency;
         }
     }
