@@ -43,7 +43,6 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_JumpTimer;
 
     private bool m_IsJumping = false;
-    private bool m_CanDoubleJump;
 
 
     private Vector3 m_Move = new();
@@ -95,6 +94,8 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_PlayerToMagnetDistance;
 
+
+
     private Vector2 m_Aim = new Vector2(1,0);
     
     [HideInInspector]
@@ -102,15 +103,13 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
-    public float m_AnimatorCancelTimer = 0.1f;
-
     public bool IsGrounded
     {
         get
         {
             return Physics.Raycast(m_Feet.transform.position, Vector3.down, 0.025f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.x / 2, 0, 0), Vector3.down, 0.025f)
-                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.x / 2, 0, 0), Vector3.down, 0.025f);
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, 0.025f)
+                || Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, 0.025f);
         }
     }
 
@@ -118,9 +117,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         get
         {
-            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.025f);
+            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.025f);
+            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.025f);
 
             return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
         }
@@ -209,21 +208,12 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
-            if(m_HasTakenExplosion) 
+            if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
-                if(IsGrounded) 
-                    m_HasTakenExplosion = false;
-            }
-            else
-            {
-                if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
-                {
-                    if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                        m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-                }
+                if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
+                    m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
             }
         }
         else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
@@ -231,15 +221,6 @@ public class PlayerBehaviour : MonoBehaviour
             if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider) && transform.TryGetComponent(out BoxCollider boxCollider))
                 transform.position = collider.ClosestPointOnBounds(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
             m_Rigidbody.velocity = Vector3.zero;
-            /*
-            if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider))
-                transform.position = collider.ClosestPoint(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
-            */
-
-            /*  MOUVEMENT
-            Vector3 direction = Vector3.Cross(m_MagnetBehaviour.GetPlayerAttachedObjectNormal, Vector3.forward).normalized;
-            m_Rigidbody.velocity = direction * m_Move.magnitude * m_MaxSpeed * 0.5f * Time.fixedDeltaTime;
-            */
         }
 
         m_IsStuckRight = false;
@@ -259,15 +240,24 @@ public class PlayerBehaviour : MonoBehaviour
         if (IsGrounded)
         {
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
+            {
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
-
-            m_CanDoubleJump = true;
+            }
+            else
+            {
+                if (m_Move == Vector3.zero)
+                    m_Rigidbody.AddForce(new Vector3(-m_Rigidbody.velocity.x / 5.0f, 0.0f, 0.0f), ForceMode.VelocityChange);
+            }
 
             m_Animator.SetBool("Landed", true);
+            
+            
+            
         }
         else
         {
             m_Animator.SetBool("Landed", false);
+            m_Rigidbody.velocity += Vector3.down/2;
         }
     }
 
@@ -289,15 +279,9 @@ public class PlayerBehaviour : MonoBehaviour
         else
             m_IsJumping = false;
 
-        if (_context.started && (IsGrounded == true || m_CanDoubleJump == true))
+        if (_context.started && IsGrounded == true)
         {
-            if (!IsGrounded)
-            {
-                Vector3 velocity = m_Rigidbody.velocity;
-                velocity.y = 0;
-                m_Rigidbody.velocity = velocity;
-                m_CanDoubleJump = false;
-            }
+     
 
             m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
             m_JumpTimer = m_JumpTime;

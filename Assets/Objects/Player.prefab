@@ -296,7 +296,6 @@ MonoBehaviour:
   m_PullTime: 0.25
   m_PlayerToMagnetDistance: 2
   SurfaceNormal: {x: 0, y: 0, z: 0}
-  m_AnimatorCancelTimer: 0.1
 --- !u!114 &863643932380618554
 MonoBehaviour:
   m_ObjectHideFlags: 0
