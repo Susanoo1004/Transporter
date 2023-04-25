@@ -91,10 +91,6 @@ public class KamikazeBehaviour : EnemyBehaviour
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
                     m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_EnemyDamage;
-
-                    // To add an explosion force
-                    // m_Target.GetComponent<Rigidbody>().AddExplosionForce(m_ExplosionKnocknack * Time.fixedDeltaTime, transform.position + Vector3.down, 2);
-                    // m_Target.GetComponent<PlayerBehaviour>().m_HasTakenExplosion = true;
                     break;
                 }
            }
