@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
@@ -3210,3 +3212,4 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 774dd758c11c4da44b398276c669023f, type: 3}
+>>>>>>> 8feb62c13e671c20cd5766deec558377972fe83c
