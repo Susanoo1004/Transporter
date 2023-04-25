@@ -48,6 +48,14 @@ public class LaserBehaviour : MonoBehaviour
                 m_HitCD -= Time.deltaTime;
                 if (m_HitCD > 0)
                     return;
+
+                PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
+                if (playerBehaviour.PlayerLife < m_LaserDamage)
+                {
+                    playerBehaviour.PlayerLife = 0;
+                    return;
+                }
+
                 m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_LaserDamage;
                 m_HitCD = m_HitFrequency;
             }
