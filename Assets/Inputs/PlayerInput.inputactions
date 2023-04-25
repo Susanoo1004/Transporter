@@ -34,12 +34,12 @@
                 },
                 {
                     "name": "Throw Magnet",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "de9e7655-a5fe-4ca6-8511-c33a771391d2",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Aim",

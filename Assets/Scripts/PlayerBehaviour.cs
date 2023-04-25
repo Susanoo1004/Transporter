@@ -28,9 +28,11 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_DashDistance;
     [SerializeField]
-    private float m_DashSpeed;
+    private float m_DashTime;
+    private float m_DashTimer;
     private bool m_IsDashing = false;
     private bool m_CanDash = true;
+    private Vector3 m_PositionBeforeDash;
 
     [SerializeField]
     private float m_MinJumpForce;
@@ -69,6 +71,8 @@ public class PlayerBehaviour : MonoBehaviour
     [Header("Magnet")]
     [SerializeField]
     private Transform m_Magnet;
+    [SerializeField]
+    private Transform m_MagnetOnArmTransform;
     private MagnetBehaviour m_MagnetBehaviour;
 
     [SerializeField]
@@ -178,7 +182,11 @@ public class PlayerBehaviour : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
         }
 
-        m_MagnetBehaviour.MagnetDefaultPositions = transform.position + (Vector3)m_Aim * m_PlayerToMagnetDistance;
+
+        if (m_Aim == Vector2.zero)
+            m_MagnetBehaviour.MagnetDefaultPositions = m_MagnetOnArmTransform.position;
+        else
+            m_MagnetBehaviour.MagnetDefaultPositions = transform.position + (Vector3)m_Aim * m_PlayerToMagnetDistance;
         if (HasMagnet)
             m_Magnet.position = m_MagnetBehaviour.MagnetDefaultPositions;
 
@@ -244,10 +252,10 @@ public class PlayerBehaviour : MonoBehaviour
         m_IsStuckRight = false;
         m_IsStuckLeft = false;
 
-        if (IsGrounded || m_MagnetBehaviour.IsPlayerAttached)
+        if ((IsGrounded || m_MagnetBehaviour.IsPlayerAttached) && m_DashTimer < 0)
             m_CanDash = true;
 
-        if (m_IsDashing)
+        if (m_IsDashing || m_DashTimer > 0)
             Dash();
 
         if (m_IsJumping)
@@ -274,11 +282,6 @@ public class PlayerBehaviour : MonoBehaviour
     {
         Vector2 move = _context.ReadValue<Vector2>();
         m_Move = new Vector3(move.x, 0, 0);
-    }
-
-    public void OnDash(InputAction.CallbackContext _context)
-    {
-        // Deprecated
     }
 
     public void OnJump(InputAction.CallbackContext _context)
@@ -324,8 +327,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
-        if (m_CanDash)
-            m_IsDashing = _context.ReadValueAsButton();
+        m_IsDashing = _context.ReadValueAsButton();
     }
 
     public void OnChangePolarity(InputAction.CallbackContext _context)
@@ -347,7 +349,7 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnAim(InputAction.CallbackContext _context)
     {
         if (GetComponent<PlayerInput>().defaultActionMap == "Keyboard")
-            m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
+            m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).magnitude < m_PlayerToMagnetDistance ? Vector3.zero : (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
@@ -360,12 +362,27 @@ public class PlayerBehaviour : MonoBehaviour
     
     public void Dash()
     {
-        if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance)
+        if (m_DashTimer > 0)
         {
-            m_Rigidbody.AddForce((m_Magnet.position - transform.position).normalized * m_DashSpeed, ForceMode.VelocityChange);
-            m_CanDash = false;
+            transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - m_DashTimer / m_DashTime);
+            m_DashTimer -= Time.fixedDeltaTime;
+            m_Rigidbody.velocity = Vector3.zero;
+            return;
         }
-        m_IsDashing = false;
+        
+        if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance && (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
+        {
+            //m_Rigidbody.AddForce((m_Magnet.position - transform.position).normalized * m_DashSpeed, ForceMode.VelocityChange);
+            m_CanDash = false;
+            m_IsDashing = false;
+            m_DashTimer = m_DashTime;
+            m_MagnetBehaviour.HoverTimer = m_DashTime;
+            m_MagnetBehaviour.TravelTimer = 0;
+            m_PositionBeforeDash = transform.position;
+
+            DettachPlayer();
+        }
+
     }
 
     private void OnCollisionStay(Collision collision)
