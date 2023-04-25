@@ -20,6 +20,11 @@ public class LaserBehaviour : MonoBehaviour
     private float m_HitFrequency;
     private float m_HitCD;
 
+    [SerializeField]
+    private byte m_LaserDamage;
+
+    public bool IsGuardingByEnemy;
+
     private bool IsPlayer;
 
     // Start is called before the first frame update
@@ -43,7 +48,7 @@ public class LaserBehaviour : MonoBehaviour
                 m_HitCD -= Time.deltaTime;
                 if (m_HitCD > 0)
                     return;
-                m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= 1;
+                m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_LaserDamage;
                 m_HitCD = m_HitFrequency;
             }
         }
