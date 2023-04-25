@@ -34,6 +34,8 @@ public class MagnetBehaviour : MonoBehaviour
     //[HideInInspector]
     public float ThrowForce;
     //[HideInInspector]
+    public Vector3 PlayerThrowForce;
+    //[HideInInspector]
     public float HoverTime;
     //[HideInInspector]
     public float HoverTimer;
@@ -49,6 +51,8 @@ public class MagnetBehaviour : MonoBehaviour
     public bool IsPlayerAttached;
     //[HideInInspector]
     public Transform PlayerAttachedObject;
+    //[HideInInspector]
+    public Vector3 MagnetDefaultPositions;
 
     public Vector3 GetPlayerAttachedObjectNormal { get {
         if (PlayerAttachedObject != null && PlayerAttachedObject.TryGetComponent(out Collider collider))
@@ -127,9 +131,9 @@ public class MagnetBehaviour : MonoBehaviour
         if (TravelTimer > 0)
         {
             if (!IsThrowing) // Coming Back
-                transform.position = Vector3.Lerp(m_LastPosition, m_Player.position, 1-TravelTimer/PullTime);
+                transform.position = Vector3.Lerp(m_LastPosition, MagnetDefaultPositions, 1-TravelTimer/PullTime);
             else // Throwing
-                m_Rigidbody.AddForce(Aim * ThrowForce, ForceMode.Acceleration);
+                m_Rigidbody.velocity = Aim * ThrowForce + PlayerThrowForce;
         }
         else //if (HoverTimer > 0)
         {
