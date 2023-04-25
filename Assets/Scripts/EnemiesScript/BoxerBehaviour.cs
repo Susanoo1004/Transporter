@@ -57,4 +57,9 @@ public class BoxerBehaviour : EnemyBehaviour
         }
     }
 
+    private void WalkingSound()
+    {
+        
+    }
+
 }
