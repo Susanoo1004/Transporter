@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using UnityEngine.AI;
 
 public class BoxerBehaviour : EnemyBehaviour
@@ -38,8 +35,11 @@ public class BoxerBehaviour : EnemyBehaviour
             if (m_HitCD > 0)
                 return;
 
-            m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_EnemyDamage;
-            m_HitCD = m_HitFrequency;
+            if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
+            {
+                player.TakeDamage(m_EnemyDamage);
+                m_HitCD = m_HitFrequency;
+            }
         }
     }
 

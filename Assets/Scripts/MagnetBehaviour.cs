@@ -226,6 +226,8 @@ public class MagnetBehaviour : MonoBehaviour
                 {
                     if (other.TryGetComponent(out Rigidbody rigidbody))
                         rigidbody.AddForce(Aim * RepulsiveForce, ForceMode.VelocityChange);
+                    
+                    other.gameObject.layer = LayerMask.NameToLayer("Player Projectiles");
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
                       || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE
@@ -233,6 +235,7 @@ public class MagnetBehaviour : MonoBehaviour
                 {
                     AttractionTimer = AttractionTime;
                     MagnetizedObject = magneticObject.transform;
+                    other.gameObject.layer = LayerMask.NameToLayer("Player Projectiles");
 
                     if (other.TryGetComponent(out Rigidbody rigidbody))
                         rigidbody.isKinematic = true;
