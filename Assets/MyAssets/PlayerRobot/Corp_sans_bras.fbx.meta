@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 6a9c35a5020be7a43bc5dab1361c1e45
+guid: 6670992961b0c3347842d6306f8d7a4a
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
-      74: -203655887218126122
-    second: mixamo.com
+      74: -1978303741906493279
+    second: Armature|idle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -100,7 +100,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0

@@ -31,6 +31,7 @@ public class BoxerBehaviour : EnemyBehaviour
     public override void FocusPlayer()
     {
         m_NavAgent.SetDestination(m_Target.transform.position);
+
         if (Vector3.Distance(transform.position, m_Target.transform.position) <= m_NavAgent.stoppingDistance)
         {
             m_HitCD -= Time.deltaTime;
@@ -38,7 +39,16 @@ public class BoxerBehaviour : EnemyBehaviour
             if (m_HitCD > 0)
                 return;
 
-            m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_EnemyDamage;
+            PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
+            if (playerBehaviour.PlayerLife < m_EnemyDamage)
+            {
+                playerBehaviour.PlayerLife = 0;
+                return;
+            }
+
+            m_Animator.Play("Hit");
+            m_Target.GetComponent<Animator>().Play("Hurt");
+            playerBehaviour.PlayerLife -= m_EnemyDamage;
             m_HitCD = m_HitFrequency;
         }
     }
@@ -48,7 +58,7 @@ public class BoxerBehaviour : EnemyBehaviour
         if (other.CompareTag("Player"))
         {
             IsPatrolling = false;
-            m_NavAgent.speed = 3.0f;
+            m_NavAgent.speed = m_NavAgent.speed * 2;
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
         }
