@@ -219,13 +219,13 @@ public class PlayerBehaviour : MonoBehaviour
             m_Animator.Play("Dead");
             m_Animator.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
         }
-
+        
         if (m_ResetArm)
         {
             m_ResetArmPos -= Time.deltaTime;
-            if (m_ResetArmPos <= 0)
+            if (m_ResetArmPos <= 0 && IsGrounded)
             {
-                m_Arm.position -= Vector3.down / 3.5f;
+                m_Arm.position -= Vector3.down/4;
                 m_ResetArmPos = 0.75f;
                 m_ResetArm = false;
             }
@@ -299,12 +299,11 @@ public class PlayerBehaviour : MonoBehaviour
             m_ResetArm = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
-            m_Arm.position += Vector3.down / 3.5f;
+            m_Arm.position += Vector3.down / 4;
         }
         else
         { 
             m_IsJumping = false;
-            Debug.Log("Vroum");
         }
     }
 
