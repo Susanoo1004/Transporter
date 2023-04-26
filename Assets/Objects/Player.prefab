@@ -89,7 +89,6 @@ MonoBehaviour:
   m_DashDistance: 0
   m_DashSpeed: 0
   m_JumpForce: 0
-  m_JumpTime: 0.3
   PlayerLife: 10
   m_PlayerLifeText: {fileID: 0}
   m_HasTakenExplosion: 0

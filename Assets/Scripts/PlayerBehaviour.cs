@@ -43,10 +43,6 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_JumpForce;
 
-    [SerializeField]
-    private float m_JumpTime;
-    private float m_JumpTimer;
-
     private bool m_IsJumping = false;
 
 
@@ -190,12 +186,9 @@ public class PlayerBehaviour : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
         }
 
-        m_MagnetBehaviour.MagnetDefaultPositions = transform.position + (Vector3)m_Aim * m_PlayerToMagnetDistance;
+        m_MagnetBehaviour.MagnetDefaultPositions = m_Arm.position + (Vector3)m_Aim * m_PlayerToMagnetDistance;
         if (HasMagnet)
             m_Magnet.position = m_MagnetBehaviour.MagnetDefaultPositions;
-
-        if (m_JumpTimer > 0)
-            m_JumpTimer -= Time.deltaTime;
 
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
         {
@@ -305,7 +298,6 @@ public class PlayerBehaviour : MonoBehaviour
             m_IsJumping = true;
             m_ResetArm = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
-            m_JumpTimer = m_JumpTime;
             m_Animator.Play("Jump");
             m_Arm.position += Vector3.down / 3.5f;
         }
