@@ -3161,6 +3161,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 863643932380618552, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 863643932380618554, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_DefaultActionMap
       value: Keyboard
@@ -3176,6 +3180,10 @@ PrefabInstance:
     - target: {fileID: 863643932380618554, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_ActionEvents.Array.data[12].m_ActionName
       value: Menu/New action
+      objectReference: {fileID: 0}
+    - target: {fileID: 1437645168330520623, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8124314071014052506, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalScale.x
@@ -3198,11 +3206,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8124314071014052506, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8124314071014052506, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8124314071014052506, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8124314071014052506, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
