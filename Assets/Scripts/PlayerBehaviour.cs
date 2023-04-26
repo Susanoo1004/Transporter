@@ -19,6 +19,14 @@ public class PlayerBehaviour : MonoBehaviour
     [HideInInspector]
     public float m_InvicibilityTimer;
 
+    [SerializeField]
+    private Transform m_Arm;
+
+    // Arm
+    private float m_ResetArmPos = 0.75f;
+    private bool m_ResetArm;
+    private Vector3 m_ArmBaseLocalScale;
+
     [Header("Movement")]
     [SerializeField]
     private float m_Accelerate;
@@ -39,17 +47,9 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector3 m_PositionBeforeDash;
 
     [SerializeField]
-    private float m_MinJumpForce;
-
-    [SerializeField]
-    private float m_MaxJumpForce;
-
-    [SerializeField]
-    private float m_JumpTime;
-    private float m_JumpTimer;
+    private float m_JumpForce;
 
     private bool m_IsJumping = false;
-    private bool m_CanDoubleJump;
 
 
     private Vector3 m_Move = new();
@@ -110,8 +110,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
-    public float m_AnimatorCancelTimer = 0.1f;
-
     public bool IsGrounded
     {
         get
@@ -126,9 +124,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         get
         {
-            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.025f);
+            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.025f);
+            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.025f);
 
             return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
         }
@@ -149,16 +147,26 @@ public class PlayerBehaviour : MonoBehaviour
         m_PlayerLifeText.text = "Player Life Point : ";
         m_ModelBaseLocalScale = m_PlayerModel.localScale;
         m_InvicibilityTimer = m_InvicibilityTime;
+        m_ArmBaseLocalScale = m_Arm.localScale;
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x/2));
-        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y/2);
+        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
+        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
+        m_Arm.GetComponentInChildren<Animator>().SetBool("Jump", m_IsJumping);
 
         m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
+
+        {
+            Vector3 direction = m_Magnet.position - m_Arm.position;
+
+            Quaternion ToRotation = Quaternion.LookRotation(direction, Vector3.Cross(direction, Vector3.forward));
+            m_Arm.rotation = ToRotation;
+            m_Arm.Rotate(transform.forward, 90);
+        }
 
         // Rotation in every case
         // Player magnetized towards MagneticObject
@@ -192,12 +200,9 @@ public class PlayerBehaviour : MonoBehaviour
         if (m_Aim == Vector2.zero)
             m_MagnetBehaviour.MagnetDefaultPositions = m_MagnetOnArmTransform.position;
         else
-            m_MagnetBehaviour.MagnetDefaultPositions = transform.position + (Vector3)m_Aim * m_PlayerToMagnetDistance;
+            m_MagnetBehaviour.MagnetDefaultPositions = m_Arm.position + (Vector3)m_Aim * m_PlayerToMagnetDistance;
         if (HasMagnet)
             m_Magnet.position = m_MagnetBehaviour.MagnetDefaultPositions;
-
-        if (m_JumpTimer > 0)
-            m_JumpTimer -= Time.deltaTime;
 
         if ((IsGrounded || m_MagnetBehaviour.IsPlayerAttached) && HasMagnet && m_DashTimer <= 0)
             m_CanDash = true;
@@ -224,9 +229,30 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
+        if (transform.rotation.y > 0)
+        {
+            m_Arm.localScale = m_ArmBaseLocalScale * -1;
+        }
+        else if (transform.rotation.y < 0)
+        {
+            m_Arm.localScale = m_ArmBaseLocalScale;
+        }
+
         if (PlayerLife == 0)
         {
-            Destroy(gameObject);
+            m_Animator.Play("Dead");
+            m_Animator.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
+        }
+
+        if (m_ResetArm)
+        {
+            m_ResetArmPos -= Time.deltaTime;
+            if (m_ResetArmPos <= 0)
+            {
+                m_Arm.position -= Vector3.down / 3.5f;
+                m_ResetArmPos = 0.75f;
+                m_ResetArm = false;
+            }
         }
     }
 
@@ -239,18 +265,10 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
-            if(m_HasTakenExplosion) 
+            if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
-                if(IsGrounded) 
-                    m_HasTakenExplosion = false;
-            }
-            else
-            {
-                if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
-                {
-                    if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                        m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-                }
+                if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
+                    m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
             }
         }
         else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
@@ -258,15 +276,6 @@ public class PlayerBehaviour : MonoBehaviour
             if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider) && transform.TryGetComponent(out BoxCollider boxCollider))
                 transform.position = collider.ClosestPointOnBounds(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
             m_Rigidbody.velocity = Vector3.zero;
-            /*
-            if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider))
-                transform.position = collider.ClosestPoint(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
-            */
-
-            /*  MOUVEMENT
-            Vector3 direction = Vector3.Cross(m_MagnetBehaviour.GetPlayerAttachedObjectNormal, Vector3.forward).normalized;
-            m_Rigidbody.velocity = direction * m_Move.magnitude * m_MaxSpeed * 0.5f * Time.fixedDeltaTime;
-            */
         }
 
         m_IsStuckRight = false;
@@ -283,16 +292,23 @@ public class PlayerBehaviour : MonoBehaviour
         if (IsGrounded)
         {
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
+            {
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
-
-            m_CanDoubleJump = true;
+            }
+            else
+            {
+                if (m_Move == Vector3.zero)
+                    m_Rigidbody.AddForce(new Vector3(-m_Rigidbody.velocity.x / 5.0f, 0.0f, 0.0f), ForceMode.VelocityChange);
+            }
 
             m_Animator.SetBool("Landed", true);
+ 
         }
         else
         {
             m_Animator.SetBool("Landed", false);
-        }
+            m_Rigidbody.velocity += Vector3.down/2;
+        }    
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
@@ -303,23 +319,18 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
-            m_IsJumping = true;
-        else
-            m_IsJumping = false;
-
-        if (_context.started && (IsGrounded == true || m_CanDoubleJump == true))
+        if (_context.started && IsGrounded == true)
         {
-            if (!IsGrounded)
-            {
-                Vector3 velocity = m_Rigidbody.velocity;
-                velocity.y = 0;
-                m_Rigidbody.velocity = velocity;
-                m_CanDoubleJump = false;
-            }
-
-            m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
-            m_JumpTimer = m_JumpTime;
+            m_IsJumping = true;
+            m_ResetArm = true;
+            m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
+            m_Animator.Play("Jump");
+            m_Arm.position += Vector3.down / 3.5f;
+        }
+        else
+        { 
+            m_IsJumping = false;
+            Debug.Log("Vroum");
         }
     }
 
@@ -370,12 +381,7 @@ public class PlayerBehaviour : MonoBehaviour
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
-
-    public void Jump()
-    {
-        m_Animator.Play("Jump");
-        m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer / (m_JumpTime * 1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
-    }
+    
     public void Dash()
     {
         if (m_DashTimer > 0)
@@ -521,7 +527,11 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void TakeDamage(byte damage)
     {
-        PlayerLife -= damage;
+        if (PlayerLife < damage)
+            PlayerLife = 0;
+        else
+            PlayerLife -= damage;
         m_InvicibilityTimer = m_InvicibilityTime;
+        m_Animator.Play("Hurt");
     }
 }

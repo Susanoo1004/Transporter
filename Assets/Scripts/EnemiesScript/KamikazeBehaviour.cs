@@ -60,6 +60,9 @@ public class KamikazeBehaviour : EnemyBehaviour
             Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down);
             m_Animator.SetFloat("SpeedX", 1);
 
+            m_Animator.applyRootMotion = true;
+            m_NavAgent.enabled = true;
+
             if (!m_Target.GetComponent<PlayerBehaviour>().IsGrounded)
             {
                 m_Animator.applyRootMotion = false;

@@ -300,6 +300,102 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Menu",
+            "id": "ca9a3ee1-33cc-44a7-bb85-e67336156adc",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "6eb0c026-90aa-4c2f-9cee-012d8aef7fde",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1f6db21a-9735-4769-b06c-6f23d1a09428",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Trap",
+            "id": "5596ce31-8981-4915-9e88-9c62cf0000a2",
+            "actions": [
+                {
+                    "name": "Throw Magnet",
+                    "type": "Button",
+                    "id": "e5471f42-7089-486d-a26e-f0c8dcc8d09e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Value",
+                    "id": "05422871-7a55-4847-9873-466c1e710536",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Change Polarity",
+                    "type": "Button",
+                    "id": "8337c188-46b5-4fa6-80ed-5a385aa93038",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "24ea33be-2e58-47c9-8d58-a23d20dbfdc4",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throw Magnet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd6837a9-0498-45d8-9c4d-a6c4e7bab622",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3741f43d-4388-48c6-8624-aa65f5a22a4b",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Polarity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
