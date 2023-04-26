@@ -255,7 +255,7 @@ public class MagnetBehaviour : MonoBehaviour
                     {
                         if (Vector3.Angle(direction, rigidbody.velocity) > 90)
                             rigidbody.velocity = Vector3.zero;
-                        rigidbody.AddForce(direction * RepulsiveForce, ForceMode.VelocityChange);
+                        rigidbody.AddForce(direction * RepulsiveForce * 1.5f, ForceMode.VelocityChange);
                     }
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE

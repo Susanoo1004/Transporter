@@ -201,6 +201,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.MagnetDefaultPositions = m_MagnetOnArmTransform.position;
         else
             m_MagnetBehaviour.MagnetDefaultPositions = m_Arm.position + (Vector3)m_Aim * m_PlayerToMagnetDistance;
+
         if (HasMagnet)
             m_Magnet.position = m_MagnetBehaviour.MagnetDefaultPositions;
 
@@ -284,10 +285,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (m_IsDashing || m_DashTimer > 0)
             Dash();
 
-        if (m_IsJumping)
-            Jump();
-
-
 
         if (IsGrounded)
         {
@@ -307,8 +304,10 @@ public class PlayerBehaviour : MonoBehaviour
         else
         {
             m_Animator.SetBool("Landed", false);
+        }   
+        
+        if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
             m_Rigidbody.velocity += Vector3.down/2;
-        }    
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
@@ -330,7 +329,6 @@ public class PlayerBehaviour : MonoBehaviour
         else
         { 
             m_IsJumping = false;
-            Debug.Log("Vroum");
         }
     }
 
@@ -353,6 +351,7 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 SetPullProperties();
             }
+            m_Magnet.position = new Vector3(m_Magnet.position.x, m_Magnet.position.y, 0);
         }
 
         m_IsDashing = _context.ReadValueAsButton();
@@ -377,7 +376,7 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnAim(InputAction.CallbackContext _context)
     {
         if (GetComponent<PlayerInput>().defaultActionMap == "Keyboard")
-            m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).magnitude < m_PlayerToMagnetDistance ? Vector3.zero : (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
+            m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
@@ -404,7 +403,7 @@ public class PlayerBehaviour : MonoBehaviour
             return;
         }
 
-        if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
+        if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
         {
             m_CanDash = false;
             m_IsDashing = false;

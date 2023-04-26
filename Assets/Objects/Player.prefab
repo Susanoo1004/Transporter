@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1442298541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1442298542}
+  m_Layer: 6
+  m_Name: MagnetPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1442298542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442298541}
+  m_LocalRotation: {x: -0, y: -0, z: -0.000000029802322, w: 1}
+  m_LocalPosition: {x: -0.43863735, y: -0.99693626, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8431649053732184527}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7146066286638838100
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,17 +113,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Feet: {fileID: 7146066287088001861}
+  m_PlayerModel: {fileID: 6226096780760245866}
+  m_InvicibilityTime: 2
+  m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
   m_Accelerate: 20
   m_MaxSpeed: 10
   m_DashPower: 15
-  m_DashDistance: 0
-  m_DashSpeed: 0
-  m_JumpForce: 0
+  m_DashDistance: 5
+  m_DashTime: 0.4
+  m_JumpForce: 13
   PlayerLife: 10
   m_PlayerLifeText: {fileID: 0}
   m_HasTakenExplosion: 0
   m_Magnet: {fileID: 7146066286746599838}
+  m_MagnetOnArmTransform: {fileID: 1442298542}
   m_HoverTime: 0.2
   m_AttractionTime: 0.1
   m_PlayerAttractionSpeed: 15
@@ -571,6 +606,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5300825969229702877}
+  - {fileID: 1442298542}
   m_Father: {fileID: 7146066286638838106}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -760,65 +796,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6670992961b0c3347842d6306f8d7a4a, type: 3}
   m_PrefabInstance: {fileID: 5903431266653929857}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7281085337515479447 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -341399397560591710, guid: c2abd26001ba96d4ebee32c3768c025f, type: 3}
-  m_PrefabInstance: {fileID: 2182143033958730549}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &4602995819677050180
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 7281085337515479447}
-    m_Modifications:
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906085231127133276, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6629051284395365756, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
-      propertyPath: m_Name
-      value: MagnetOnArm
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a1dcc13c5274e084dadf8fb2159ca37a, type: 3}
