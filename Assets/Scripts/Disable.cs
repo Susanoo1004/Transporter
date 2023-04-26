@@ -13,15 +13,18 @@ public class Disable : MonoBehaviour
 
     [Header("Value")]
     [SerializeField]
+    private float m_ActivateFrequency;
+    private float m_ActivateTimer;
+    [SerializeField]
     private float m_DisableFrequency;
     private float m_DisableTimer;
 
-    private bool m_Enable;
 
     // Start is called before the first frame update
     void Start()
     {
         m_DisableTimer = m_DisableFrequency;
+        m_ActivateTimer = m_ActivateFrequency;
     }
 
     // Update is called once per frame
@@ -29,17 +32,29 @@ public class Disable : MonoBehaviour
     {
         if (!m_LaserToDisable.IsGuardingByEnemy) 
         {
-            m_DisableTimer -= Time.deltaTime;
+            if(m_LaserToDisable.enabled) 
+            {
+                m_ActivateTimer -= Time.deltaTime;
 
-            if (m_DisableTimer > 0)
-                return;
-            
-            if (m_LaserToDisable.enabled == false)
-                m_LaserToDisable.enabled = true;
-            else
+                if (m_ActivateTimer > 0)
+                    return;
+
                 m_LaserToDisable.enabled = false;
 
-            m_DisableTimer = m_DisableFrequency;
+                m_ActivateTimer = m_ActivateFrequency;
+            }
+            else
+            {
+                m_DisableTimer -= Time.deltaTime;
+
+                if (m_DisableTimer > 0)
+                    return;
+
+                m_LaserToDisable.enabled = true;
+
+                m_DisableTimer = m_DisableFrequency;   
+            }
+            
         }
         else
         {
