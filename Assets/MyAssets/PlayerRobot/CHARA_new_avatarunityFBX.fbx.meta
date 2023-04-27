@@ -27,9 +27,6 @@ ModelImporter:
   - first:
       74: -4799524434163024911
     second: Armature|walk
-  - first:
-      74: -2702400367771620057
-    second: InAir
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -58,6 +55,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
+<<<<<<< HEAD
     clipAnimations:
     - serializedVersion: 16
       name: Armature|Dash
@@ -320,6 +318,9 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+=======
+    clipAnimations: []
+>>>>>>> 1acdf623a96d154171cadaa8aa61426df5049d96
     isReadable: 0
   meshes:
     lODScreenPercentages: []
