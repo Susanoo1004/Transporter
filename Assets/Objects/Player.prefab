@@ -128,6 +128,7 @@ MonoBehaviour:
   m_HasTakenExplosion: 0
   m_Magnet: {fileID: 7146066286746599838}
   m_MagnetOnArmTransform: {fileID: 1442298542}
+  m_MagnetCooldownTime: 0
   m_HoverTime: 0.2
   m_AttractionTime: 0.1
   m_PlayerAttractionSpeed: 15
@@ -503,6 +504,7 @@ MonoBehaviour:
   MagnetDefaultPositions: {x: 0, y: 0, z: 0}
   IgnoreObject: {fileID: 0}
   MagnetizedObject: {fileID: 0}
+  LastPosition: {x: 0, y: 0, z: 0}
   Aim: {x: 0, y: 0, z: 0}
 --- !u!135 &7146066286746599811
 SphereCollider:

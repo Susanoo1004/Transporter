@@ -67,7 +67,7 @@ public class MagnetBehaviour : MonoBehaviour
     public Transform MagnetizedObject;
     private Vector3 m_LastMagnetizedObjectPosition;
 
-    private Vector3 m_LastPosition;
+    public Vector3 LastPosition;
 
     [HideInInspector]
     public Vector3 Aim;
@@ -118,7 +118,7 @@ public class MagnetBehaviour : MonoBehaviour
             else if (HoverTimer > 0)
             {
                 HoverTimer -= Time.deltaTime;
-                m_LastPosition = transform.position;
+                LastPosition = transform.position;
             }
         }
 
@@ -131,7 +131,7 @@ public class MagnetBehaviour : MonoBehaviour
         if (TravelTimer > 0)
         {
             if (!IsThrowing) // Coming Back
-                transform.position = Vector3.Lerp(m_LastPosition, MagnetDefaultPositions, 1-TravelTimer/PullTime);
+                transform.position = Vector3.Lerp(LastPosition, MagnetDefaultPositions, 1-TravelTimer/PullTime);
             else // Throwing
                 m_Rigidbody.velocity = Aim * ThrowForce + PlayerThrowForce;
         }
