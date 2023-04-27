@@ -345,6 +345,12 @@ public class PlayerBehaviour : MonoBehaviour
                 DropMagnetizedObject();
 
             m_MagnetBehaviour.IgnoreObject = null;
+
+
+            //ms : son changement polarity
+
+
+
         }
     }
 
@@ -362,6 +368,11 @@ public class PlayerBehaviour : MonoBehaviour
         {
             m_Rigidbody.AddForce((m_Magnet.position - transform.position).normalized * m_DashSpeed, ForceMode.VelocityChange);
             m_CanDash = false;
+
+
+            // ms : son Dash
+
+
         }
         m_IsDashing = false;
     }
