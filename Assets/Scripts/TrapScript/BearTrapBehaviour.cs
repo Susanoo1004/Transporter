@@ -46,6 +46,10 @@ public class BearTrapBehaviour : MonoBehaviour
             m_Target = other.gameObject;
             m_OldActionMap = m_Target.GetComponent<PlayerInput>().currentActionMap.name;
             m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap("Trap");
+
+
+            // ms : son d'activation du piege 
+
         }
     }
 }
