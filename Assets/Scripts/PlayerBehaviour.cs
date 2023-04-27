@@ -392,6 +392,12 @@ public class PlayerBehaviour : MonoBehaviour
                 DropMagnetizedObject();
 
             m_MagnetBehaviour.IgnoreObject = null;
+
+
+            //ms : son changement polarity
+
+
+
         }
     }
 
@@ -424,6 +430,7 @@ public class PlayerBehaviour : MonoBehaviour
             transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - m_DashTimer / m_DashTime);
             m_Rigidbody.velocity = Vector3.zero;
             return;
+            // ms : son Dash
         }
 
         else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
