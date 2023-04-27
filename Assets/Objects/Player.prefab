@@ -128,7 +128,7 @@ MonoBehaviour:
   m_HasTakenExplosion: 0
   m_Magnet: {fileID: 7146066286746599838}
   m_MagnetOnArmTransform: {fileID: 1442298542}
-  m_MagnetCooldownTime: 0
+  m_MagnetCooldownTime: 0.5
   m_HoverTime: 0.2
   m_AttractionTime: 0.1
   m_PlayerAttractionSpeed: 15
@@ -340,7 +340,19 @@ MonoBehaviour:
     m_ActionId: 0c4067a8-affe-40a3-ad90-6e34d71e8ae3
     m_ActionName: Gameplay/Change Polarity
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnChangePolarity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 3d5db880-d4f1-4291-88d7-c34721da9f0e
     m_ActionName: Keyboard/Change Polarity[/Keyboard/q]
   - m_PersistentCalls:
@@ -348,20 +360,56 @@ MonoBehaviour:
     m_ActionId: 6eb0c026-90aa-4c2f-9cee-012d8aef7fde
     m_ActionName: Menu/New action
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnMagnetThrow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e5471f42-7089-486d-a26e-f0c8dcc8d09e
     m_ActionName: Trap/Throw Magnet
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 05422871-7a55-4847-9873-466c1e710536
     m_ActionName: Trap/Aim
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnChangePolarity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 8337c188-46b5-4fa6-80ed-5a385aa93038
     m_ActionName: Trap/Change Polarity
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Keyboard
+  m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!95 &7146066286638838103
