@@ -35,6 +35,8 @@ public class BearTrapBehaviour : MonoBehaviour
 
             m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap(m_OldActionMap);
             GetComponent<BearTrapBehaviour>().enabled = false;
+            GetComponent<Collider>().enabled = false;
+            IsTrapped = false;
         }
     }
 

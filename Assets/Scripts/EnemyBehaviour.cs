@@ -16,6 +16,10 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField]
     protected byte m_EnemyDamage;
 
+    [SerializeField]
+    protected float m_InvincibilityTime;
+    protected float m_InvincibilityTimer;
+
     protected NavMeshAgent m_NavAgent;
 
     protected Animator m_Animator;
@@ -45,7 +49,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        m_InvincibilityTimer -= Time.deltaTime;
     }
 
     protected virtual void MyUpdate()
@@ -84,6 +88,18 @@ public class EnemyBehaviour : MonoBehaviour
 
             Debug.Log("Hit");
             m_HitCD = m_HitFrequency;
+        }
+    }
+
+    public virtual void TakeDamage(byte damage)
+    {
+        if (m_InvincibilityTimer <= 0)
+        {
+            if (m_EnemyLife < damage)
+                m_EnemyLife = 0;
+            else
+                m_EnemyLife -= damage;
+            m_InvincibilityTimer = m_InvincibilityTime;
         }
     }
 }
