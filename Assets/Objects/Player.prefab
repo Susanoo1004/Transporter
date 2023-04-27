@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1442298541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1442298542}
+  m_Layer: 6
+  m_Name: MagnetPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1442298542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442298541}
+  m_LocalRotation: {x: -0, y: -0, z: -0.000000029802322, w: 1}
+  m_LocalPosition: {x: -0.43863735, y: -0.99693626, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8431649053732184527}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7146066286638838100
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,17 +113,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Feet: {fileID: 7146066287088001861}
+  m_PlayerModel: {fileID: 6226096780760245866}
+  m_InvicibilityTime: 2
+  m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
   m_Accelerate: 20
   m_MaxSpeed: 10
   m_DashPower: 15
-  m_DashDistance: 0
-  m_DashSpeed: 0
-  m_JumpForce: 0
+  m_DashDistance: 5
+  m_DashTime: 0.4
+  m_JumpForce: 13
   PlayerLife: 10
   m_PlayerLifeText: {fileID: 0}
   m_HasTakenExplosion: 0
   m_Magnet: {fileID: 7146066286746599838}
+  m_MagnetOnArmTransform: {fileID: 1442298542}
+  m_MagnetCooldownTime: 0.5
   m_HoverTime: 0.2
   m_AttractionTime: 0.1
   m_PlayerAttractionSpeed: 15
@@ -304,7 +340,19 @@ MonoBehaviour:
     m_ActionId: 0c4067a8-affe-40a3-ad90-6e34d71e8ae3
     m_ActionName: Gameplay/Change Polarity
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnChangePolarity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 3d5db880-d4f1-4291-88d7-c34721da9f0e
     m_ActionName: Keyboard/Change Polarity[/Keyboard/q]
   - m_PersistentCalls:
@@ -312,20 +360,56 @@ MonoBehaviour:
     m_ActionId: 6eb0c026-90aa-4c2f-9cee-012d8aef7fde
     m_ActionName: Menu/New action
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnMagnetThrow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e5471f42-7089-486d-a26e-f0c8dcc8d09e
     m_ActionName: Trap/Throw Magnet
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 05422871-7a55-4847-9873-466c1e710536
     m_ActionName: Trap/Aim
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: OnChangePolarity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 8337c188-46b5-4fa6-80ed-5a385aa93038
     m_ActionName: Trap/Change Polarity
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Keyboard
+  m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!95 &7146066286638838103
@@ -379,7 +463,7 @@ Transform:
   m_GameObject: {fileID: 7146066286746599839}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.74, y: -0.451, z: 0}
-  m_LocalScale: {x: 0.4999999, y: 0.4999999, z: 0.4999999}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7146066286638838106}
@@ -468,6 +552,7 @@ MonoBehaviour:
   MagnetDefaultPositions: {x: 0, y: 0, z: 0}
   IgnoreObject: {fileID: 0}
   MagnetizedObject: {fileID: 0}
+  LastPosition: {x: 0, y: 0, z: 0}
   Aim: {x: 0, y: 0, z: 0}
 --- !u!135 &7146066286746599811
 SphereCollider:
@@ -571,6 +656,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5300825969229702877}
+  - {fileID: 1442298542}
   m_Father: {fileID: 7146066286638838106}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
