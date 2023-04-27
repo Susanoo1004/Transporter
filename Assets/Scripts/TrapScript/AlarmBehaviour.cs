@@ -8,6 +8,9 @@ public class AlarmBehaviour : MonoBehaviour
     private Transform m_AreaToDisable;
 
     private bool m_IsEnable;
+
+    private AudioSource m_Source;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +32,7 @@ public class AlarmBehaviour : MonoBehaviour
 
         if (m_IsEnable) 
         {
-            //Pour les MS : jouer le son de l'alarme ici en loop
+            
         }
     }
 
