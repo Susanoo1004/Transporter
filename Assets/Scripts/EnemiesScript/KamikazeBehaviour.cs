@@ -93,18 +93,15 @@ public class KamikazeBehaviour : EnemyBehaviour
            {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
-                    PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
-                    if (playerBehaviour.PlayerLife < m_EnemyDamage)
+                    if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
                     {
-                        playerBehaviour.PlayerLife = 0;
-                        break;
+                        player.TakeDamage(m_EnemyDamage);
                     }
-
-                    playerBehaviour.PlayerLife -= m_EnemyDamage;
-                    m_Target.GetComponent<Animator>().Play("Hurt");
                     break;
                 }
            }
+           // ms : son explosion
+
            Destroy(gameObject);
         }
     }
@@ -117,6 +114,10 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.speed = 6.0f;
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
+
+
+            // ms : son detection 
+
         }
 
     }

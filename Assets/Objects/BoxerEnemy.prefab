@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 7765127392699117887}
   - component: {fileID: 7765127392699117888}
   - component: {fileID: 4298666805641661895}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boxer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,6 +180,7 @@ MonoBehaviour:
   m_HitFrequency: 2
   m_EnemyLife: 2
   m_EnemyDamage: 1
+  m_InvincibilityTime: 0.5
   m_NavPoints:
   - {fileID: 4298666805452483298}
   - {fileID: 4298666806055649736}
@@ -255,6 +256,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &6054719466881083963
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765127392699117883}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.75, z: 1}
+  m_Center: {x: 0, y: 1.35, z: 0}
 --- !u!1001 &265235402088817843
 PrefabInstance:
   m_ObjectHideFlags: 0

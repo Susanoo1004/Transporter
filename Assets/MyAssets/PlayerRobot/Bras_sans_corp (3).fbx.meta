@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 320b3c45387d75249924b08a2707a7c3
+guid: cc3e47879c3d2b846b9b6c58f9ca17f1
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
-      74: 7238280004761517075
-    second: Armature|jump
+      74: -1978303741906493279
+    second: Armature|idle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -100,7 +100,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
