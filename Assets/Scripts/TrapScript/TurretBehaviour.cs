@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TurretBehaviour : MonoBehaviour
 {
@@ -8,23 +9,11 @@ public class TurretBehaviour : MonoBehaviour
     [SerializeField]
     private float m_AttractionSpeed;
 
-    MagneticObject.Polarity polarity;
+    private Transform m_Target;
 
-    private byte TurretHP = 1;
+    private string m_OldActionMap;
 
-    [SerializeField]
-    private Material m_PositiveMaterial;
-    [SerializeField]
-    private Material m_NegativeMaterial;
-    [SerializeField]
-    private Material m_AttractiveMaterial;
-    [SerializeField]
-    private Material m_RepulsiveMaterial;
-
-    private void OnValidate()
-    {
-        PolarityMaterial();
-    }
+    private bool m_HasBeenTrap;
 
     // Start is called before the first frame update
     void Start()
@@ -35,38 +24,34 @@ public class TurretBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PolarityMaterial();
+        if (m_HasBeenTrap)
+            if (Vector3.Distance(transform.position, m_Target.position) > 2.0f)
+            {
+                m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap(m_OldActionMap);
+                m_HasBeenTrap = false;
+            }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        // other.GetComponent<Rigidbody>().velocity = (transform.position - other.transform.position).normalized * m_AttractionSpeed;
-        if (!other.TryGetComponent(out PlayerBehaviour player))
+        if (!other.TryGetComponent(out PlayerBehaviour player)  && !other.TryGetComponent(out MagneticObject magneticObject))
             return;
 
-        other.GetComponent<Rigidbody>().AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed);
+        if (other.GetComponent<PlayerBehaviour>().IsGrounded)
+            other.GetComponent<Rigidbody>().AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed * 2, ForceMode.Acceleration);
+        else
+            other.GetComponent<Rigidbody>().AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed, ForceMode.Acceleration);
     }
 
-
-    private void PolarityMaterial()
+    private void OnCollisionEnter(Collision collision)
     {
-        switch (polarity)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            case MagneticObject.Polarity.NEGATIVE:
-                GetComponent<Renderer>().material = m_NegativeMaterial;
-                break;
-
-            case MagneticObject.Polarity.POSITIVE:
-                GetComponent<Renderer>().material = m_PositiveMaterial;
-                break;
-
-            case MagneticObject.Polarity.BOTH_ATTRACTIVE:
-                GetComponent<Renderer>().material = m_AttractiveMaterial;
-                break;
-
-            case MagneticObject.Polarity.BOTH_REPULSIVE:
-                GetComponent<Renderer>().material = m_RepulsiveMaterial;
-                break;
+            m_Target = collision.transform;
+            m_OldActionMap = m_Target.GetComponent<PlayerInput>().currentActionMap.name;
+            m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap("Trap");
+            m_HasBeenTrap = true;
         }
+        
     }
 }

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using UnityEngine.AI;
 
 public class BoxerBehaviour : EnemyBehaviour
@@ -39,17 +36,13 @@ public class BoxerBehaviour : EnemyBehaviour
             if (m_HitCD > 0)
                 return;
 
-            PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
-            if (playerBehaviour.PlayerLife < m_EnemyDamage)
+            if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
             {
-                playerBehaviour.PlayerLife = 0;
-                return;
+                player.TakeDamage(m_EnemyDamage);
+                Debug.Log("Beeeeeeeeh");
+                m_HitCD = m_HitFrequency;
+                m_Animator.Play("Hit");
             }
-
-            m_Animator.Play("Hit");
-            m_Target.GetComponent<Animator>().Play("Hurt");
-            playerBehaviour.PlayerLife -= m_EnemyDamage;
-            m_HitCD = m_HitFrequency;
         }
     }
 
@@ -61,6 +54,10 @@ public class BoxerBehaviour : EnemyBehaviour
             m_NavAgent.speed = m_NavAgent.speed * 2;
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
+
+
+            // ms : son detection
+
         }
     }
 
