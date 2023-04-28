@@ -10,6 +10,8 @@ public class TurretBehaviour : MonoBehaviour
 
     MagneticObject.Polarity polarity;
 
+    private byte TurretHP = 1;
+
     [SerializeField]
     private Material m_PositiveMaterial;
     [SerializeField]
@@ -38,8 +40,6 @@ public class TurretBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-
         // other.GetComponent<Rigidbody>().velocity = (transform.position - other.transform.position).normalized * m_AttractionSpeed;
         if (!other.TryGetComponent(out PlayerBehaviour player))
             return;
