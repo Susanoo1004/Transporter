@@ -49,7 +49,6 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_InvincibilityTimer -= Time.deltaTime;
     }
 
     protected virtual void MyUpdate()
@@ -64,6 +63,8 @@ public class EnemyBehaviour : MonoBehaviour
 
         if (m_EnemyLife == 0)
             Destroy(gameObject);
+
+        m_InvincibilityTimer -= Time.deltaTime;
     }
 
     public void EnemyPatroll()
