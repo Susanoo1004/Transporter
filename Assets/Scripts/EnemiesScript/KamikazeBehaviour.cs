@@ -93,15 +93,10 @@ public class KamikazeBehaviour : EnemyBehaviour
            {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
-                    PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
-                    if (playerBehaviour.PlayerLife < m_EnemyDamage)
+                    if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
                     {
-                        playerBehaviour.PlayerLife = 0;
-                        break;
+                        player.TakeDamage(m_EnemyDamage);
                     }
-
-                    playerBehaviour.PlayerLife -= m_EnemyDamage;
-                    m_Target.GetComponent<Animator>().Play("Hurt");
                     break;
                 }
            }
