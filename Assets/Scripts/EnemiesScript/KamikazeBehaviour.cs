@@ -114,6 +114,8 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.speed = 6.0f;
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
+
+
             // ms : son detection 
 
         }
