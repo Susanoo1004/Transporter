@@ -48,6 +48,7 @@ public class MagneticObject : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemies") && other.gameObject.TryGetComponent(out EnemyBehaviour enemyBehaviour))
         {
+            Debug.Log("Beeeeeeeeeeeeeeh");
             enemyBehaviour.TakeDamage(m_Damage);
         }
     }
