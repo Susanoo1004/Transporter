@@ -56,7 +56,16 @@ public class LaserBehaviour : MonoBehaviour
                 m_HitCD = m_HitFrequency;
             }
         }
-        
+
+        if (IsGuardingByEnemy) 
+        {
+            // ms : son, laser allume en loop
+        }
+        else
+        {
+            // ms : son, laser allume 3 sec
+        }
+
     }
 
     private void OnDrawGizmos()
