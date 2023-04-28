@@ -18,9 +18,9 @@ public class CameraBehaviour : MonoBehaviour
     void Update()
     {
         Vector3 cameraPos = m_Target.position;
-        cameraPos.y += 2.0f;
+        cameraPos.y += 7.0f;
         cameraPos.z -= 20.0f;
         transform.position = cameraPos;
-        transform.LookAt(m_Target.position);
+        transform.LookAt(m_Target.position + Vector3.up * 6.0f);
     }
 }
