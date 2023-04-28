@@ -156,6 +156,8 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
 
+
+
         m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);

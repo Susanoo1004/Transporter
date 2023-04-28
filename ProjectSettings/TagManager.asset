@@ -3,8 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Ground
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -12,16 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - Player
-  - Enemies
-  - Magnet
-<<<<<<< HEAD
-  - Shield
   - 
-=======
-  - Enemy Projectiles
-  - Player Projectiles
->>>>>>> fe159857019ffd4b5285537ab9fa7e9459035284
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
