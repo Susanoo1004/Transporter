@@ -31,8 +31,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_Accelerate;
 
-    [SerializeField]
-    private float m_MaxSpeed;
+    public float MaxSpeed;
 
     [SerializeField]
     private float m_DashPower;
@@ -53,7 +52,8 @@ public class PlayerBehaviour : MonoBehaviour
     private bool m_IsJumping = false;
 
 
-    private Vector3 m_Move = new();
+    [HideInInspector] 
+    public Vector3 Move = new();
     private Vector3 m_LastMove = Vector3.right;
 
     [HideInInspector]
@@ -161,6 +161,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
@@ -198,8 +199,8 @@ public class PlayerBehaviour : MonoBehaviour
         // else
         else
         {
-            if (m_Move != Vector3.zero)
-                m_LastMove = m_Move;
+            if (Move != Vector3.zero)
+                m_LastMove = Move;
             Quaternion ToRotation = Quaternion.LookRotation(m_LastMove, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
         }
@@ -280,10 +281,10 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
-            if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
+            if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
-                if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                    m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
+                if ((!m_IsStuckLeft && Mathf.Sign(Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(Move.x) == 1) || IsGrounded)
+                    m_Rigidbody.AddForce(Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
             }
         }
         else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
@@ -307,7 +308,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
             else
             {
-                if (m_Move == Vector3.zero)
+                if (Move == Vector3.zero)
                     m_Rigidbody.AddForce(new Vector3(-m_Rigidbody.velocity.x / 5.0f, 0.0f, 0.0f), ForceMode.VelocityChange);
             }
 
@@ -326,7 +327,7 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnMovement(InputAction.CallbackContext _context)
     {
         Vector2 move = _context.ReadValue<Vector2>();
-        m_Move = new Vector3(move.x, 0, 0);
+        Move = new Vector3(move.x, 0, 0);
     }
 
     public void OnJump(InputAction.CallbackContext _context)

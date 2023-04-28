@@ -32,7 +32,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected bool IsPatrolling = true;
 
-
     int index;
 
     private void Awake()
