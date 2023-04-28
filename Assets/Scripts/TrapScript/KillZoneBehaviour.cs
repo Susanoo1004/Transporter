@@ -8,7 +8,7 @@ public class KillZoneBehaviour : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            other.GetComponent<PlayerBehaviour>().PlayerLife = 0;
+            other.transform.position = Vector3.zero;
 
 
             // ms : son barbele 

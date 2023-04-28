@@ -59,10 +59,6 @@ public class PlayerBehaviour : MonoBehaviour
     [HideInInspector]
     public byte PlayerLife = 10;
 
-    // To move into UI
-    [SerializeField]
-    TMP_Text m_PlayerLifeText;
-
     private Animator m_Animator;
 
     private Rigidbody m_Rigidbody;
@@ -113,7 +109,6 @@ public class PlayerBehaviour : MonoBehaviour
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
-    private bool m_JustDashed;
     private bool m_BufferThrow;
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
@@ -152,7 +147,6 @@ public class PlayerBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_PlayerLifeText.text = "Player Life Point : ";
         m_ModelBaseLocalScale = m_PlayerModel.localScale;
         m_InvicibilityTimer = m_InvicibilityTime;
         m_ArmBaseLocalScale = m_Arm.localScale;
@@ -166,8 +160,6 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
         m_Arm.GetComponentInChildren<Animator>().SetBool("Jump", m_IsJumping);
-
-        m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
 
         {
             Vector3 direction = m_Magnet.position - m_Arm.position;
