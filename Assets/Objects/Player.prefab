@@ -118,11 +118,13 @@ MonoBehaviour:
   m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
   m_Accelerate: 20
-  m_MaxSpeed: 10
+  m_MaxSpeed: 0
   m_DashPower: 15
   m_DashDistance: 5
   m_DashTime: 0.4
+  DashTimer: 0
   m_JumpForce: 13
+  m_Move: {x: 0, y: 0, z: 0}
   PlayerLife: 10
   m_PlayerLifeText: {fileID: 0}
   m_HasTakenExplosion: 0
@@ -421,7 +423,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7146066286638838100}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: c2abd26001ba96d4ebee32c3768c025f, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 6670992961b0c3347842d6306f8d7a4a, type: 3}
   m_Controller: {fileID: 9100000, guid: f568f227c6247e747aff01ac75207b3c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
