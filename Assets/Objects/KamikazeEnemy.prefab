@@ -3228,11 +3228,12 @@ MonoBehaviour:
   m_DetonationRadius: 5
   m_JumpForce: 30
   m_ExplosionKnocknack: 250
-  m_KamikazeFtsp: {fileID: 1543923753164247896}
+  m_KamikazeAudioSource: {fileID: 0}
   m_KamikazeFtspList:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  m_KamikazeDetectionSound: {fileID: 1543923753164247896}
 --- !u!195 &6626422040191249832
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3327,8 +3328,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 6e6ec77271e3f4649b350a7451645054, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

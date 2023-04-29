@@ -6,6 +6,9 @@ public class BoxerBehaviour : EnemyBehaviour
     [SerializeField]
     private float m_AttackRange;
 
+    [SerializeField]
+    private AudioSource m_BoxerDetectionSound;
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -54,7 +57,7 @@ public class BoxerBehaviour : EnemyBehaviour
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
 
-            // ms : son detection
+            m_BoxerDetectionSound.Play(); // ms : son detection
 
         }
     }

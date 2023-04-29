@@ -29,6 +29,9 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private AudioClip[] m_KamikazeFtspList;
 
+    [SerializeField]
+    private AudioSource m_KamikazeDetectionSound;
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -125,7 +128,7 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
 
-
+            m_KamikazeDetectionSound.Play();
             // ms : son detection 
 
         }
