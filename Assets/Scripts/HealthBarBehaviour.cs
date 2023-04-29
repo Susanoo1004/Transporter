@@ -14,14 +14,14 @@ public class HealthBarBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_HealthBar.value = m_PlayerBehaviour.PlayerLife + 1;
-        m_HealthBar.maxValue = m_PlayerBehaviour.PlayerLife + 1;
+        m_HealthBar.value = m_PlayerBehaviour.PlayerLife;
+        m_HealthBar.maxValue = m_PlayerBehaviour.PlayerLife;
         m_HealthBar.minValue = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_HealthBar.value = m_PlayerBehaviour.PlayerLife + 1;
+        m_HealthBar.value = m_PlayerBehaviour.PlayerLife;
     }
 }

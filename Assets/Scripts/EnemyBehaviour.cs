@@ -86,7 +86,6 @@ public class EnemyBehaviour : MonoBehaviour
             if (m_HitCD > 0)
                 return;
 
-            Debug.Log("Hit");
             m_HitCD = m_HitFrequency;
         }
     }

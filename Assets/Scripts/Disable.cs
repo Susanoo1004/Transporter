@@ -60,7 +60,6 @@ public class Disable : MonoBehaviour
         else
         {
 
-
             int enemyDead = 0;
             for(int i = 0; i < m_EnemyGuardian.Length; i++) 
             {

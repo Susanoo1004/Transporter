@@ -72,6 +72,7 @@ public class MagnetBehaviour : MonoBehaviour
     [HideInInspector]
     public Vector3 Aim;
 
+    private Renderer m_Renderer;
 
     private bool HasMagnet { get { return transform.parent == m_Player.transform; } }
     public bool HasMagnetizedObject { get { return MagnetizedObject != null; } }
@@ -85,24 +86,24 @@ public class MagnetBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        m_Renderer = GetComponent<Renderer>();
     }
 
     private void OnValidate()
     {
         if (IsPositive)
-            GetComponent<Renderer>().material = m_PositiveMaterial;
+            m_Renderer.material = m_PositiveMaterial;
         else
-            GetComponent<Renderer>().material = m_NegativeMaterial;
+            m_Renderer.material = m_NegativeMaterial;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (IsPositive)
-            GetComponent<Renderer>().material = m_PositiveMaterial;
+            m_Renderer.material = m_PositiveMaterial;
         else
-            GetComponent<Renderer>().material = m_NegativeMaterial;
+            m_Renderer.material = m_NegativeMaterial;
     
         if (!IsPlayerMagnetized)
         {
