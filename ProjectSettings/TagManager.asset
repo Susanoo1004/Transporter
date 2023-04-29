@@ -15,8 +15,13 @@ TagManager:
   - Player
   - Enemies
   - Magnet
+<<<<<<< HEAD
   - Player Projectiles
   - Enemy Projectiles
+=======
+  - Enemy Projectiles
+  - Player Projectiles
+>>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
   - 
   - 
   - 

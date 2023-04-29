@@ -13,7 +13,14 @@ public class TurretBehaviour : MonoBehaviour
 
     private string m_OldActionMap;
 
+<<<<<<< HEAD
     private bool m_HasBeenTrap;
+=======
+    private void OnValidate()
+    {
+         
+    }
+>>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
 
     // Start is called before the first frame update
     void Start()
@@ -24,17 +31,26 @@ public class TurretBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
         if (m_HasBeenTrap)
             if (Vector3.Distance(transform.position, m_Target.position) > 2.0f)
             {
                 m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap(m_OldActionMap);
                 m_HasBeenTrap = false;
             }
+=======
+
+>>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
     }
 
     private void OnTriggerStay(Collider other)
     {
+<<<<<<< HEAD
         if (!other.TryGetComponent(out PlayerBehaviour player)  && !other.TryGetComponent(out MagneticObject magneticObject))
+=======
+        // other.GetComponent<Rigidbody>().velocity = (transform.position - other.transform.position).normalized * m_AttractionSpeed;
+        if (!other.TryGetComponent(out PlayerBehaviour player)) // ou magnetic object
+>>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
             return;
 
         if (other.GetComponent<PlayerBehaviour>().IsGrounded)
@@ -42,6 +58,7 @@ public class TurretBehaviour : MonoBehaviour
         else
             other.GetComponent<Rigidbody>().AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed, ForceMode.Acceleration);
     }
+<<<<<<< HEAD
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -54,4 +71,6 @@ public class TurretBehaviour : MonoBehaviour
         }
         
     }
+=======
+>>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
 }

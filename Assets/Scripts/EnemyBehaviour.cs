@@ -48,6 +48,10 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
+=======
+        m_InvincibilityTimer -= Time.deltaTime;
+>>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
     }
 
     protected virtual void MyUpdate()
