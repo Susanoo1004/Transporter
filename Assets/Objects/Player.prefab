@@ -118,13 +118,13 @@ MonoBehaviour:
   m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
   m_Accelerate: 20
-  m_MaxSpeed: 0
+  MaxSpeed: 0
   m_DashPower: 15
   m_DashDistance: 5
   m_DashTime: 0.4
   DashTimer: 0
   m_JumpForce: 13
-  m_Move: {x: 0, y: 0, z: 0}
+  Move: {x: 0, y: 0, z: 0}
   PlayerLife: 10
   m_PlayerLifeText: {fileID: 0}
   m_HasTakenExplosion: 0
