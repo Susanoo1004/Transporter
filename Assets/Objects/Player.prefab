@@ -126,7 +126,6 @@ MonoBehaviour:
   m_JumpForce: 13
   Move: {x: 0, y: 0, z: 0}
   PlayerLife: 10
-  m_PlayerLifeText: {fileID: 0}
   m_HasTakenExplosion: 0
   m_Magnet: {fileID: 7146066286746599838}
   m_MagnetOnArmTransform: {fileID: 1442298542}
@@ -140,6 +139,7 @@ MonoBehaviour:
   m_PullTime: 0.25
   m_PlayerToMagnetDistance: 2
   SurfaceNormal: {x: 0, y: 0, z: 0}
+  CurrentCheckpoint: {x: 0, y: 0, z: 0}
 --- !u!114 &7146066286638838102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,6 +556,7 @@ MonoBehaviour:
   MagnetizedObject: {fileID: 0}
   LastPosition: {x: 0, y: 0, z: 0}
   Aim: {x: 0, y: 0, z: 0}
+  m_Renderer: {fileID: 7146066286746599813}
 --- !u!135 &7146066286746599811
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -754,7 +755,7 @@ Animator:
   m_GameObject: {fileID: 4817586676688387175}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: cc3e47879c3d2b846b9b6c58f9ca17f1, type: 3}
-  m_Controller: {fileID: 9100000, guid: 548462055b202ac4785e7bbd806aa4fd, type: 2}
+  m_Controller: {fileID: 9100000, guid: efb57696bb0d8034686571a69f614942, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

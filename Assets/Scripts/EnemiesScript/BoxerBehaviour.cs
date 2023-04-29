@@ -39,7 +39,6 @@ public class BoxerBehaviour : EnemyBehaviour
             if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
             {
                 player.TakeDamage(m_EnemyDamage);
-                Debug.Log("Beeeeeeeeh");
                 m_HitCD = m_HitFrequency;
                 m_Animator.Play("Hit");
             }
@@ -54,7 +53,6 @@ public class BoxerBehaviour : EnemyBehaviour
             m_NavAgent.speed = m_NavAgent.speed * 2;
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
-
 
             // ms : son detection
 
