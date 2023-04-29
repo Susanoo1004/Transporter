@@ -23,6 +23,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_Arm;
 
+    [SerializeField]
+    private float m_GravityMultiplier;
+
     // Arm
     private float m_ResetArmPos = 0.75f;
     private bool m_ResetArm;
@@ -337,7 +340,7 @@ public class PlayerBehaviour : MonoBehaviour
         }   
         
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += Vector3.down/2;
+            m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
