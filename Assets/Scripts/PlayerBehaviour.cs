@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -59,13 +60,10 @@ public class PlayerBehaviour : MonoBehaviour
     [HideInInspector]
     public byte PlayerLife = 10;
 
-    // To move into UI
-    [SerializeField]
-    TMP_Text m_PlayerLifeText;
-
     private Animator m_Animator;
-
     private Rigidbody m_Rigidbody;
+    private Animator m_ArmAnimator;
+    private PlayerInput m_PlayerInput;
 
     private bool m_IsStuckLeft;
     private bool m_IsStuckRight;
@@ -113,8 +111,13 @@ public class PlayerBehaviour : MonoBehaviour
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
-    private bool m_JustDashed;
     private bool m_BufferThrow;
+
+    [HideInInspector]
+    public Vector3 CurrentCheckpoint = Vector3.zero;
+
+    private float m_DeathTimer;
+    private float m_DeathTime = 2.0f;
 
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
@@ -147,27 +150,26 @@ public class PlayerBehaviour : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<BoxCollider>();
         m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
+        m_ArmAnimator = m_Arm.GetComponentInChildren<Animator>();
+        m_PlayerInput = GetComponent<PlayerInput>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        m_PlayerLifeText.text = "Player Life Point : ";
         m_ModelBaseLocalScale = m_PlayerModel.localScale;
         m_InvicibilityTimer = m_InvicibilityTime;
         m_ArmBaseLocalScale = m_Arm.localScale;
+        m_DeathTimer = m_DeathTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-
         m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
-        m_Arm.GetComponentInChildren<Animator>().SetBool("Jump", m_IsJumping);
-
-        m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
+        m_ArmAnimator.SetBool("Jump", m_IsJumping);
 
         {
             Vector3 direction = m_Magnet.position - m_Arm.position;
@@ -257,7 +259,21 @@ public class PlayerBehaviour : MonoBehaviour
         if (PlayerLife == 0)
         {
             m_Animator.Play("Dead");
-            m_Animator.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
+            m_Arm.gameObject.SetActive(false);
+            m_PlayerInput.SwitchCurrentActionMap("Menu");
+
+            m_DeathTimer -= Time.deltaTime;
+
+            if (m_DeathTimer > 0)
+                return;
+
+            m_DeathTimer = m_DeathTime;
+            transform.position = CurrentCheckpoint;
+            m_PlayerInput.SwitchCurrentActionMap("Gameplay");
+            m_Animator.Play("Movement");
+            PlayerLife = 10;
+            m_Arm.gameObject.SetActive(true);
+
         }
 
         if (m_ResetArm)
@@ -405,7 +421,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnAim(InputAction.CallbackContext _context)
     {
-        if (GetComponent<PlayerInput>().defaultActionMap == "Keyboard")
+        if (m_PlayerInput.defaultActionMap == "Keyboard")
             m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;

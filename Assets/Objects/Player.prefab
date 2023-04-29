@@ -126,7 +126,6 @@ MonoBehaviour:
   m_JumpForce: 13
   Move: {x: 0, y: 0, z: 0}
   PlayerLife: 10
-  m_PlayerLifeText: {fileID: 0}
   m_HasTakenExplosion: 0
   m_Magnet: {fileID: 7146066286746599838}
   m_MagnetOnArmTransform: {fileID: 1442298542}
@@ -140,6 +139,7 @@ MonoBehaviour:
   m_PullTime: 0.25
   m_PlayerToMagnetDistance: 2
   SurfaceNormal: {x: 0, y: 0, z: 0}
+  CurrentCheckpoint: {x: 0, y: 0, z: 0}
 --- !u!114 &7146066286638838102
 MonoBehaviour:
   m_ObjectHideFlags: 0
