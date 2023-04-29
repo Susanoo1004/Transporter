@@ -67,7 +67,7 @@ public class MagnetBehaviour : MonoBehaviour
     public Transform MagnetizedObject;
     private Vector3 m_LastMagnetizedObjectPosition;
 
-    private Vector3 m_LastPosition;
+    public Vector3 LastPosition;
 
     [HideInInspector]
     public Vector3 Aim;
@@ -118,7 +118,7 @@ public class MagnetBehaviour : MonoBehaviour
             else if (HoverTimer > 0)
             {
                 HoverTimer -= Time.deltaTime;
-                m_LastPosition = transform.position;
+                LastPosition = transform.position;
             }
         }
 
@@ -131,7 +131,7 @@ public class MagnetBehaviour : MonoBehaviour
         if (TravelTimer > 0)
         {
             if (!IsThrowing) // Coming Back
-                transform.position = Vector3.Lerp(m_LastPosition, MagnetDefaultPositions, 1-TravelTimer/PullTime);
+                transform.position = Vector3.Lerp(LastPosition, MagnetDefaultPositions, 1-TravelTimer/PullTime);
             else // Throwing
                 m_Rigidbody.velocity = Aim * ThrowForce + PlayerThrowForce;
         }
@@ -226,6 +226,8 @@ public class MagnetBehaviour : MonoBehaviour
                 {
                     if (other.TryGetComponent(out Rigidbody rigidbody))
                         rigidbody.AddForce(Aim * RepulsiveForce, ForceMode.VelocityChange);
+                    
+                    other.gameObject.layer = LayerMask.NameToLayer("Player Projectiles");
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
                       || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE
@@ -233,6 +235,7 @@ public class MagnetBehaviour : MonoBehaviour
                 {
                     AttractionTimer = AttractionTime;
                     MagnetizedObject = magneticObject.transform;
+                    other.gameObject.layer = LayerMask.NameToLayer("Player Projectiles");
 
                     if (other.TryGetComponent(out Rigidbody rigidbody))
                         rigidbody.isKinematic = true;
@@ -252,7 +255,7 @@ public class MagnetBehaviour : MonoBehaviour
                     {
                         if (Vector3.Angle(direction, rigidbody.velocity) > 90)
                             rigidbody.velocity = Vector3.zero;
-                        rigidbody.AddForce(direction * RepulsiveForce, ForceMode.VelocityChange);
+                        rigidbody.AddForce(direction * RepulsiveForce * 1.5f, ForceMode.VelocityChange);
                     }
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
