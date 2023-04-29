@@ -14,11 +14,7 @@ public class KillZoneBehaviour : MonoBehaviour
         {
             other.GetComponent<PlayerBehaviour>().PlayerLife = 0;
 
-<<<<<<< HEAD
-
-=======
             m_KillzoneWire.Play();
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
             // ms : son barbele 
 
         }
