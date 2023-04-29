@@ -72,6 +72,7 @@ public class MagnetBehaviour : MonoBehaviour
     [HideInInspector]
     public Vector3 Aim;
 
+    [SerializeField]
     private Renderer m_Renderer;
 
     private bool HasMagnet { get { return transform.parent == m_Player.transform; } }
@@ -79,6 +80,7 @@ public class MagnetBehaviour : MonoBehaviour
 
     private void Awake()
     {
+        m_Renderer = GetComponent<Renderer>();
         m_Rigidbody = GetComponent<Rigidbody>();
         MagnetizedObject = null;
     }
@@ -86,7 +88,6 @@ public class MagnetBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_Renderer = GetComponent<Renderer>();
     }
 
     private void OnValidate()
