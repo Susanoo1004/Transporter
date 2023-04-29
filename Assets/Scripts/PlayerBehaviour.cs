@@ -41,12 +41,8 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DashDistance;
     [SerializeField]
     private float m_DashTime;
-<<<<<<< HEAD
     [HideInInspector]
     public float DashTimer;
-=======
-    private float m_DashTimer;
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
     private bool m_IsDashing = false;
     private bool m_CanDash = true;
     private Vector3 m_PositionBeforeDash;
@@ -57,7 +53,7 @@ public class PlayerBehaviour : MonoBehaviour
     private bool m_IsJumping = false;
 
 
-    [HideInInspector] 
+    [HideInInspector]
     public Vector3 Move = new();
     private Vector3 m_LastMove = Vector3.right;
 
@@ -110,12 +106,11 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_PlayerToMagnetDistance;
 
-    private Vector2 m_Aim = new Vector2(1,0);
-    
+    private Vector2 m_Aim = new Vector2(1, 0);
+
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
-<<<<<<< HEAD
     private bool m_BufferThrow;
 
     [HideInInspector]
@@ -124,11 +119,6 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DeathTimer;
     private float m_DeathTime = 2.0f;
 
-=======
-    private bool m_JustDashed;
-    private bool m_BufferThrow;
-
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
     public bool IsGrounded
@@ -167,10 +157,6 @@ public class PlayerBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-<<<<<<< HEAD
-=======
-        m_PlayerLifeText.text = "Player Life Point : ";
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
         m_ModelBaseLocalScale = m_PlayerModel.localScale;
         m_InvicibilityTimer = m_InvicibilityTime;
         m_ArmBaseLocalScale = m_Arm.localScale;
@@ -230,13 +216,8 @@ public class PlayerBehaviour : MonoBehaviour
         if (HasMagnet)
             m_Magnet.position = m_MagnetBehaviour.MagnetDefaultPositions;
 
-<<<<<<< HEAD
         if (DashTimer > 0)
             DashTimer -= Time.deltaTime;
-=======
-        if (m_DashTimer > 0)
-            m_DashTimer -= Time.deltaTime;
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
 
         if (m_InvicibilityTimer > 0)
             m_InvicibilityTimer -= Time.deltaTime;
@@ -260,17 +241,10 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
-<<<<<<< HEAD
         if ((IsGrounded || m_MagnetBehaviour.IsPlayerAttached) && HasMagnet && DashTimer <= 0)
             m_CanDash = true;
 
         if (m_BufferThrow && m_MagnetCooldownTimer <= 0 && DashTimer <= 0)
-=======
-        if ((IsGrounded || m_MagnetBehaviour.IsPlayerAttached) && HasMagnet && m_DashTimer <= 0)
-            m_CanDash = true;
-
-        if (m_BufferThrow && m_MagnetCooldownTimer <= 0 && m_DashTimer <= 0)
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
             MagnetThrow();
 
         if (transform.rotation.y > 0)
@@ -339,11 +313,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_IsStuckRight = false;
         m_IsStuckLeft = false;
 
-<<<<<<< HEAD
         if (m_IsDashing || DashTimer > 0)
-=======
-        if (m_IsDashing || m_DashTimer > 0)
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
             Dash();
 
         if (IsGrounded)
@@ -359,25 +329,21 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             m_Animator.SetBool("Landed", true);
- 
+
         }
         else
         {
             m_Animator.SetBool("Landed", false);
-        }   
-        
+        }
+
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += Vector3.down/2;
+            m_Rigidbody.velocity += Vector3.down / 2;
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
     {
         Vector2 move = _context.ReadValue<Vector2>();
-<<<<<<< HEAD
         Move = new Vector3(move.x, 0, 0);
-=======
-        m_Move = new Vector3(move.x, 0, 0);
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
     }
 
     public void OnJump(InputAction.CallbackContext _context)
@@ -391,7 +357,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_Arm.position += Vector3.down / 3.5f;
         }
         else
-        { 
+        {
             m_IsJumping = false;
         }
     }
@@ -436,7 +402,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started && HasMagnet)
         {
             m_MagnetBehaviour.IsPositive = !m_MagnetBehaviour.IsPositive;
-            
+
             if (m_MagnetBehaviour.IsPlayerAttached)
                 DettachPlayer();
 
@@ -460,14 +426,10 @@ public class PlayerBehaviour : MonoBehaviour
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
-    
+
     public void Dash()
     {
-<<<<<<< HEAD
         if (DashTimer > 0)
-=======
-        if (m_DashTimer > 0)
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
         {
             if (!TryGetComponent(out BoxCollider boxCollider))
                 return;
@@ -478,16 +440,11 @@ public class PlayerBehaviour : MonoBehaviour
 
             if (Physics.CapsuleCast(m_Magnet.position + halfHeight, transform.position - halfHeight, boxCollider.size.z / 2, direction, distance.magnitude, layer))
             {
-<<<<<<< HEAD
                 DashTimer = 0;
-=======
-                m_DashTimer = 0;
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
                 return;
             }
 
             m_MagnetCooldownTimer = m_MagnetCooldownTime;
-<<<<<<< HEAD
             transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - DashTimer / m_DashTime);
             m_Rigidbody.velocity = Vector3.zero;
 
@@ -495,24 +452,14 @@ public class PlayerBehaviour : MonoBehaviour
             // ms : son Dash
 
 
-            
+
             return;
-=======
-            transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - m_DashTimer / m_DashTime);
-            m_Rigidbody.velocity = Vector3.zero;
-            return;
-            // ms : son Dash
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
         }
 
         else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
         {
             m_CanDash = false;
-<<<<<<< HEAD
             DashTimer = m_DashTime;
-=======
-            m_DashTimer = m_DashTime;
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
             m_MagnetBehaviour.HoverTimer = m_DashTime;
             m_MagnetBehaviour.TravelTimer = 0;
             m_PositionBeforeDash = transform.position;
@@ -589,7 +536,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.MagnetizedObject.position = new Vector3(m_MagnetBehaviour.MagnetizedObject.position.x,
                                                                       m_MagnetBehaviour.MagnetizedObject.position.y,
                                                                       0);
-            m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0,0,0,0);
+            m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {

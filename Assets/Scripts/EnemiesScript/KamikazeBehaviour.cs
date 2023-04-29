@@ -9,10 +9,6 @@ public class KamikazeBehaviour : EnemyBehaviour
 
     private bool HasJump;
 
-   
-
-
-
     [Header("Explosion")]
     [SerializeField]
     private float m_DetonationRadius;
@@ -22,12 +18,6 @@ public class KamikazeBehaviour : EnemyBehaviour
 
     [SerializeField]
     private float m_ExplosionKnocknack;
-
-    [SerializeField]
-    private AudioSource m_KamikazeAudioSource;
-
-    [SerializeField]
-    private AudioClip[] m_KamikazeFtspList;
 
     private void Awake()
     {
@@ -67,7 +57,7 @@ public class KamikazeBehaviour : EnemyBehaviour
         else
         {
             m_Animator.Play("Explode");
-            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down);
+            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up / 2) - (transform.position + Vector3.down);
             m_Animator.SetFloat("SpeedX", 1);
 
             m_Animator.applyRootMotion = true;
@@ -98,9 +88,9 @@ public class KamikazeBehaviour : EnemyBehaviour
             if (vecBetweenTargetandKamikaze.magnitude >= 2.8f && m_HitCD > 0.0f)
                 return;
 
-           Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
-           foreach (Collider collider in colliders)
-           {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
+            foreach (Collider collider in colliders)
+            {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
                     if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
@@ -109,10 +99,10 @@ public class KamikazeBehaviour : EnemyBehaviour
                     }
                     break;
                 }
-           }
-           // ms : son explosion
+            }
+            // ms : son explosion
 
-           Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -124,11 +114,8 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.speed = 6.0f;
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
             // ms : son detection 
 
         }
@@ -137,12 +124,5 @@ public class KamikazeBehaviour : EnemyBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
-    }
-
-
-    private void PlayWalk()
-    {
-        int index = Random.Range(0, m_KamikazeFtspList.Length - 1);
-        m_KamikazeAudioSource.PlayOneShot(m_KamikazeFtspList[index]);
     }
 }
