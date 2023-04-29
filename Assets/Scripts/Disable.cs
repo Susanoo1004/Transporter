@@ -52,7 +52,9 @@ public class Disable : MonoBehaviour
 
                 m_LaserToDisable.enabled = true;
 
+
                 m_DisableTimer = m_DisableFrequency;
+
 
             }
 
