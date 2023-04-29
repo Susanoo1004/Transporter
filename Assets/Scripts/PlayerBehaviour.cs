@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using TMPro;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -14,52 +11,62 @@ public class PlayerBehaviour : MonoBehaviour
     [Header("Body")]
     [SerializeField]
     private Transform m_Feet;
+    [SerializeField]
+    private Transform m_PlayerModel;
+    private Vector3 m_ModelBaseLocalScale;
+
+    [SerializeField]
+    private float m_InvicibilityTime;
+    [HideInInspector]
+    public float m_InvicibilityTimer;
+
+    [SerializeField]
+    private Transform m_Arm;
+
+    // Arm
+    private float m_ResetArmPos = 0.75f;
+    private bool m_ResetArm;
+    private Vector3 m_ArmBaseLocalScale;
 
     [Header("Movement")]
     [SerializeField]
     private float m_Accelerate;
 
-    [SerializeField]
-    private float m_MaxSpeed;
+    public float MaxSpeed;
 
     [SerializeField]
     private float m_DashPower;
 
     [SerializeField]
-    private float m_DashCooldownDuration;
-    private float m_DashCooldown;
+    private float m_DashDistance;
+    [SerializeField]
+    private float m_DashTime;
+    [HideInInspector]
+    public float DashTimer;
+    private bool m_IsDashing = false;
+    private bool m_CanDash = true;
+    private Vector3 m_PositionBeforeDash;
 
     [SerializeField]
-    private float m_MinJumpForce;
-
-    [SerializeField]
-    private float m_MaxJumpForce;
-
-    [SerializeField]
-    private float m_JumpTime;
-    private float m_JumpTimer;
+    private float m_JumpForce;
 
     private bool m_IsJumping = false;
-    private bool m_CanDoubleJump;
 
-    private bool m_IsDashing = false;
 
-    private Vector3 m_Move = new();
+    [HideInInspector] 
+    public Vector3 Move = new();
     private Vector3 m_LastMove = Vector3.right;
 
     [HideInInspector]
     public byte PlayerLife = 10;
 
-    // To move into UI
-    [SerializeField]
-    TMP_Text m_PlayerLifeText;
-
     private Animator m_Animator;
-
     private Rigidbody m_Rigidbody;
+    private Animator m_ArmAnimator;
+    private PlayerInput m_PlayerInput;
 
-    public bool m_IsStuckLeft;
-    public bool m_IsStuckRight;
+    private bool m_IsStuckLeft;
+    private bool m_IsStuckRight;
 
     [HideInInspector]
     public bool m_HasTakenExplosion;
@@ -67,7 +74,13 @@ public class PlayerBehaviour : MonoBehaviour
     [Header("Magnet")]
     [SerializeField]
     private Transform m_Magnet;
+    [SerializeField]
+    private Transform m_MagnetOnArmTransform;
     private MagnetBehaviour m_MagnetBehaviour;
+
+    [SerializeField]
+    private float m_MagnetCooldownTime;
+    private float m_MagnetCooldownTimer;
 
     [SerializeField]
     private float m_HoverTime;
@@ -90,14 +103,23 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_PullTime;
 
-    private Vector2 m_Aim;
+    [SerializeField]
+    private float m_PlayerToMagnetDistance;
 
+    private Vector2 m_Aim = new Vector2(1,0);
+    
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
-    private bool HasMagnet { get { return m_Magnet.parent == transform; } }
+    private bool m_BufferThrow;
 
-    public float m_AnimatorCancelTimer = 0.1f;
+    [HideInInspector]
+    public Vector3 CurrentCheckpoint = Vector3.zero;
+
+    private float m_DeathTimer;
+    private float m_DeathTime = 2.0f;
+
+    private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
     public bool IsGrounded
     {
@@ -113,9 +135,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         get
         {
-            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.05f);
-            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.05f);
-            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.05f);
+            bool center = Physics.Raycast(m_Feet.transform.position, Vector3.down, out RaycastHit CenterHit, 0.025f);
+            bool left = Physics.Raycast(m_Feet.transform.position + new Vector3(-m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit LeftHit, 0.025f);
+            bool right = Physics.Raycast(m_Feet.transform.position + new Vector3(m_Collider.size.z / 2, 0, 0), Vector3.down, out RaycastHit RightHit, 0.025f);
 
             return center ? CenterHit.transform.gameObject : right ? RightHit.transform.gameObject : left ? LeftHit.transform.gameObject : null;
         }
@@ -128,22 +150,34 @@ public class PlayerBehaviour : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<BoxCollider>();
         m_MagnetBehaviour = m_Magnet.GetComponent<MagnetBehaviour>();
+        m_ArmAnimator = m_Arm.GetComponentInChildren<Animator>();
+        m_PlayerInput = GetComponent<PlayerInput>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        m_PlayerLifeText.text = "Player Life Point : ";
+        m_ModelBaseLocalScale = m_PlayerModel.localScale;
+        m_InvicibilityTimer = m_InvicibilityTime;
+        m_ArmBaseLocalScale = m_Arm.localScale;
+        m_DeathTimer = m_DeathTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x/2));
-        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y/2);
+        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
+        m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
+        m_ArmAnimator.SetBool("Jump", m_IsJumping);
 
-        m_PlayerLifeText.text = "Player Life Point : " + PlayerLife;
+        {
+            Vector3 direction = m_Magnet.position - m_Arm.position;
+
+            Quaternion ToRotation = Quaternion.LookRotation(direction, Vector3.Cross(direction, Vector3.forward));
+            m_Arm.rotation = ToRotation;
+            m_Arm.Rotate(transform.forward, 90);
+        }
 
         // Rotation in every case
         // Player magnetized towards MagneticObject
@@ -167,19 +201,30 @@ public class PlayerBehaviour : MonoBehaviour
         // else
         else
         {
-            if (m_Move != Vector3.zero)
-                m_LastMove = m_Move;
+            if (Move != Vector3.zero)
+                m_LastMove = Move;
             Quaternion ToRotation = Quaternion.LookRotation(m_LastMove, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080 * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
         }
 
 
+        if (m_Aim == Vector2.zero)
+            m_MagnetBehaviour.MagnetDefaultPositions = m_MagnetOnArmTransform.position;
+        else
+            m_MagnetBehaviour.MagnetDefaultPositions = new Vector3(m_Arm.position.x, m_Arm.position.y, 0) + (Vector3)m_Aim * m_PlayerToMagnetDistance;
 
-        if (m_DashCooldown > 0)
-            m_DashCooldown -= Time.deltaTime;
+        if (HasMagnet)
+            m_Magnet.position = m_MagnetBehaviour.MagnetDefaultPositions;
 
-        if (m_JumpTimer > 0)
-            m_JumpTimer -= Time.deltaTime;
+        if (DashTimer > 0)
+            DashTimer -= Time.deltaTime;
+
+        if (m_InvicibilityTimer > 0)
+            m_InvicibilityTimer -= Time.deltaTime;
+
+        if (m_MagnetCooldownTimer > 0)
+            m_MagnetCooldownTimer -= Time.deltaTime;
+
 
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !HasMagnet && m_MagnetBehaviour.HoverTimer <= 0)
         {
@@ -196,29 +241,66 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
+        if ((IsGrounded || m_MagnetBehaviour.IsPlayerAttached) && HasMagnet && DashTimer <= 0)
+            m_CanDash = true;
+
+        if (m_BufferThrow && m_MagnetCooldownTimer <= 0 && DashTimer <= 0)
+            MagnetThrow();
+
+        if (transform.rotation.y > 0)
+        {
+            m_Arm.localScale = m_ArmBaseLocalScale * -1;
+        }
+        else if (transform.rotation.y < 0)
+        {
+            m_Arm.localScale = m_ArmBaseLocalScale;
+        }
+
         if (PlayerLife == 0)
         {
-            Destroy(gameObject);
+            m_Animator.Play("Dead");
+            m_Arm.gameObject.SetActive(false);
+            m_PlayerInput.SwitchCurrentActionMap("Menu");
+
+            m_DeathTimer -= Time.deltaTime;
+
+            if (m_DeathTimer > 0)
+                return;
+
+            m_DeathTimer = m_DeathTime;
+            transform.position = CurrentCheckpoint;
+            m_PlayerInput.SwitchCurrentActionMap("Gameplay");
+            m_Animator.Play("Movement");
+            PlayerLife = 10;
+            m_Arm.gameObject.SetActive(true);
+
+        }
+
+        if (m_ResetArm)
+        {
+            m_ResetArmPos -= Time.deltaTime;
+            if (m_ResetArmPos <= 0)
+            {
+                m_Arm.position -= Vector3.down / 3.5f;
+                m_ResetArmPos = 0.75f;
+                m_ResetArm = false;
+            }
         }
     }
 
     private void FixedUpdate()
     {
+        if (m_InvicibilityTimer > 0)
+            m_PlayerModel.localScale = m_PlayerModel.localScale == Vector3.zero ? m_ModelBaseLocalScale : Vector3.zero;
+        else
+            m_PlayerModel.localScale = m_ModelBaseLocalScale;
 
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
-            if(m_HasTakenExplosion) 
+            if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
-                if(IsGrounded) 
-                    m_HasTakenExplosion = false;
-            }
-            else
-            {
-                if ((m_Rigidbody.velocity.x >= -m_MaxSpeed && m_Rigidbody.velocity.x <= m_MaxSpeed) || (Mathf.Sign(m_Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
-                {
-                    if ((!m_IsStuckLeft && Mathf.Sign(m_Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(m_Move.x) == 1) || IsGrounded)
-                        m_Rigidbody.AddForce(m_Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-                }
+                if ((!m_IsStuckLeft && Mathf.Sign(Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(Move.x) == 1) || IsGrounded)
+                    m_Rigidbody.AddForce(Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
             }
         }
         else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
@@ -226,99 +308,93 @@ public class PlayerBehaviour : MonoBehaviour
             if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider) && transform.TryGetComponent(out BoxCollider boxCollider))
                 transform.position = collider.ClosestPointOnBounds(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
             m_Rigidbody.velocity = Vector3.zero;
-            /*
-            if (m_MagnetBehaviour.PlayerAttachedObject.TryGetComponent(out Collider collider))
-                transform.position = collider.ClosestPoint(transform.position) + m_MagnetBehaviour.GetPlayerAttachedObjectNormal * boxCollider.size.y / 2;
-            */
-
-            /*  MOUVEMENT
-            Vector3 direction = Vector3.Cross(m_MagnetBehaviour.GetPlayerAttachedObjectNormal, Vector3.forward).normalized;
-            m_Rigidbody.velocity = direction * m_Move.magnitude * m_MaxSpeed * 0.5f * Time.fixedDeltaTime;
-            */
         }
 
         m_IsStuckRight = false;
         m_IsStuckLeft = false;
 
-        if (m_IsDashing)
+        if (m_IsDashing || DashTimer > 0)
             Dash();
-
-        if (m_IsJumping)
-            Jump();
 
         if (IsGrounded)
         {
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
+            {
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
-
-            m_CanDoubleJump = true;
+            }
+            else
+            {
+                if (Move == Vector3.zero)
+                    m_Rigidbody.AddForce(new Vector3(-m_Rigidbody.velocity.x / 5.0f, 0.0f, 0.0f), ForceMode.VelocityChange);
+            }
 
             m_Animator.SetBool("Landed", true);
+ 
         }
         else
         {
             m_Animator.SetBool("Landed", false);
-        }
+        }   
+        
+        if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
+            m_Rigidbody.velocity += Vector3.down/2;
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
     {
         Vector2 move = _context.ReadValue<Vector2>();
-        m_Move = new Vector3(move.x, 0, 0);
-    }
-
-    public void OnDash(InputAction.CallbackContext _context)
-    {
-        if (_context.ReadValueAsButton() == true && m_DashCooldown <= 0)
-        {
-            m_IsDashing = true;
-            m_DashCooldown = m_DashCooldownDuration;
-        }
+        Move = new Vector3(move.x, 0, 0);
     }
 
     public void OnJump(InputAction.CallbackContext _context)
     {
-        if (_context.ReadValueAsButton() == true && m_JumpTimer > 0)
-            m_IsJumping = true;
-        else
-            m_IsJumping = false;
-
-        if (_context.started && (IsGrounded == true || m_CanDoubleJump == true))
+        if (_context.started && IsGrounded == true)
         {
-            if (!IsGrounded)
-            {
-                Vector3 velocity = m_Rigidbody.velocity;
-                velocity.y = 0;
-                m_Rigidbody.velocity = velocity;
-                m_CanDoubleJump = false;
-            }
-
-            m_Rigidbody.AddForce(Vector3.up * m_MinJumpForce, ForceMode.VelocityChange);
-            m_JumpTimer = m_JumpTime;
+            m_IsJumping = true;
+            m_ResetArm = true;
+            m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
+            m_Animator.Play("Jump");
+            m_Arm.position += Vector3.down / 3.5f;
         }
-
+        else
+        { 
+            m_IsJumping = false;
+        }
     }
 
     public void OnMagnetThrow(InputAction.CallbackContext _context)
     {
         if (_context.started)
         {
-            if (HasMagnet)
-            {
-                if (m_MagnetBehaviour.IsPlayerAttached)
-                    DettachPlayer();
-
-
-                if (m_MagnetBehaviour.HasMagnetizedObject)
-                    ThrowMagnetizedObject();
-                else
-                    SetThrowProperties();
-            }
-            else if (m_MagnetBehaviour.TravelTimer <= 0)
-            {
-                SetPullProperties();
-            }
+            m_BufferThrow = true;
+            m_IsDashing = true;
         }
+        if (_context.canceled)
+        {
+            m_BufferThrow = false;
+            m_IsDashing = false;
+        }
+    }
+
+    private void MagnetThrow()
+    {
+        if (HasMagnet)
+        {
+            if (m_MagnetBehaviour.IsPlayerAttached)
+                DettachPlayer();
+
+            if (m_MagnetBehaviour.HasMagnetizedObject)
+                ThrowMagnetizedObject();
+            else
+                SetThrowProperties();
+        }
+        else if (m_MagnetBehaviour.TravelTimer <= 0)
+        {
+            SetPullProperties();
+        }
+
+        m_MagnetCooldownTimer = m_MagnetCooldownTime;
+        m_Magnet.position = new Vector3(m_Magnet.position.x, m_Magnet.position.y, 0);
     }
 
     public void OnChangePolarity(InputAction.CallbackContext _context)
@@ -334,28 +410,61 @@ public class PlayerBehaviour : MonoBehaviour
                 DropMagnetizedObject();
 
             m_MagnetBehaviour.IgnoreObject = null;
+
+
+            //ms : son changement polarity
+
+
+
         }
     }
 
     public void OnAim(InputAction.CallbackContext _context)
     {
-        if (GetComponent<PlayerInput>().defaultActionMap == "Keyboard")
+        if (m_PlayerInput.defaultActionMap == "Keyboard")
             m_Aim = (_context.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
-
-    public void Jump()
-    {
-        m_Animator.Play("Jump");
-        m_Rigidbody.AddForce(Vector3.up * m_MaxJumpForce * 3f * (m_JumpTimer / (m_JumpTime * 1.2f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
-    }
     
     public void Dash()
     {
-        m_Rigidbody.velocity = Vector3.zero;
-        m_Rigidbody.AddForce(m_LastMove * m_DashPower, ForceMode.VelocityChange);
-        m_IsDashing = false;
+        if (DashTimer > 0)
+        {
+            if (!TryGetComponent(out BoxCollider boxCollider))
+                return;
+            Vector3 distance = m_Magnet.position - transform.position;
+            Vector3 direction = distance.normalized;
+            Vector3 halfHeight = Vector3.up * boxCollider.size.y / 2 * 0.9f;
+            int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
+
+            if (Physics.CapsuleCast(m_Magnet.position + halfHeight, transform.position - halfHeight, boxCollider.size.z / 2, direction, distance.magnitude, layer))
+            {
+                DashTimer = 0;
+                return;
+            }
+
+            m_MagnetCooldownTimer = m_MagnetCooldownTime;
+            transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - DashTimer / m_DashTime);
+            m_Rigidbody.velocity = Vector3.zero;
+
+
+            // ms : son Dash
+
+
+            
+            return;
+        }
+
+        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
+        {
+            m_CanDash = false;
+            DashTimer = m_DashTime;
+            m_MagnetBehaviour.HoverTimer = m_DashTime;
+            m_MagnetBehaviour.TravelTimer = 0;
+            m_PositionBeforeDash = transform.position;
+        }
+
     }
 
     private void OnCollisionStay(Collision collision)
@@ -374,13 +483,12 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void SetThrowProperties()
     {
-        m_Magnet.transform.localPosition = new Vector3(0f, -0.2f, 0f);
-        m_Magnet.transform.rotation = new Quaternion(0, 0, 0, 0);
         m_Magnet.SetParent(null, true);
+        m_Magnet.transform.rotation = new Quaternion(0, 0, 0, 0);
         m_Magnet.GetComponent<BoxCollider>().enabled = true;
         m_Magnet.GetComponent<SphereCollider>().enabled = true;
         m_Magnet.GetComponent<Rigidbody>().isKinematic = false;
-        m_Magnet.GetComponent<Rigidbody>().velocity = m_Rigidbody.velocity;
+        //m_Magnet.GetComponent<Rigidbody>().velocity = m_Rigidbody.velocity;
 
         m_MagnetBehaviour.Aim = new Vector3(m_Aim.x, m_Aim.y, 0);
         m_MagnetBehaviour.TravelTimer = m_ThrowTime;
@@ -389,6 +497,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.PlayerAttractionSpeed = m_PlayerAttractionSpeed;
         m_MagnetBehaviour.IsThrowing = true;
         m_MagnetBehaviour.ThrowForce = m_ThrowForce;
+        m_MagnetBehaviour.PlayerThrowForce = m_Rigidbody.velocity;
         m_MagnetBehaviour.RepulsiveForce = m_RepulsiveForce;
     }
 
@@ -403,13 +512,14 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.IsThrowing = false;
         m_MagnetBehaviour.HoverTimer = 0;
         m_MagnetBehaviour.IgnoreObject = null;
+        m_MagnetBehaviour.LastPosition = m_Magnet.position;
     }
 
     private void AttachMagnet()
     {
         m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
+        m_Magnet.position = new Vector3(m_Magnet.position.x, m_Magnet.position.y, 0);
         m_Magnet.SetParent(transform, true);
-        m_Magnet.localPosition = new Vector3(0f, 0.2f, 1f);
     }
 
     private void ThrowMagnetizedObject()
@@ -468,4 +578,13 @@ public class PlayerBehaviour : MonoBehaviour
         m_Rigidbody.useGravity = true;
     }
 
+    public void TakeDamage(byte damage)
+    {
+        if (PlayerLife < damage)
+            PlayerLife = 0;
+        else
+            PlayerLife -= damage;
+        m_InvicibilityTimer = m_InvicibilityTime;
+        m_Animator.Play("Hurt");
+    }
 }

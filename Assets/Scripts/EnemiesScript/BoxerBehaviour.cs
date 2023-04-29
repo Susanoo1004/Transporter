@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using UnityEngine.AI;
 
 public class BoxerBehaviour : EnemyBehaviour
@@ -31,6 +28,7 @@ public class BoxerBehaviour : EnemyBehaviour
     public override void FocusPlayer()
     {
         m_NavAgent.SetDestination(m_Target.transform.position);
+
         if (Vector3.Distance(transform.position, m_Target.transform.position) <= m_NavAgent.stoppingDistance)
         {
             m_HitCD -= Time.deltaTime;
@@ -38,8 +36,12 @@ public class BoxerBehaviour : EnemyBehaviour
             if (m_HitCD > 0)
                 return;
 
-            m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_EnemyDamage;
-            m_HitCD = m_HitFrequency;
+            if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
+            {
+                player.TakeDamage(m_EnemyDamage);
+                m_HitCD = m_HitFrequency;
+                m_Animator.Play("Hit");
+            }
         }
     }
 
@@ -48,9 +50,12 @@ public class BoxerBehaviour : EnemyBehaviour
         if (other.CompareTag("Player"))
         {
             IsPatrolling = false;
-            m_NavAgent.speed = 3.0f;
+            m_NavAgent.speed = m_NavAgent.speed * 2;
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
+
+            // ms : son detection
+
         }
     }
 
