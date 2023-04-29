@@ -7,6 +7,9 @@ public class AlarmBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_AreaToDisable;
 
+    [SerializeField]
+    private AudioSource m_AlarmSound;
+
     private bool m_IsEnable;
     // Start is called before the first frame update
     void Start()
@@ -29,7 +32,7 @@ public class AlarmBehaviour : MonoBehaviour
 
         if (m_IsEnable) 
         {
-            //Pour les MS : jouer le son de l'alarme ici en loop
+            m_AlarmSound.Play(); //Pour les MS : jouer le son de l'alarme ici en loop
         }
     }
 

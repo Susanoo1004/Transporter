@@ -25,6 +25,12 @@ public class LaserBehaviour : MonoBehaviour
 
     public bool IsGuardingByEnemy;
 
+    [SerializeField]
+    private AudioSource m_LaserOnOff;
+
+    [SerializeField]
+    private AudioSource m_LaserLoop;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,11 +61,11 @@ public class LaserBehaviour : MonoBehaviour
 
         if (IsGuardingByEnemy) 
         {
-            // ms : son, laser allume en loop
+            m_LaserLoop.Play(); // ms : son, laser allume en loop
         }
         else
         {
-            // ms : son, laser allume 3 sec
+            m_LaserOnOff.Play(); // ms : son, laser allume 3 sec
         }
 
     }
