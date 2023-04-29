@@ -9,6 +9,10 @@ public class KamikazeBehaviour : EnemyBehaviour
 
     private bool HasJump;
 
+   
+
+
+
     [Header("Explosion")]
     [SerializeField]
     private float m_DetonationRadius;
@@ -18,6 +22,12 @@ public class KamikazeBehaviour : EnemyBehaviour
 
     [SerializeField]
     private float m_ExplosionKnocknack;
+
+    [SerializeField]
+    private AudioSource m_KamikazeAudioSource;
+
+    [SerializeField]
+    private AudioClip[] m_KamikazeFtspList;
 
     private void Awake()
     {
@@ -122,5 +132,12 @@ public class KamikazeBehaviour : EnemyBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
+    }
+
+
+    private void PlayWalk()
+    {
+        int index = Random.Range(0, m_KamikazeFtspList.Length - 1);
+        m_KamikazeAudioSource.PlayOneShot(m_KamikazeFtspList[index]);
     }
 }
