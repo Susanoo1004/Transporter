@@ -213,6 +213,7 @@ MonoBehaviour:
   m_HitFrequency: 2
   m_EnemyLife: 1
   m_EnemyDamage: 1
+  m_InvincibilityTime: 0.5
   m_NavPoints:
   - {fileID: 0}
   - {fileID: 0}

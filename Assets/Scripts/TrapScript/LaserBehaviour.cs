@@ -46,17 +46,22 @@ public class LaserBehaviour : MonoBehaviour
                     return;
 
                 PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
-                if (playerBehaviour.PlayerLife < m_LaserDamage)
-                {
-                    playerBehaviour.PlayerLife = 0;
-                    return;
-                }
+                playerBehaviour.TakeDamage(m_LaserDamage);
 
                 m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_LaserDamage;
                 m_HitCD = m_HitFrequency;
             }
         }
-        
+
+        if (IsGuardingByEnemy) 
+        {
+            // ms : son, laser allume en loop
+        }
+        else
+        {
+            // ms : son, laser allume 3 sec
+        }
+
     }
 
     private void OnDrawGizmos()
