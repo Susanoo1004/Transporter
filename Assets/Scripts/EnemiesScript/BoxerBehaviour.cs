@@ -54,7 +54,6 @@ public class BoxerBehaviour : EnemyBehaviour
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
 
-
             // ms : son detection
 
         }

@@ -32,7 +32,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected bool IsPatrolling = true;
 
-
     int index;
 
     private void Awake()
@@ -49,7 +48,6 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_InvincibilityTimer -= Time.deltaTime;
     }
 
     protected virtual void MyUpdate()
@@ -64,6 +62,8 @@ public class EnemyBehaviour : MonoBehaviour
 
         if (m_EnemyLife == 0)
             Destroy(gameObject);
+
+        m_InvincibilityTimer -= Time.deltaTime;
     }
 
     public void EnemyPatroll()
@@ -86,7 +86,6 @@ public class EnemyBehaviour : MonoBehaviour
             if (m_HitCD > 0)
                 return;
 
-            Debug.Log("Hit");
             m_HitCD = m_HitFrequency;
         }
     }

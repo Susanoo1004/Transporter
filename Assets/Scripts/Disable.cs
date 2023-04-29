@@ -52,12 +52,14 @@ public class Disable : MonoBehaviour
 
                 m_LaserToDisable.enabled = true;
 
-                m_DisableTimer = m_DisableFrequency;   
+                m_DisableTimer = m_DisableFrequency;
+
             }
-            
+
         }
         else
         {
+
             int enemyDead = 0;
             for(int i = 0; i < m_EnemyGuardian.Length; i++) 
             {
