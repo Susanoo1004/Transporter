@@ -58,16 +58,6 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-<<<<<<< HEAD
-    clipAnimations:
-    - serializedVersion: 16
-      name: InAir
-      takeName: Armature|jump
-      internalID: 0
-      firstFrame: 16.4
-      lastFrame: 25.5
-=======
-<<<<<<< HEAD
     clipAnimations:
     - serializedVersion: 16
       name: Armature|Dash
@@ -75,18 +65,13 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 28
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-<<<<<<< HEAD
-      loopTime: 1
-=======
       loopTime: 0
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -127,7 +112,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.057663135
+        functionName: play_DeathSound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -260,7 +252,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -289,8 +281,6 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-<<<<<<< HEAD
-=======
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -308,42 +298,6 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: InAir
-      takeName: Armature|jump
-      internalID: 0
-      firstFrame: 14.1
-      lastFrame: 24
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-<<<<<<< HEAD
-=======
-=======
-    clipAnimations: []
->>>>>>> 1acdf623a96d154171cadaa8aa61426df5049d96
->>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93
     isReadable: 0
   meshes:
     lODScreenPercentages: []

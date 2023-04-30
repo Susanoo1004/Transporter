@@ -650,4 +650,10 @@ public class PlayerBehaviour : MonoBehaviour
         int index = Random.Range(0, m_MagnetPushList.Length);
         m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
     }
+
+    public void play_DeathSound()
+    {
+        m_DeathSound.Play();
+    }
+
 }
