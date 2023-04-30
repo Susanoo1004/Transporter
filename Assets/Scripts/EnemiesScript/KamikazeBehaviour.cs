@@ -34,6 +34,10 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private AudioSource m_KamikazeRollLoop;
 
+    [SerializeField]
+    private AudioSource m_KamikazeGoToRoll;
+
+   
     private bool m_KamikazeRollPlay = true;
 
     private void Awake()
@@ -160,5 +164,11 @@ public class KamikazeBehaviour : EnemyBehaviour
         
         int index = Random.Range(0, m_KamikazeFtspList.Length);
         m_KamikazeFtsp.PlayOneShot(m_KamikazeFtspList[index]);
+    }
+
+    public void play_KamikazeGoToRoll()
+    {
+        m_KamikazeGoToRoll.Play();
+        
     }
 }
