@@ -259,7 +259,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             m_Animator.Play("Dead");
             m_Arm.gameObject.SetActive(false);
-            m_PlayerInput.SwitchCurrentActionMap("Menu");
+            m_PlayerInput.SwitchCurrentActionMap("Dead");
 
             m_DeathTimer -= Time.deltaTime;
 
