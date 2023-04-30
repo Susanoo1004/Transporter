@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Arm: {fileID: 8431649053732184527}
   m_GravityMultiplier: 9.99
   m_Accelerate: 20
-  MaxSpeed: 40
+  MaxSpeed: 0
   m_DashPower: 15
   m_DashDistance: 5
   m_DashTime: 0.4
