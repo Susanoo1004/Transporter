@@ -651,7 +651,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
     }
 
-    public void play_DeathSound()
+    public void play_DeathSoundFunction()
     {
         m_DeathSound.Play();
     }
