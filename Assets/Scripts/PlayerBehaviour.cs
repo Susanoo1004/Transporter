@@ -129,6 +129,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private AudioClip[] m_MagnetPushList;
 
+    [SerializeField]
+    private AudioSource m_DeathSound;
+
     [HideInInspector]
     public Vector3 SurfaceNormal;
 

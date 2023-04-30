@@ -145,6 +145,7 @@ MonoBehaviour:
   m_LifeLose: {fileID: 0}
   m_MagnetPush: {fileID: 0}
   m_MagnetPushList: []
+  m_DeathSound: {fileID: 0}
   SurfaceNormal: {x: 0, y: 0, z: 0}
   CurrentCheckpoint: {x: 0, y: 0, z: 0}
 --- !u!114 &7146066286638838102
