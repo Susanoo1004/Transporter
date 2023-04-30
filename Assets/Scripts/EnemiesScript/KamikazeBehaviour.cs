@@ -74,9 +74,10 @@ public class KamikazeBehaviour : EnemyBehaviour
             foreach (Collider collider in colliders)
             {
                 if (collider.CompareTag("Player"))
-                {
+                {                   
                     IsExploding = true;
-                    return;
+                    m_KamikazeExplosion.Play();
+                    return;                    
                 }
             }
 
@@ -84,7 +85,7 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
         else
         {
-            m_Animator.Play("Explode");
+            m_Animator.Play("Explode");            
             Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up / 2) - (transform.position + Vector3.down);
             m_Animator.SetFloat("SpeedX", 1);
 
@@ -133,7 +134,7 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_KamikazeRollLoop.enabled = false; 
             
             // ms : son explosion
-            m_KamikazeExplosion.Play();
+            
 
             Destroy(gameObject);
         }
