@@ -73,9 +73,22 @@ public class TurretBehaviour : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player Projectiles"))
         {
+            m_TurretIdleSound.Stop();
+            m_TurretAttractingSound.Stop();
             m_DestructionSound.Play();
             Destroy(gameObject);
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+                m_TurretAttractingSound.Play();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+                m_TurretAttractingSound.Stop();
+    }
 }
