@@ -97,25 +97,26 @@ public class KamikazeBehaviour : EnemyBehaviour
             }
 
             m_HitCD -= Time.deltaTime;
+            Debug.Log(m_HitCD);
 
-            if (vecBetweenTargetandKamikaze.magnitude >= 2.8f && m_HitCD > 0.0f)
+            if (m_HitCD > 0.0f)
                 return;
 
-           Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
-           foreach (Collider collider in colliders)
-           {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
+            foreach (Collider collider in colliders)
+            {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
                     if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
                     {
                         player.TakeDamage(m_EnemyDamage);
+                        break;
                     }
-                    break;
                 }
-           }
-           // ms : son explosion
+            }
+            // ms : son explosion
 
-           Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -134,6 +135,13 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
 
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+            m_HitCD = 0;    
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
