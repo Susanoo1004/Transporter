@@ -36,31 +36,6 @@ public class LaserBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        RaycastHit[] HitPoints = Physics.RaycastAll(m_Shooter.position, -m_Shooter.up, m_Distance, 1 << 6 | 1 << 0);
-        foreach (RaycastHit hit in HitPoints) 
-        {
-            m_Target = hit.collider.gameObject;
-
-            if (m_Target.layer == LayerMask.NameToLayer("Default"))
-                break;
-
-            if (m_Target.layer == LayerMask.NameToLayer("Player"))
-            {
-                m_HitCD -= Time.deltaTime;
-                if (m_HitCD > 0)
-                    break;
-
-                PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
-
-                if (playerBehaviour.PlayerLife != 0) 
-                    playerBehaviour.TakeDamage(m_LaserDamage);
-
-                m_HitCD = m_HitFrequency;
-                break;
-            }
-        }
-        */
         if (Physics.Raycast(m_Shooter.position, -m_Shooter.up, out RaycastHit Hit, m_Distance, 1 << 6 | 1 << 0))
         {
             m_Target = Hit.collider.gameObject;
