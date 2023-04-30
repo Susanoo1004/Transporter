@@ -27,6 +27,12 @@ public class BoxerBehaviour : EnemyBehaviour
     [SerializeField]
     private AudioClip[] m_BoxerPunchList;
 
+    [SerializeField]
+    private AudioSource m_ShieldAttack;
+
+    [SerializeField]
+    private AudioClip[] m_ShieldAttackList;
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -67,6 +73,7 @@ public class BoxerBehaviour : EnemyBehaviour
                 play_BoxerPunch();
 
                 //son du shield attack (aléatoire) --> les gp doivent faire un script :)
+                //play_ShieldAttack();
             }
         }
     }
@@ -105,6 +112,13 @@ public class BoxerBehaviour : EnemyBehaviour
 
         int index = Random.Range(0, m_BoxerPunchList.Length);
         m_BoxerPunch.PlayOneShot(m_BoxerPunchList[index]);
+    }
+
+    public void play_ShieldAttack()
+    {
+
+        int index = Random.Range(0, m_ShieldAttackList.Length);
+        m_ShieldAttack.PlayOneShot(m_ShieldAttackList[index]);
     }
 
 }
