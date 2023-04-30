@@ -188,6 +188,17 @@ MonoBehaviour:
   - {fileID: 4298666806055649736}
   m_AttackRange: 2
   m_BoxerDetectionSound: {fileID: 2637179881757279134}
+  m_BoxerFstpWalk: {fileID: 0}
+  m_BoxerFstpWalkList:
+  - {fileID: 8300000, guid: 127b5b7798bd16548893829244d4459f, type: 3}
+  - {fileID: 8300000, guid: 144e11cba2585f64d8541393265cb99a, type: 3}
+  - {fileID: 8300000, guid: 5677a6579c86ddb4baeb5fb69d475207, type: 3}
+  - {fileID: 8300000, guid: a17c88adf858b1c47af6ba95590572d3, type: 3}
+  m_BoxerFstpRun: {fileID: 0}
+  m_BoxerFstpRunList:
+  - {fileID: 8300000, guid: f80d5f02a5400374b94fb53e7787efc8, type: 3}
+  - {fileID: 8300000, guid: 659246a77703719468f7bcfc9595a90b, type: 3}
+  - {fileID: 8300000, guid: d7a6453de8a5b344287c15532e7ac3af, type: 3}
 --- !u!65 &7765127392699117886
 BoxCollider:
   m_ObjectHideFlags: 0

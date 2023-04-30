@@ -9,6 +9,18 @@ public class BoxerBehaviour : EnemyBehaviour
     [SerializeField]
     private AudioSource m_BoxerDetectionSound;
 
+    [SerializeField]
+    private AudioSource m_BoxerFstpWalk;
+
+    [SerializeField]
+    private AudioClip[] m_BoxerFstpWalkList;
+
+    [SerializeField]
+    private AudioSource m_BoxerFstpRun;
+
+    [SerializeField]
+    private AudioClip[] m_BoxerFstpRunList;
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -61,5 +73,21 @@ public class BoxerBehaviour : EnemyBehaviour
 
         }
     }
+
+    // ms : footsteps sound on animator
+    public void play_BoxerFstpWalk()
+    {
+
+        int index = Random.Range(0, m_BoxerFstpWalkList.Length);
+        m_BoxerFstpWalk.PlayOneShot(m_BoxerFstpWalkList[index]);
+    }
+
+    public void play_BoxerFstpRun()
+    {
+
+        int index = Random.Range(0, m_BoxerFstpRunList.Length);
+        m_BoxerFstpRun.PlayOneShot(m_BoxerFstpRunList[index]);
+    }
+
 
 }
