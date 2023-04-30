@@ -15,6 +15,9 @@ public class TurretBehaviour : MonoBehaviour
     [SerializeField]
     private float m_AttractionSpeed;
 
+    [SerializeField]
+    private AudioSource m_DestructionSound;
+
     private Transform m_Target;
 
     private string m_OldActionMap;
@@ -71,7 +74,10 @@ public class TurretBehaviour : MonoBehaviour
         }
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player Projectiles"))
+        {
+            m_DestructionSound.Play();
             Destroy(gameObject);
+        }
     }
 
 }
