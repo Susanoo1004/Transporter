@@ -157,7 +157,7 @@ MonoBehaviour:
   m_MagnetPushList:
   - {fileID: 8300000, guid: f6457519fa2cc704aae4f6f60dc3c850, type: 3}
   - {fileID: 8300000, guid: 21f85982aa02590428ca7c1de2e8a9e5, type: 3}
-  m_MagnetBack: {fileID: 6452599080800338257}
+  m_DeathSound: {fileID: 0}
   m_MagnetThrow: {fileID: 6284772842241196388}
   m_PlayerJump: {fileID: 1087569064889243272}
   SurfaceNormal: {x: 0, y: 0, z: 0}
