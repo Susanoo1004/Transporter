@@ -36,7 +36,6 @@ public class LaserBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (Physics.Raycast(m_Shooter.position, -m_Shooter.up, out RaycastHit Hit, m_Distance, 1 << 6 | 1 << 0))
         {
             m_Target = Hit.collider.gameObject;
