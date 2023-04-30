@@ -49,6 +49,9 @@ public class MagneticObject : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemies") && other.gameObject.TryGetComponent(out EnemyBehaviour enemyBehaviour))
         {
             enemyBehaviour.TakeDamage(m_Damage);
+
+            //son quand l'ennemi reçoit des dégats de caisse Damage_Heavy
+            //son quand l'ennemi reçoit des dégats de pièces Damage_Light
         }
     }
 }
