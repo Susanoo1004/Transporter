@@ -576,7 +576,7 @@ public class PlayerBehaviour : MonoBehaviour
                                                                       m_MagnetBehaviour.MagnetizedObject.position.y,
                                                                       0);
             m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
-
+            //son
             play_MagnetPush();
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
