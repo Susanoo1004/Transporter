@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -40,10 +42,12 @@ public class LaserBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit[] HitPoints = Physics.RaycastAll(m_Shooter.position, -m_Shooter.up, m_Distance, 1 << 6 | 1 << 0);
-        foreach (RaycastHit hit in HitPoints) 
+        if (Physics.Raycast(m_Shooter.position, -m_Shooter.up, out RaycastHit Hit, m_Distance, 1 << 6 | 1 << 0))
         {
-            m_Target = hit.collider.gameObject;
+            m_Target = Hit.collider.gameObject;
+
+            if (m_Target.layer == LayerMask.NameToLayer("Default"))
+                return;
 
             if (m_Target.layer == LayerMask.NameToLayer("Player"))
             {
@@ -52,12 +56,15 @@ public class LaserBehaviour : MonoBehaviour
                     return;
 
                 PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
-                playerBehaviour.TakeDamage(m_LaserDamage);
 
-                m_Target.GetComponent<PlayerBehaviour>().PlayerLife -= m_LaserDamage;
+                if (playerBehaviour.PlayerLife != 0)
+                    playerBehaviour.TakeDamage(m_LaserDamage);
+
                 m_HitCD = m_HitFrequency;
+                return;
             }
         }
+            
 
         if (IsGuardingByEnemy) 
         {

@@ -364,7 +364,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += Vector3.down / 2;
+            m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
@@ -617,7 +617,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.IsPlayerAttached = false;
         m_MagnetBehaviour.PlayerAttachedObject = null;
         m_Rigidbody.useGravity = true;
-        //son de player quand il se détache de la platforme
+        //son de player quand il se dï¿½tache de la platforme
     }
 
     public void TakeDamage(byte damage)
