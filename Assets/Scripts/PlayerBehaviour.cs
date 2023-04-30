@@ -23,6 +23,8 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_Arm;
 
+    [SerializeField]
+    private float m_GravityMultiplier;
     // Arm
     private float m_ResetArmPos = 0.75f;
     private bool m_ResetArm;
@@ -138,9 +140,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private AudioSource m_PlayerJump;
 
-    [SerializeField]
-    private AudioClip[] m_PlayerJumpList;
-
+    
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
@@ -388,7 +388,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
             m_Arm.position += Vector3.down / 3.5f;
-            play_PlayerJump();
+            m_PlayerJump.Play();
         }
         else
         {
@@ -659,11 +659,5 @@ public class PlayerBehaviour : MonoBehaviour
         int index = Random.Range(0, m_MagnetPushList.Length);
         m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
     }
-
-    public void play_PlayerJump()
-    {
-
-        int index = Random.Range(0, m_PlayerJumpList.Length);
-        m_PlayerJump.PlayOneShot(m_PlayerJumpList[index]);
-    }
+        
 }
