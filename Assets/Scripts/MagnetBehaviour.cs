@@ -22,6 +22,10 @@ public class MagnetBehaviour : MonoBehaviour
     private Material m_PositiveMaterial;
     [SerializeField]
     private Material m_NegativeMaterial;
+    [SerializeField]
+    private AudioSource m_MagnetImpactObjectHeavy;
+    [SerializeField]
+    private AudioSource m_MagnetImpactObjectLight;
 
     //[HideInInspector]
     public float RepulsiveForce;
@@ -154,6 +158,12 @@ public class MagnetBehaviour : MonoBehaviour
             {
                 MagnetizedObject.SetParent(transform, true);
                 MagnetizedObject.localPosition = Vector3.zero;
+
+                //si l'objet qu'il touche est lourd
+                m_MagnetImpactObjectHeavy.Play();
+
+                //si l'objet qu'il touche est léger
+                //m_MagnetImpactObjectLight.Play();
             }
         }
 
@@ -188,6 +198,8 @@ public class MagnetBehaviour : MonoBehaviour
 
                         if (PlayerAttachedObject.TryGetComponent(out Collider collider))
                             m_Player.position = collider.ClosestPoint(transform.position) + GetPlayerAttachedObjectNormal * boxCollider.size.y/2;
+
+                        //son player attéri sur une plateforme aimantée
                     }
                 }
                 
@@ -209,6 +221,7 @@ public class MagnetBehaviour : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         TravelTimer = 0;
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -258,6 +271,8 @@ public class MagnetBehaviour : MonoBehaviour
                         if (Vector3.Angle(direction, rigidbody.velocity) > 90)
                             rigidbody.velocity = Vector3.zero;
                         rigidbody.AddForce(direction * RepulsiveForce * 1.5f, ForceMode.VelocityChange);
+
+                        //son player_repelled
                     }
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
@@ -279,6 +294,8 @@ public class MagnetBehaviour : MonoBehaviour
                             boxCollider.isTrigger = true;
                             if (m_Player.TryGetComponent(out Rigidbody rb))
                                 rb.useGravity = false;
+
+                            //son player attracted (par une plateforme)
                         }
                     }
                 }

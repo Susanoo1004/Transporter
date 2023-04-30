@@ -41,10 +41,13 @@ public class BoxerBehaviour : EnemyBehaviour
                 player.TakeDamage(m_EnemyDamage);
                 m_HitCD = m_HitFrequency;
                 m_Animator.Play("Hit");
+
+                //son du boxeur punch (aléatoire)
+                //son du shield attack (aléatoire) --> les gp doivent faire un script :)
             }
         }
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

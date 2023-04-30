@@ -19,6 +19,16 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private float m_ExplosionKnocknack;
 
+    [SerializeField]
+    private AudioSource m_KamikazeExplosion;
+
+    [SerializeField]
+    private AudioSource m_KamikazeFtsp;
+
+    [SerializeField]
+    private AudioClip[] m_KamikazeFtspList;
+
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -81,12 +91,13 @@ public class KamikazeBehaviour : EnemyBehaviour
             else
             {
                 m_NavAgent.SetDestination(m_Target.transform.position);
+
+                //confirmation avec Paul, son kamikaze Roll
             }
 
             m_HitCD -= Time.deltaTime;
-            Debug.Log(m_HitCD);
 
-            if (m_HitCD > 0.0f)
+            if (vecBetweenTargetandKamikaze.magnitude >= 2.8f && m_HitCD > 0.0f)
                 return;
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
@@ -97,11 +108,12 @@ public class KamikazeBehaviour : EnemyBehaviour
                     if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
                     {
                         player.TakeDamage(m_EnemyDamage);
-                        break;
                     }
+                    break;
                 }
             }
             // ms : son explosion
+            m_KamikazeExplosion.Play();
 
             Destroy(gameObject);
         }
@@ -122,15 +134,15 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
 
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-            m_HitCD = 0;    
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
+    }
+
+    public void play_KamikazeFtsp()
+    {
+        
+        int index = Random.Range(0, m_KamikazeFtspList.Length);
+        m_KamikazeFtsp.PlayOneShot(m_KamikazeFtspList[index]);
     }
 }
