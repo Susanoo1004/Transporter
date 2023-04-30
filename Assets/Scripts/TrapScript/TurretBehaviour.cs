@@ -45,16 +45,15 @@ public class TurretBehaviour : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (!other.TryGetComponent(out PlayerBehaviour player))
+        bool isAMagneticObj = other.TryGetComponent(out MagneticObject magneticObject);
+
+        if (!other.TryGetComponent(out PlayerBehaviour player) || isAMagneticObj)
             return;
 
         if (!other.TryGetComponent(out Rigidbody rigidbody))
             return;
 
-        if (player.DashTimer > 0)
-            return;
-
-        if (player.IsGrounded)
+        if (player.IsGrounded || magneticObject.AffectSelf)
             rigidbody.AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed * 2, ForceMode.Acceleration);
         else
             rigidbody.AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed, ForceMode.Acceleration);
@@ -65,7 +64,6 @@ public class TurretBehaviour : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             m_Target = collision.transform;
-            Debug.Log("Collision Player");
             m_OldActionMap = m_Target.GetComponent<PlayerInput>().currentActionMap.name;
             m_Target.TryGetComponent(out PlayerInput playerInput);
             m_PlayerInput = playerInput;
