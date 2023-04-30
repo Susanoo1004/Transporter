@@ -117,6 +117,7 @@ MonoBehaviour:
   m_InvicibilityTime: 2
   m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
+  m_GravityMultiplier: 0
   m_Accelerate: 20
   MaxSpeed: 0
   m_DashPower: 15

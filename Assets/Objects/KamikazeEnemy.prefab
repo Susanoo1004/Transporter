@@ -3235,6 +3235,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1abdd9ccc417da047ab5d9195816aea6, type: 3}
   - {fileID: 8300000, guid: 7584693c781fad646b351dcdd04c6fc4, type: 3}
   - {fileID: 8300000, guid: 1c4e89e1e6612ba45964cd736cb4aa3f, type: 3}
+  m_KamikazeDetectionSound: {fileID: 0}
 --- !u!195 &6626422040191249832
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3375,7 +3376,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.86
       inSlope: 0
       outSlope: 0
       tangentMode: 0

@@ -20,6 +20,12 @@ public class EnemyBehaviour : MonoBehaviour
     protected float m_InvincibilityTime;
     protected float m_InvincibilityTimer;
 
+    // Sound Detection
+    private bool m_DetectedSoundActivator = true;
+
+    [SerializeField]
+    private AudioSource m_DetectedSound;
+
     protected NavMeshAgent m_NavAgent;
 
     protected Animator m_Animator;
@@ -53,9 +59,20 @@ public class EnemyBehaviour : MonoBehaviour
     protected virtual void MyUpdate()
     {
         if (IsPatrolling)
+        {
             EnemyPatroll();
+        }
+
         else
+        {
+            if (m_DetectedSoundActivator)
+            {
+                m_DetectedSound.Play();
+                m_DetectedSoundActivator = false;
+            }
             FocusPlayer();
+        }
+
 
         if (m_EnemyLife >= 250)
             m_EnemyLife = 0;

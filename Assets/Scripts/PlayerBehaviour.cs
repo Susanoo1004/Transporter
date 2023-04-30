@@ -23,6 +23,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_Arm;
 
+    [SerializeField]
+    private float m_GravityMultiplier;
+
     // Arm
     private float m_ResetArmPos = 0.75f;
     private bool m_ResetArm;
