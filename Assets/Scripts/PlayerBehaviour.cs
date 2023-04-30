@@ -23,9 +23,6 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_Arm;
 
-    [SerializeField]
-    private float m_GravityMultiplier;
-
     // Arm
     private float m_ResetArmPos = 0.75f;
     private bool m_ResetArm;
@@ -55,6 +52,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool m_IsJumping = false;
 
+    [SerializeField]
+    private float m_GravityMultiplier;
 
     [HideInInspector]
     public Vector3 Move = new();
@@ -70,9 +69,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool m_IsStuckLeft;
     private bool m_IsStuckRight;
-
-    [HideInInspector]
-    public bool m_HasTakenExplosion;
 
     [Header("Magnet")]
     [SerializeField]
