@@ -43,32 +43,6 @@ public class LaserBehaviour : MonoBehaviour
             if (m_Target.layer == LayerMask.NameToLayer("Default"))
                 return;
 
-            if (m_Target.layer == LayerMask.NameToLayer("Default"))
-                break;
-
-            if (m_Target.layer == LayerMask.NameToLayer("Player"))
-            {
-                m_HitCD -= Time.deltaTime;
-                if (m_HitCD > 0)
-                    break;
-
-                PlayerBehaviour playerBehaviour = m_Target.GetComponent<PlayerBehaviour>();
-
-                if (playerBehaviour.PlayerLife != 0) 
-                    playerBehaviour.TakeDamage(m_LaserDamage);
-
-                m_HitCD = m_HitFrequency;
-                break;
-            }
-        }
-        */
-        if (Physics.Raycast(m_Shooter.position, -m_Shooter.up, out RaycastHit Hit, m_Distance, 1 << 6 | 1 << 0))
-        {
-            m_Target = Hit.collider.gameObject;
-
-            if (m_Target.layer == LayerMask.NameToLayer("Default"))
-                return;
-
             if (m_Target.layer == LayerMask.NameToLayer("Player"))
             {
                 m_HitCD -= Time.deltaTime;
