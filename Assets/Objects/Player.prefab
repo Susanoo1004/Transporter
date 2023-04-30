@@ -746,6 +746,7 @@ MonoBehaviour:
   m_NegativeMaterial: {fileID: 2100000, guid: 8b6badc08db3a5441a86aee48522e4c2, type: 2}
   m_MagnetImpactObjectHeavy: {fileID: 0}
   m_MagnetImpactObjectLight: {fileID: 0}
+  m_PlatformAttractionImpact: {fileID: 0}
   RepulsiveForce: 0
   AttractionTime: 0
   PlayerAttractionSpeed: 0

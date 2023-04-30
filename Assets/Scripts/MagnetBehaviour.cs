@@ -26,6 +26,8 @@ public class MagnetBehaviour : MonoBehaviour
     private AudioSource m_MagnetImpactObjectHeavy;
     [SerializeField]
     private AudioSource m_MagnetImpactObjectLight;
+    [SerializeField]
+    private AudioSource m_PlatformAttractionImpact;
 
     //[HideInInspector]
     public float RepulsiveForce;
@@ -200,6 +202,8 @@ public class MagnetBehaviour : MonoBehaviour
                             m_Player.position = collider.ClosestPoint(transform.position) + GetPlayerAttachedObjectNormal * boxCollider.size.y/2;
 
                         //son player attéri sur une plateforme aimantée
+                        m_PlatformAttractionImpact.Play();
+
                     }
                 }
                 
