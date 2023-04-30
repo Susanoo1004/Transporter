@@ -21,6 +21,8 @@ public class MagneticObject : MonoBehaviour
     private AudioClip[] m_DamageHeavyList;
     [SerializeField]
     private AudioClip[] m_DamageLightList;
+
+
    
 
 
@@ -62,7 +64,12 @@ public class MagneticObject : MonoBehaviour
 
             //son quand l'ennemi reçoit des dégats de caisse Damage_Heavy
             play_DamageHeavy();
-            //son quand l'ennemi reçoit des dégats de pièces Damage_Light
+            //son quand l'ennemi reçoit des dégats de pièces Damage_Light.  play_DamageLight();
+                        
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Default"))
+        {
             play_DamageLight();
         }
     }

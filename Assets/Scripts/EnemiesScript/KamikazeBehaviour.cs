@@ -31,6 +31,11 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private AudioSource m_KamikazeDetectionSound;
 
+    [SerializeField]
+    private AudioSource m_KamikazeRollLoop;
+
+    private bool m_KamikazeRollPlay = true;
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -54,7 +59,12 @@ public class KamikazeBehaviour : EnemyBehaviour
     {
         if (!IsExploding)
         {
-            //son Kamikaze Roll
+            if (m_KamikazeRollPlay)
+            {
+                m_KamikazeRollLoop.Play();
+                m_KamikazeRollPlay = false;
+
+            }
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, m_DetonationRadius);
             foreach (Collider collider in colliders)
@@ -116,7 +126,7 @@ public class KamikazeBehaviour : EnemyBehaviour
                 }
             }
 
-            //m_KamikazeRoll.enabled = false;   pour désactiver la loop
+            m_KamikazeRollLoop.enabled = false; 
             
             // ms : son explosion
             m_KamikazeExplosion.Play();

@@ -24,7 +24,7 @@ public class HealthBarBehaviour : MonoBehaviour
     {
         m_HealthBar.value = m_PlayerBehaviour.PlayerLife;
 
-        if (m_HealthBar.value <= 3) ;
+        if (m_HealthBar.value <= 3);
             //son low life
 
     }

@@ -27,6 +27,8 @@ public class MagnetBehaviour : MonoBehaviour
     [SerializeField]
     private AudioSource m_MagnetImpactObjectLight;
     [SerializeField]
+    private AudioClip[] m_MagnetImpactLightList;
+    [SerializeField]
     private AudioSource m_PlatformAttractionImpact;
     [SerializeField]
     private AudioSource m_PlayerAttracted;
@@ -36,6 +38,10 @@ public class MagnetBehaviour : MonoBehaviour
     private AudioSource m_PlayerRepelled;
     [SerializeField]
     private AudioClip[] m_PlayerRepelledList;
+    [SerializeField]
+    private AudioSource m_MagnetPush;
+    [SerializeField]
+    private AudioClip[] m_MagnetPushList;
 
     //[HideInInspector]
     public float RepulsiveForce;
@@ -171,9 +177,7 @@ public class MagnetBehaviour : MonoBehaviour
 
                 //si l'objet qu'il touche est lourd
                 m_MagnetImpactObjectHeavy.Play();
-
-                //si l'objet qu'il touche est léger
-                //m_MagnetImpactObjectLight.Play();
+                                               
             }
         }
 
@@ -233,7 +237,8 @@ public class MagnetBehaviour : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         TravelTimer = 0;
-        
+        play_MagnetImpactLight();
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -255,6 +260,10 @@ public class MagnetBehaviour : MonoBehaviour
                         rigidbody.AddForce(Aim * RepulsiveForce, ForceMode.VelocityChange);
                     
                     other.gameObject.layer = LayerMask.NameToLayer("Player Projectiles");
+
+                    play_MagnetPush();
+
+
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
                       || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE
@@ -332,5 +341,20 @@ public class MagnetBehaviour : MonoBehaviour
 
         int index = UnityEngine.Random.Range(0, m_PlayerRepelledList.Length);
         m_PlayerRepelled.PlayOneShot(m_PlayerRepelledList[index]);
+
+    }
+
+    public void play_MagnetPush()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_MagnetPushList.Length);
+        m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
+    }
+
+    public void play_MagnetImpactLight()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_MagnetImpactLightList.Length);
+        m_MagnetImpactObjectLight.PlayOneShot(m_MagnetImpactLightList[index]);
     }
 }

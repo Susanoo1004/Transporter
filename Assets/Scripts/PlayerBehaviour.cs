@@ -140,6 +140,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private AudioSource m_PlayerJump;
 
+    [SerializeField]
+    private AudioSource m_MagnetGrabing;
+
     
     [HideInInspector]
     public Vector3 SurfaceNormal;
@@ -152,6 +155,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DeathTimer;
     private float m_DeathTime = 2.0f;
 
+    private bool m_MagnetGrabingSound = true;
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
     public bool IsGrounded
@@ -203,6 +207,12 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
         m_ArmAnimator.SetBool("Jump", m_IsJumping);
+
+        if(m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
+        {
+            m_MagnetGrabing.Play();
+            m_MagnetGrabingSound = false;
+        }
 
         {
             Vector3 direction = m_Magnet.position - m_Arm.position;
@@ -486,11 +496,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetCooldownTimer = m_MagnetCooldownTime;
             transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - DashTimer / m_DashTime);
             m_Rigidbody.velocity = Vector3.zero;
-
-
-            // ms : son Dash
-            play_PlayerDash();
-
+                                    
 
             return;
         }
@@ -502,6 +508,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.HoverTimer = m_DashTime;
             m_MagnetBehaviour.TravelTimer = 0;
             m_PositionBeforeDash = transform.position;
+            play_PlayerDash();
         }
 
     }
@@ -585,6 +592,8 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
             //son
             play_MagnetPush();
+            m_MagnetGrabingSound = false;
+            m_MagnetGrabing.Stop();
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -617,6 +626,9 @@ public class PlayerBehaviour : MonoBehaviour
 
 
         m_MagnetBehaviour.MagnetizedObject = null;
+
+        m_MagnetGrabingSound = false;
+        m_MagnetGrabing.Stop();
     }
 
     private void DettachPlayer()
@@ -624,7 +636,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.IsPlayerAttached = false;
         m_MagnetBehaviour.PlayerAttachedObject = null;
         m_Rigidbody.useGravity = true;
-        //son de player quand il se d�tache de la platforme
+        //son de player quand il se detache de la platforme
     }
 
     public void TakeDamage(byte damage)
