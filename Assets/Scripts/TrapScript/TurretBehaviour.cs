@@ -29,7 +29,7 @@ public class TurretBehaviour : MonoBehaviour
         if (m_HasBeenTrap)
             if (Vector3.Distance(transform.position, m_Target.position) > 2.0f)
             {
-                m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap(m_OldActionMap);
+                m_PlayerInput.SwitchCurrentActionMap(m_OldActionMap);
                 m_HasBeenTrap = false;
             }
     }
