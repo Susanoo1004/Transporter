@@ -23,6 +23,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_Arm;
 
+    [SerializeField]
+    private float m_GravityMultiplier;
+
     // Arm
     private float m_ResetArmPos = 0.75f;
     private bool m_ResetArm;
@@ -53,7 +56,7 @@ public class PlayerBehaviour : MonoBehaviour
     private bool m_IsJumping = false;
 
 
-    [HideInInspector] 
+    [HideInInspector]
     public Vector3 Move = new();
     private Vector3 m_LastMove = Vector3.right;
 
@@ -106,8 +109,8 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_PlayerToMagnetDistance;
 
-    private Vector2 m_Aim = new Vector2(1,0);
-    
+    private Vector2 m_Aim = new Vector2(1, 0);
+
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
@@ -329,15 +332,15 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             m_Animator.SetBool("Landed", true);
- 
+
         }
         else
         {
             m_Animator.SetBool("Landed", false);
-        }   
-        
+        }
+
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += Vector3.down/2;
+            m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
@@ -357,7 +360,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_Arm.position += Vector3.down / 3.5f;
         }
         else
-        { 
+        {
             m_IsJumping = false;
         }
     }
@@ -402,7 +405,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started && HasMagnet)
         {
             m_MagnetBehaviour.IsPositive = !m_MagnetBehaviour.IsPositive;
-            
+
             if (m_MagnetBehaviour.IsPlayerAttached)
                 DettachPlayer();
 
@@ -426,7 +429,7 @@ public class PlayerBehaviour : MonoBehaviour
         else
             m_Aim = _context.ReadValue<Vector2>().normalized;
     }
-    
+
     public void Dash()
     {
         if (DashTimer > 0)
@@ -452,7 +455,7 @@ public class PlayerBehaviour : MonoBehaviour
             // ms : son Dash
 
 
-            
+
             return;
         }
 
@@ -536,7 +539,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.MagnetizedObject.position = new Vector3(m_MagnetBehaviour.MagnetizedObject.position.x,
                                                                       m_MagnetBehaviour.MagnetizedObject.position.y,
                                                                       0);
-            m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0,0,0,0);
+            m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {
