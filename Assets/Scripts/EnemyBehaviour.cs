@@ -17,6 +17,9 @@ public class EnemyBehaviour : MonoBehaviour
     protected byte m_EnemyDamage;
 
     [SerializeField]
+    private AudioSource m_EnemyExplosion;
+
+    [SerializeField]
     protected float m_InvincibilityTime;
     protected float m_InvincibilityTimer;
 
@@ -61,7 +64,11 @@ public class EnemyBehaviour : MonoBehaviour
             m_EnemyLife = 0;
 
         if (m_EnemyLife == 0)
+        {
+            m_EnemyExplosion.Play();
             Destroy(gameObject);
+        }
+            
 
         m_InvincibilityTimer -= Time.deltaTime;
     }

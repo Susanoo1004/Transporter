@@ -54,6 +54,8 @@ public class KamikazeBehaviour : EnemyBehaviour
     {
         if (!IsExploding)
         {
+            //son Kamikaze Roll
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, m_DetonationRadius);
             foreach (Collider collider in colliders)
             {
@@ -94,7 +96,6 @@ public class KamikazeBehaviour : EnemyBehaviour
             {
                 m_NavAgent.SetDestination(m_Target.transform.position);
 
-                //confirmation avec Paul, son kamikaze Roll
             }
 
             m_HitCD -= Time.deltaTime;
@@ -114,6 +115,9 @@ public class KamikazeBehaviour : EnemyBehaviour
                     break;
                 }
             }
+
+            //m_KamikazeRoll.enabled = false;   pour désactiver la loop
+            
             // ms : son explosion
             m_KamikazeExplosion.Play();
 
