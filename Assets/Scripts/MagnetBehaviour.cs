@@ -42,6 +42,8 @@ public class MagnetBehaviour : MonoBehaviour
     private AudioSource m_MagnetPush;
     [SerializeField]
     private AudioClip[] m_MagnetPushList;
+    [SerializeField]
+    private AudioSource m_MagnetImpactPlatform;
 
     //[HideInInspector]
     public float RepulsiveForce;
@@ -97,6 +99,8 @@ public class MagnetBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return transform.parent == m_Player.transform; } }
     public bool HasMagnetizedObject { get { return MagnetizedObject != null; } }
+
+    private bool m_MagnetImpactObjectHeavySound = true;
 
     private void Awake()
     {
@@ -168,16 +172,20 @@ public class MagnetBehaviour : MonoBehaviour
             if (AttractionTimer > 0)
             {
                 AttractionTimer -= Time.fixedDeltaTime;
-                MagnetizedObject.position = Vector3.Lerp(m_LastMagnetizedObjectPosition, transform.position, 1-AttractionTimer/AttractionTime);
+                MagnetizedObject.position = Vector3.Lerp(m_LastMagnetizedObjectPosition, transform.position, 1 - AttractionTimer / AttractionTime);
+                m_MagnetImpactObjectHeavySound = true;
             }
             else
             {
                 MagnetizedObject.SetParent(transform, true);
                 MagnetizedObject.localPosition = Vector3.zero;
 
-                //si l'objet qu'il touche est lourd
-                m_MagnetImpactObjectHeavy.Play();
-                                               
+               if(m_MagnetImpactObjectHeavySound)
+                    { 
+                    m_MagnetImpactObjectHeavy.Play();
+                    m_MagnetImpactObjectHeavySound = false;
+                    }
+
             }
         }
 
@@ -319,6 +327,7 @@ public class MagnetBehaviour : MonoBehaviour
 
                             //son player attracted (par une plateforme)
                             play_PlayerAttracted();
+                            m_MagnetImpactPlatform.Play();
                         }
                     }
                 }

@@ -140,8 +140,8 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private AudioSource m_PlayerJump;
 
-    [SerializeField]
-    private AudioSource m_MagnetGrabing;
+    //[SerializeField]
+    //private AudioSource m_MagnetGrabing;
 
     
     [HideInInspector]
@@ -155,7 +155,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DeathTimer;
     private float m_DeathTime = 2.0f;
 
-    private bool m_MagnetGrabingSound = true;
+    //private bool m_MagnetGrabingSound = true;
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
     public bool IsGrounded
@@ -208,11 +208,11 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetBool("Jump", m_IsJumping);
         m_ArmAnimator.SetBool("Jump", m_IsJumping);
 
-        if(m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
-        {
-            m_MagnetGrabing.Play();
-            m_MagnetGrabingSound = false;
-        }
+        //if(m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
+        // {
+        // m_MagnetGrabing.Play();
+        //m_MagnetGrabingSound= false;
+        //}
 
         {
             Vector3 direction = m_Magnet.position - m_Arm.position;
@@ -592,8 +592,8 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
             //son
             play_MagnetPush();
-            m_MagnetGrabingSound = false;
-            m_MagnetGrabing.Stop();
+            //m_MagnetGrabingSound = false;
+           // m_MagnetGrabing.Stop();
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -627,8 +627,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         m_MagnetBehaviour.MagnetizedObject = null;
 
-        m_MagnetGrabingSound = false;
-        m_MagnetGrabing.Stop();
+       // m_MagnetGrabingSound = false;
+        //m_MagnetGrabing.Stop();
     }
 
     private void DettachPlayer()
