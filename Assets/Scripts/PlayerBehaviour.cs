@@ -487,7 +487,6 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.AttractionTime = m_AttractionTime;
         m_MagnetBehaviour.PlayerAttractionSpeed = m_PlayerAttractionSpeed;
         m_MagnetBehaviour.IsThrowing = true;
-        m_MagnetBehaviour.PlayerThrowForce = m_Rigidbody.velocity;
         m_MagnetBehaviour.RepulsiveForce = m_RepulsiveForce;
         
         if (m_Aim == Vector2.zero)
@@ -495,9 +494,11 @@ public class PlayerBehaviour : MonoBehaviour
             m_Magnet.position = m_Arm.position + (IsInForeground ? Vector3.forward : Vector3.back) * m_PlayerToMagnetDistance;
             m_MagnetBehaviour.Aim = IsInForeground ? Vector3.forward : Vector3.back;
             m_MagnetBehaviour.ThrowForce = 25/m_ThrowTime;
+            m_MagnetBehaviour.PlayerThrowForce = Vector3.zero;
         }
         else
         {
+            m_MagnetBehaviour.PlayerThrowForce = m_Rigidbody.velocity;
             m_MagnetBehaviour.Aim = new Vector3(m_Aim.x, m_Aim.y, 0);
             m_MagnetBehaviour.ThrowForce = m_ThrowForce;
         }
