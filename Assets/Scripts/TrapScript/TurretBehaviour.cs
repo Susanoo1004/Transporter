@@ -37,7 +37,7 @@ public class TurretBehaviour : MonoBehaviour
         if (!other.TryGetComponent(out PlayerBehaviour player)  && !other.TryGetComponent(out MagneticObject magneticObject))
             return;
 
-        if (other.GetComponent<PlayerBehaviour>().IsGrounded)
+        if (player.IsGrounded || !other.TryGetComponent(out MagneticObject magneticObj))
             other.GetComponent<Rigidbody>().AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed * 2, ForceMode.Acceleration);
         else
             other.GetComponent<Rigidbody>().AddForce((transform.position - other.transform.position).normalized * m_AttractionSpeed, ForceMode.Acceleration);
