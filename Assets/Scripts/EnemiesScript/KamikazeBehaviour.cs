@@ -9,10 +9,6 @@ public class KamikazeBehaviour : EnemyBehaviour
 
     private bool HasJump;
 
-   
-
-
-
     [Header("Explosion")]
     [SerializeField]
     private float m_DetonationRadius;
@@ -70,7 +66,7 @@ public class KamikazeBehaviour : EnemyBehaviour
         else
         {
             m_Animator.Play("Explode");
-            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up/2) - (transform.position + Vector3.down);
+            Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up / 2) - (transform.position + Vector3.down);
             m_Animator.SetFloat("SpeedX", 1);
 
             m_Animator.applyRootMotion = true;
@@ -145,12 +141,5 @@ public class KamikazeBehaviour : EnemyBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
-    }
-
-
-    private void PlayWalk()
-    {
-        int index = Random.Range(0, m_KamikazeFtspList.Length - 1);
-        m_KamikazeAudioSource.PlayOneShot(m_KamikazeFtspList[index]);
     }
 }

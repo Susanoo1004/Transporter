@@ -18,7 +18,7 @@ public class TurretBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class TurretBehaviour : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (!other.TryGetComponent(out PlayerBehaviour player)  && !other.TryGetComponent(out MagneticObject magneticObject))
+        if (!other.TryGetComponent(out PlayerBehaviour player) && !other.TryGetComponent(out MagneticObject magneticObject))
             return;
 
         if (player.IsGrounded || !other.TryGetComponent(out MagneticObject magneticObj))
@@ -52,6 +52,6 @@ public class TurretBehaviour : MonoBehaviour
             m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap("Trap");
             m_HasBeenTrap = true;
         }
-        
+
     }
 }

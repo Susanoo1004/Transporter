@@ -1,5 +1,17 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<< HEAD:Assets/Sound/Lvl3_AfterBridge_LOOP.wav.meta
+<<<<<<< HEAD
+guid: 25106088a6c57884e9906e68ddb5e97a
+=======
+guid: 33c7d945967b402479ce9442a90c7696
+>>>>>>> b6cb52f8027e9894dfd27e00de860e998b3dae99
+=======
 guid: 746e2bea6ecee7048a5394a163d84f1a
+>>>>>>> 4154e4c29a60c47f951311d4c98cf571f799ae93:Assets/Sound/Sound_Design/Shield_protect_heavy.ogg.meta
+=======
+guid: 746e2bea6ecee7048a5394a163d84f1a
+>>>>>>> P_Conde
 AudioImporter:
   externalObjects: {}
   serializedVersion: 6
