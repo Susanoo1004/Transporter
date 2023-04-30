@@ -105,6 +105,7 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 m_EnemyLife = 0;
                 //son enemy death
+                m_EnemyExplosion.Play();
             }
 
             else

@@ -11,6 +11,9 @@ public class HealthBarBehaviour : MonoBehaviour
     [SerializeField]
     private Slider m_HealthBar;
 
+    [SerializeField]
+    private AudioSource m_LifeLow;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +27,8 @@ public class HealthBarBehaviour : MonoBehaviour
     {
         m_HealthBar.value = m_PlayerBehaviour.PlayerLife;
 
-        if (m_HealthBar.value <= 3);
-            //son low life
+        if (m_HealthBar.value <= 3)
+        m_LifeLow.Play();
 
     }
 }

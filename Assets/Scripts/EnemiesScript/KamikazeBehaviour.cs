@@ -66,7 +66,7 @@ public class KamikazeBehaviour : EnemyBehaviour
             if (m_KamikazeRollPlay)
             {
                 m_KamikazeRollLoop.Play();
-                m_KamikazeRollPlay = false;
+                m_KamikazeRollPlay = false;                
 
             }
 
@@ -131,9 +131,8 @@ public class KamikazeBehaviour : EnemyBehaviour
                 }
             }
 
-            m_KamikazeRollLoop.enabled = false; 
-            
-            // ms : son explosion
+            m_KamikazeRollLoop.enabled = false;            
+           
             
 
             Destroy(gameObject);
