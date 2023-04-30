@@ -129,6 +129,12 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private AudioClip[] m_MagnetPushList;
 
+    [SerializeField]
+    private AudioSource m_MagnetBack;
+
+    [SerializeField]
+    private AudioSource m_MagnetThrow;
+
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
@@ -527,6 +533,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.RepulsiveForce = m_RepulsiveForce;
 
         //son de MagnetThrow (lancement de l'aimant)
+        m_MagnetThrow.Play();
     }
 
     private void SetPullProperties()
@@ -543,6 +550,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.LastPosition = m_Magnet.position;
 
         //son MagnetBack
+        m_MagnetBack.Play();
     }
 
     private void AttachMagnet()
