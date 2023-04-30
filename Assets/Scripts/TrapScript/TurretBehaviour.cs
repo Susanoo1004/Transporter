@@ -7,6 +7,12 @@ public class TurretBehaviour : MonoBehaviour
 {
 
     [SerializeField]
+    private AudioSource m_TurretIdleSound;
+
+    [SerializeField]
+    private AudioSource m_TurretAttractingSound;
+
+    [SerializeField]
     private float m_AttractionSpeed;
 
     private Transform m_Target;
@@ -34,6 +40,8 @@ public class TurretBehaviour : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        m_TurretAttractingSound.Play();
+
         if (!other.TryGetComponent(out PlayerBehaviour player) && !other.TryGetComponent(out MagneticObject magneticObject))
             return;
 

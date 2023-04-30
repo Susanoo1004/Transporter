@@ -117,7 +117,6 @@ MonoBehaviour:
   m_InvicibilityTime: 2
   m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
-  m_GravityMultiplier: 0
   m_Accelerate: 20
   MaxSpeed: 0
   m_DashPower: 15
@@ -139,6 +138,13 @@ MonoBehaviour:
   m_ThrowTime: 0.25
   m_PullTime: 0.25
   m_PlayerToMagnetDistance: 2
+  m_MagnetSwitchSound: {fileID: 0}
+  m_MagnetSwitchList: []
+  m_PlayerDash: {fileID: 0}
+  m_PlayerDashList: []
+  m_LifeLose: {fileID: 0}
+  m_MagnetPush: {fileID: 0}
+  m_MagnetPushList: []
   SurfaceNormal: {x: 0, y: 0, z: 0}
   CurrentCheckpoint: {x: 0, y: 0, z: 0}
 --- !u!114 &7146066286638838102
@@ -538,6 +544,8 @@ MonoBehaviour:
   IsPositive: 0
   m_PositiveMaterial: {fileID: 2100000, guid: 00efcbfbbb4d9d0499928a0974698dd2, type: 2}
   m_NegativeMaterial: {fileID: 2100000, guid: 8b6badc08db3a5441a86aee48522e4c2, type: 2}
+  m_MagnetImpactObjectHeavy: {fileID: 0}
+  m_MagnetImpactObjectLight: {fileID: 0}
   RepulsiveForce: 0
   AttractionTime: 0
   PlayerAttractionSpeed: 0
