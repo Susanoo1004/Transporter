@@ -64,6 +64,8 @@ public class TurretBehaviour : MonoBehaviour
             m_HasBeenTrap = true;
         }
 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player Projectiles"))
+            Destroy(gameObject);
     }
 
 }
