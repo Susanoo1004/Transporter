@@ -25,7 +25,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]
     private float m_GravityMultiplier;
-
     // Arm
     private float m_ResetArmPos = 0.75f;
     private bool m_ResetArm;
@@ -135,6 +134,15 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private AudioSource m_DeathSound;
 
+    private AudioSource m_MagnetBack;
+
+    [SerializeField]
+    private AudioSource m_MagnetThrow;
+
+    [SerializeField]
+    private AudioSource m_PlayerJump;
+
+    
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
@@ -382,6 +390,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
             m_Arm.position += Vector3.down / 3.5f;
+            m_PlayerJump.Play();
         }
         else
         {
@@ -482,7 +491,7 @@ public class PlayerBehaviour : MonoBehaviour
 
 
             // ms : son Dash
-            m_PlayerDash.Play();
+            play_PlayerDash();
 
 
             return;
@@ -533,6 +542,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.RepulsiveForce = m_RepulsiveForce;
 
         //son de MagnetThrow (lancement de l'aimant)
+        m_MagnetThrow.Play();
     }
 
     private void SetPullProperties()
@@ -549,6 +559,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.LastPosition = m_Magnet.position;
 
         //son MagnetBack
+        m_MagnetBack.Play();
     }
 
     private void AttachMagnet()
@@ -574,8 +585,8 @@ public class PlayerBehaviour : MonoBehaviour
                                                                       m_MagnetBehaviour.MagnetizedObject.position.y,
                                                                       0);
             m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
-            
-            //son MagnetPush
+            //son
+            play_MagnetPush();
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {

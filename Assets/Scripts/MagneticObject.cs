@@ -13,6 +13,16 @@ public class MagneticObject : MonoBehaviour
     }
     [SerializeField]
     private byte m_Damage = 1;
+    [SerializeField]
+    private AudioSource m_DamageHeavy;
+    [SerializeField]
+    private AudioSource m_DamageLight;
+    [SerializeField]
+    private AudioClip[] m_DamageHeavyList;
+    [SerializeField]
+    private AudioClip[] m_DamageLightList;
+   
+
 
 
     private int m_DefaultLayer;
@@ -51,7 +61,23 @@ public class MagneticObject : MonoBehaviour
             enemyBehaviour.TakeDamage(m_Damage);
 
             //son quand l'ennemi reçoit des dégats de caisse Damage_Heavy
+            play_DamageHeavy();
             //son quand l'ennemi reçoit des dégats de pièces Damage_Light
+            play_DamageLight();
         }
+    }
+
+    public void play_DamageHeavy()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_DamageHeavyList.Length);
+        m_DamageHeavy.PlayOneShot(m_DamageHeavyList[index]);
+    }
+
+    public void play_DamageLight()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_DamageLightList.Length);
+        m_DamageLight.PlayOneShot(m_DamageLightList[index]);
     }
 }

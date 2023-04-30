@@ -26,6 +26,16 @@ public class MagnetBehaviour : MonoBehaviour
     private AudioSource m_MagnetImpactObjectHeavy;
     [SerializeField]
     private AudioSource m_MagnetImpactObjectLight;
+    [SerializeField]
+    private AudioSource m_PlatformAttractionImpact;
+    [SerializeField]
+    private AudioSource m_PlayerAttracted;
+    [SerializeField]
+    private AudioClip[] m_PlayerAttractedList;
+    [SerializeField]
+    private AudioSource m_PlayerRepelled;
+    [SerializeField]
+    private AudioClip[] m_PlayerRepelledList;
 
     //[HideInInspector]
     public float RepulsiveForce;
@@ -200,6 +210,8 @@ public class MagnetBehaviour : MonoBehaviour
                             m_Player.position = collider.ClosestPoint(transform.position) + GetPlayerAttachedObjectNormal * boxCollider.size.y/2;
 
                         //son player attéri sur une plateforme aimantée
+                        m_PlatformAttractionImpact.Play();
+
                     }
                 }
                 
@@ -273,6 +285,7 @@ public class MagnetBehaviour : MonoBehaviour
                         rigidbody.AddForce(direction * RepulsiveForce * 1.5f, ForceMode.VelocityChange);
 
                         //son player_repelled
+                        play_PlayerRepelled();
                     }
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
@@ -296,6 +309,7 @@ public class MagnetBehaviour : MonoBehaviour
                                 rb.useGravity = false;
 
                             //son player attracted (par une plateforme)
+                            play_PlayerAttracted();
                         }
                     }
                 }
@@ -304,5 +318,19 @@ public class MagnetBehaviour : MonoBehaviour
         GetComponent<SphereCollider>().enabled = false;
 
         }
+    }
+
+    public void play_PlayerAttracted()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_PlayerAttractedList.Length);
+        m_PlayerAttracted.PlayOneShot(m_PlayerAttractedList[index]);
+    }
+
+    public void play_PlayerRepelled()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_PlayerRepelledList.Length);
+        m_PlayerRepelled.PlayOneShot(m_PlayerRepelledList[index]);
     }
 }
