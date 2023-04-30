@@ -3222,6 +3222,7 @@ MonoBehaviour:
   m_EnemyLife: 1
   m_EnemyDamage: 2
   m_InvincibilityTime: 0.5
+  m_DetectedSound: {fileID: 1543923753164247896}
   m_NavPoints:
   - {fileID: 6626422041097380025}
   - {fileID: 6626422039393809447}
@@ -3235,7 +3236,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1abdd9ccc417da047ab5d9195816aea6, type: 3}
   - {fileID: 8300000, guid: 7584693c781fad646b351dcdd04c6fc4, type: 3}
   - {fileID: 8300000, guid: 1c4e89e1e6612ba45964cd736cb4aa3f, type: 3}
-  m_KamikazeDetectionSound: {fileID: 0}
 --- !u!195 &6626422040191249832
 NavMeshAgent:
   m_ObjectHideFlags: 0
