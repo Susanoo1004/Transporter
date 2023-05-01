@@ -9568,9 +9568,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1328452546353917956, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1646583129630645909, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3085738244475823137, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7146066286638838102, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_DefaultActionMap
