@@ -1,0 +1,34 @@
+{
+    "name": "MenuInput",
+    "maps": [
+        {
+            "name": "Menu",
+            "id": "0c74b039-4873-423f-9908-50752463a7d2",
+            "actions": [
+                {
+                    "name": "Start",
+                    "type": "Button",
+                    "id": "439d0ca0-d662-4912-842f-5f93d7d55900",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e24b1930-d25e-4713-ab3b-edba1d39f68b",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
