@@ -221,7 +221,7 @@ public class MagnetBehaviour : MonoBehaviour
                         if (PlayerAttachedObject.TryGetComponent(out Collider collider))
                             m_Player.position = collider.ClosestPoint(transform.position) + GetPlayerAttachedObjectNormal * boxCollider.size.y/2;
 
-                        //son player attéri sur une plateforme aimantée
+                        //son player attï¿½ri sur une plateforme aimantï¿½e
                         m_PlatformAttractionImpact.Play();
 
                     }

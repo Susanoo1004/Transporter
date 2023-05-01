@@ -64,8 +64,9 @@ public class MovingPlatform : MonoBehaviour
     {
         if (m_StopCooldown > 0)
         {
-            m_StopCooldown -= Time.deltaTime;
             m_PlatformMove.Play();
+            m_StopCooldown -= Time.deltaTime;
+
         }
     }
 

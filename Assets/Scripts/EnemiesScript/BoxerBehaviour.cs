@@ -7,9 +7,6 @@ public class BoxerBehaviour : EnemyBehaviour
     private float m_AttackRange;
 
     [SerializeField]
-    private AudioSource m_BoxerDetectionSound;
-
-    [SerializeField]
     private AudioSource m_BoxerFstpWalk;
 
     [SerializeField]
@@ -66,10 +63,10 @@ public class BoxerBehaviour : EnemyBehaviour
                 m_HitCD = m_HitFrequency;
                 m_Animator.Play("Hit");
 
-                //son du boxeur punch (aléatoire)
+                //son du boxeur punch (alï¿½atoire)
                 play_BoxerPunch();
 
-                //son du shield attack (aléatoire) --> les gp doivent faire un script :)
+                //son du shield attack (alï¿½atoire) --> les gp doivent faire un script :)
                 m_ShieldAttack.Play();
             }
         }
@@ -83,8 +80,6 @@ public class BoxerBehaviour : EnemyBehaviour
             m_NavAgent.speed = m_NavAgent.speed * 2;
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
-
-            m_BoxerDetectionSound.Play(); // ms : son detection
 
         }
     }
