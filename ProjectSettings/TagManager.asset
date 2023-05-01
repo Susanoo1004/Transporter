@@ -15,14 +15,9 @@ TagManager:
   - Player
   - Enemies
   - Magnet
-<<<<<<< HEAD
-  - Player Projectiles
-  - Enemy Projectiles
-=======
-  - Enemy Projectiles
-  - Player Projectiles
->>>>>>> L_Sarrazin
   - 
+  - Player Projectiles
+  - Enemy Projectiles
   - 
   - 
   - 

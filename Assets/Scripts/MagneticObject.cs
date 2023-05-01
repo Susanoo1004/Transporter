@@ -14,6 +14,8 @@ public class MagneticObject : MonoBehaviour
     [SerializeField]
     private byte m_Damage = 1;
 
+    [HideInInspector]
+    public bool DestroyOnCollision;
 
     private int m_DefaultLayer;
 
