@@ -24,8 +24,6 @@ public class PlayerBehaviour : MonoBehaviour
     private Transform m_Arm;
 
     // Arm
-    private float m_ResetArmPos = 0.75f;
-    private bool m_ResetArm;
     private Vector3 m_ArmBaseLocalScale;
 
     //[HideInInspector]
@@ -332,19 +330,6 @@ public class PlayerBehaviour : MonoBehaviour
 
         }
 
-
-        /*
-        if (m_ResetArm)
-        {
-            m_ResetArmPos -= Time.deltaTime;
-            if (m_ResetArmPos <= 0)
-            {
-                m_Arm.position -= Vector3.down / 3.5f;
-                m_ResetArmPos = 0.75f;
-                m_ResetArm = false;
-            }
-        }
-        */
     }
 
     private void FixedUpdate()
@@ -411,10 +396,8 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started && IsGrounded == true)
         {
             m_IsJumping = true;
-            m_ResetArm = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
-            //m_Arm.position += Vector3.down / 3.5f;
             m_PlayerJump.Play();
         }
         else
