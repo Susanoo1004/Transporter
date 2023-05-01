@@ -395,7 +395,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
+            m_Rigidbody.velocity += (Vector3.down/10);
     }
 
     public void OnMovement(InputAction.CallbackContext _context)

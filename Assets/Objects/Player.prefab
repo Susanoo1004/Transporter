@@ -125,7 +125,6 @@ MonoBehaviour:
   m_InvicibilityTime: 2
   m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
-  m_GravityMultiplier: 2.5
   IsInForeground: 0
   m_Accelerate: 20
   MaxSpeed: 10
@@ -161,7 +160,7 @@ MonoBehaviour:
   m_MagnetPushList:
   - {fileID: 8300000, guid: f6457519fa2cc704aae4f6f60dc3c850, type: 3}
   - {fileID: 8300000, guid: 21f85982aa02590428ca7c1de2e8a9e5, type: 3}
-  m_DeathSound: {fileID: 6054082149726411538}
+  m_DeathSound: {fileID: 0}
   m_MagnetThrow: {fileID: 6284772842241196388}
   m_PlayerJump: {fileID: 7721971932150762321}
   m_LifeLow: {fileID: 6330437250270583338}

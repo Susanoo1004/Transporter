@@ -9568,6 +9568,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1646583129630645909, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.14
+      objectReference: {fileID: 0}
     - target: {fileID: 7146066286638838102, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_DefaultActionMap
       value: Gameplay
@@ -9590,7 +9594,7 @@ PrefabInstance:
       objectReference: {fileID: 858531462}
     - target: {fileID: 7146066286638838106, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7146066286638838106, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9599,6 +9603,10 @@ PrefabInstance:
     - target: {fileID: 7146066286638838106, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7146066286638838107, guid: d8f5b507d9219144487f262c264e4940, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7577731113683123740, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_Controller
