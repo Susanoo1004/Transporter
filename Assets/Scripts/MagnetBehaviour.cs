@@ -163,7 +163,7 @@ public class MagnetBehaviour : MonoBehaviour
             Vector3 direction = distance.normalized;
             if (!m_Player.TryGetComponent(out BoxCollider boxCollider))
                 return;
-            Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.9f;
+            Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.7f;
             int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
             if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x/2, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == MagnetizedObject.gameObject)
@@ -251,7 +251,8 @@ public class MagnetBehaviour : MonoBehaviour
             {
                 if (polarity == magneticObject.polarity || magneticObject.polarity == MagneticObject.Polarity.BOTH_REPULSIVE) // Repulse
                 {
-                    Vector3 direction = (m_Player.position - transform.position).normalized;
+                    Vector3 direction = m_Player.position - transform.position;
+                    direction = new Vector3(direction.x, direction.y).normalized;
 
                     if (m_Player.TryGetComponent(out Rigidbody rigidbody))
                     {
@@ -269,7 +270,7 @@ public class MagnetBehaviour : MonoBehaviour
                     {
                         Vector3 distance = transform.position - m_Player.position;
                         Vector3 direction = distance.normalized;
-                        Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.9f;
+                        Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.7f;
                         int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
                         if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x / 2, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == magneticObject.gameObject)
