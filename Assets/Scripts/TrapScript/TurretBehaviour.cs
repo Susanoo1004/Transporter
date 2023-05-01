@@ -56,6 +56,7 @@ public class TurretBehaviour : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             m_Target = collision.transform;
+            Debug.Log("Collision Player");
             m_OldActionMap = m_Target.GetComponent<PlayerInput>().currentActionMap.name;
             m_Target.TryGetComponent(out PlayerInput playerInput);
             m_PlayerInput = playerInput;

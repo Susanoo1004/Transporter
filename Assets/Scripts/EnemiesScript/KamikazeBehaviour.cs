@@ -19,6 +19,27 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private float m_ExplosionKnocknack;
 
+    [SerializeField]
+    private AudioSource m_KamikazeExplosion;
+
+    [SerializeField]
+    private AudioSource m_KamikazeFtsp;
+
+    [SerializeField]
+    private AudioClip[] m_KamikazeFtspList;
+
+    [SerializeField]
+    private AudioSource m_KamikazeDetectionSound;
+
+    [SerializeField]
+    private AudioSource m_KamikazeRollLoop;
+
+    [SerializeField]
+    private AudioSource m_KamikazeGoToRoll;
+
+   
+    private bool m_KamikazeRollPlay = true;
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -42,13 +63,21 @@ public class KamikazeBehaviour : EnemyBehaviour
     {
         if (!IsExploding)
         {
+            if (m_KamikazeRollPlay)
+            {
+                m_KamikazeRollLoop.Play();
+                m_KamikazeRollPlay = false;                
+
+            }
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, m_DetonationRadius);
             foreach (Collider collider in colliders)
             {
                 if (collider.CompareTag("Player"))
-                {
+                {                   
                     IsExploding = true;
-                    return;
+                    m_KamikazeExplosion.Play();
+                    return;                    
                 }
             }
 
@@ -56,7 +85,7 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
         else
         {
-            m_Animator.Play("Explode");
+            m_Animator.Play("Explode");            
             Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up / 2) - (transform.position + Vector3.down);
             m_Animator.SetFloat("SpeedX", 1);
 
@@ -81,12 +110,12 @@ public class KamikazeBehaviour : EnemyBehaviour
             else
             {
                 m_NavAgent.SetDestination(m_Target.transform.position);
+
             }
 
             m_HitCD -= Time.deltaTime;
-            Debug.Log(m_HitCD);
 
-            if (m_HitCD > 0.0f)
+            if (vecBetweenTargetandKamikaze.magnitude >= 2.8f && m_HitCD > 0.0f)
                 return;
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, 2.8f, 1 << 6);
@@ -97,11 +126,14 @@ public class KamikazeBehaviour : EnemyBehaviour
                     if (m_Target.TryGetComponent(out PlayerBehaviour player) && player.m_InvicibilityTimer < 0)
                     {
                         player.TakeDamage(m_EnemyDamage);
-                        break;
                     }
+                    break;
                 }
             }
-            // ms : son explosion
+
+            m_KamikazeRollLoop.enabled = false;            
+           
+            
 
             Destroy(gameObject);
         }
@@ -116,21 +148,27 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
 
-
+            m_KamikazeDetectionSound.Play();
             // ms : son detection 
 
         }
 
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-            m_HitCD = 0;    
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, m_DetonationRadius);
+    }
+
+    public void play_KamikazeFtsp()
+    {
+        
+        int index = Random.Range(0, m_KamikazeFtspList.Length);
+        m_KamikazeFtsp.PlayOneShot(m_KamikazeFtspList[index]);
+    }
+
+    public void play_KamikazeGoToRoll()
+    {
+        m_KamikazeGoToRoll.Play();
+        
     }
 }
