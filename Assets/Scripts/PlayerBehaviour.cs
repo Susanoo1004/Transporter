@@ -330,18 +330,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
 
-        /*
-        if (m_ResetArm)
-        {
-            m_ResetArmPos -= Time.deltaTime;
-            if (m_ResetArmPos <= 0)
-            {
-                m_Arm.position -= Vector3.down / 3.5f;
-                m_ResetArmPos = 0.75f;
-                m_ResetArm = false;
-            }
-        }
-        
+    
     }
 
     private void FixedUpdate()

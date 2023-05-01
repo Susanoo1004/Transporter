@@ -2258,6 +2258,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4261504524889656953, guid: eb3c8fd668f69e14da14c2592773097c, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261504524889656953, guid: eb3c8fd668f69e14da14c2592773097c, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 4261504524889656956, guid: eb3c8fd668f69e14da14c2592773097c, type: 3}
       propertyPath: m_LoopBack
       value: 1
@@ -2292,7 +2300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4261504524889656959, guid: eb3c8fd668f69e14da14c2592773097c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3c8fd668f69e14da14c2592773097c, type: 3}
@@ -9723,7 +9731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7146066286638838106, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 159
+      value: 161
       objectReference: {fileID: 0}
     - target: {fileID: 7146066286638838106, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13822,8 +13830,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1177382704}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.70710677}
-  m_LocalPosition: {x: 0.00000071525574, y: -3.335, z: 15.382836}
-  m_LocalScale: {x: 4.793847, y: 9.11986, z: 5}
+  m_LocalPosition: {x: 0.00000071525574, y: -2.8315, z: 15.382836}
+  m_LocalScale: {x: 4.793847, y: 10.126692, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2083649511}
@@ -24762,7 +24770,7 @@ GameObject:
   - component: {fileID: 2129414260}
   - component: {fileID: 2129414259}
   - component: {fileID: 2129414258}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CubeMagnet (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
