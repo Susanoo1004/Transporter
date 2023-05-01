@@ -28,6 +28,18 @@ public class KamikazeBehaviour : EnemyBehaviour
     [SerializeField]
     private AudioClip[] m_KamikazeFtspList;
 
+    [SerializeField]
+    private AudioSource m_KamikazeDetectionSound;
+
+    [SerializeField]
+    private AudioSource m_KamikazeRollLoop;
+
+    [SerializeField]
+    private AudioSource m_KamikazeGoToRoll;
+
+   
+    private bool m_KamikazeRollPlay = true;
+
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -51,13 +63,21 @@ public class KamikazeBehaviour : EnemyBehaviour
     {
         if (!IsExploding)
         {
+            if (m_KamikazeRollPlay)
+            {
+                m_KamikazeRollLoop.Play();
+                m_KamikazeRollPlay = false;                
+
+            }
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, m_DetonationRadius);
             foreach (Collider collider in colliders)
             {
                 if (collider.CompareTag("Player"))
-                {
+                {                   
                     IsExploding = true;
-                    return;
+                    m_KamikazeExplosion.Play();
+                    return;                    
                 }
             }
 
@@ -65,7 +85,7 @@ public class KamikazeBehaviour : EnemyBehaviour
         }
         else
         {
-            m_Animator.Play("Explode");
+            m_Animator.Play("Explode");            
             Vector3 vecBetweenTargetandKamikaze = (m_Target.transform.position + Vector3.up / 2) - (transform.position + Vector3.down);
             m_Animator.SetFloat("SpeedX", 1);
 
@@ -91,7 +111,6 @@ public class KamikazeBehaviour : EnemyBehaviour
             {
                 m_NavAgent.SetDestination(m_Target.transform.position);
 
-                //confirmation avec Paul, son kamikaze Roll
             }
 
             m_HitCD -= Time.deltaTime;
@@ -114,6 +133,10 @@ public class KamikazeBehaviour : EnemyBehaviour
             // ms : son explosion
             m_KamikazeExplosion.Play();
 
+            m_KamikazeRollLoop.enabled = false;            
+           
+            
+
             Destroy(gameObject);
         }
     }
@@ -126,8 +149,6 @@ public class KamikazeBehaviour : EnemyBehaviour
             m_NavAgent.speed = 6.0f;
             m_NavAgent.stoppingDistance = 5.0f;
             m_Target = other.gameObject;
-
-
         }
 
     }
@@ -141,5 +162,11 @@ public class KamikazeBehaviour : EnemyBehaviour
         
         int index = Random.Range(0, m_KamikazeFtspList.Length);
         m_KamikazeFtsp.PlayOneShot(m_KamikazeFtspList[index]);
+    }
+
+    public void play_KamikazeGoToRoll()
+    {
+        m_KamikazeGoToRoll.Play();
+        
     }
 }

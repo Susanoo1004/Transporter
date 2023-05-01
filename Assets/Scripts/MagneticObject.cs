@@ -25,12 +25,23 @@ public class MagneticObject : MonoBehaviour
 
 
 
+   
+
+
+    [HideInInspector]
+    public bool DestroyOnCollision;
+
     private int m_DefaultLayer;
 
     public Polarity polarity;
 
     public bool AffectPlayer;
     public bool AffectSelf;
+
+    private void Awake()
+    {
+        m_DefaultLayer = gameObject.layer;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +59,7 @@ public class MagneticObject : MonoBehaviour
     {
         if (gameObject.layer == LayerMask.NameToLayer("Player Projectiles") || gameObject.layer == LayerMask.NameToLayer("Enemy Projectiles"))
         {
-            if (TryGetComponent(out Rigidbody rb) && rb.velocity == Vector3.zero)
+            if (TryGetComponent(out Rigidbody rb) && rb.velocity.magnitude < 0.1f)
                 gameObject.layer = m_DefaultLayer;
         }
 
@@ -56,14 +67,23 @@ public class MagneticObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemies") && other.gameObject.TryGetComponent(out EnemyBehaviour enemyBehaviour))
+        if (gameObject.layer == LayerMask.NameToLayer("Player Projectiles") && other.gameObject.layer == LayerMask.NameToLayer("Enemies") && other.gameObject.TryGetComponent(out EnemyBehaviour enemyBehaviour))
         {
             enemyBehaviour.TakeDamage(m_Damage);
 
-            //son quand l'ennemi reçoit des dégats de caisse Damage_Heavy
+            //son quand l'ennemi reï¿½oit des dï¿½gats de caisse Damage_Heavy
             play_DamageHeavy();
-            //son quand l'ennemi reçoit des dégats de pièces Damage_Light
+            //son quand l'ennemi reï¿½oit des dï¿½gats de piï¿½ces Damage_Light.  play_DamageLight();
+                        
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Default"))
+        {
             play_DamageLight();
+        }
+        if (gameObject.layer == LayerMask.NameToLayer("Enemy Projectiles") && other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.TryGetComponent(out PlayerBehaviour playerBehaviour))
+        {
+            playerBehaviour.TakeDamage(m_Damage);
         }
     }
 

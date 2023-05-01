@@ -27,6 +27,8 @@ public class MagnetBehaviour : MonoBehaviour
     [SerializeField]
     private AudioSource m_MagnetImpactObjectLight;
     [SerializeField]
+    private AudioClip[] m_MagnetImpactLightList;
+    [SerializeField]
     private AudioSource m_PlatformAttractionImpact;
     [SerializeField]
     private AudioSource m_PlayerAttracted;
@@ -36,6 +38,12 @@ public class MagnetBehaviour : MonoBehaviour
     private AudioSource m_PlayerRepelled;
     [SerializeField]
     private AudioClip[] m_PlayerRepelledList;
+    [SerializeField]
+    private AudioSource m_MagnetPush;
+    [SerializeField]
+    private AudioClip[] m_MagnetPushList;
+    [SerializeField]
+    private AudioSource m_MagnetImpactPlatform;
 
     //[HideInInspector]
     public float RepulsiveForce;
@@ -91,6 +99,8 @@ public class MagnetBehaviour : MonoBehaviour
 
     private bool HasMagnet { get { return transform.parent == m_Player.transform; } }
     public bool HasMagnetizedObject { get { return MagnetizedObject != null; } }
+
+    private bool m_MagnetImpactObjectHeavySound = true;
 
     private void Awake()
     {
@@ -162,18 +172,20 @@ public class MagnetBehaviour : MonoBehaviour
             if (AttractionTimer > 0)
             {
                 AttractionTimer -= Time.fixedDeltaTime;
-                MagnetizedObject.position = Vector3.Lerp(m_LastMagnetizedObjectPosition, transform.position, 1-AttractionTimer/AttractionTime);
+                MagnetizedObject.position = Vector3.Lerp(m_LastMagnetizedObjectPosition, transform.position, 1 - AttractionTimer / AttractionTime);
+                m_MagnetImpactObjectHeavySound = true;
             }
             else
             {
                 MagnetizedObject.SetParent(transform, true);
                 MagnetizedObject.localPosition = Vector3.zero;
 
-                //si l'objet qu'il touche est lourd
-                m_MagnetImpactObjectHeavy.Play();
+               if(m_MagnetImpactObjectHeavySound)
+                    { 
+                    m_MagnetImpactObjectHeavy.Play();
+                    m_MagnetImpactObjectHeavySound = false;
+                    }
 
-                //si l'objet qu'il touche est léger
-                //m_MagnetImpactObjectLight.Play();
             }
         }
 
@@ -183,7 +195,7 @@ public class MagnetBehaviour : MonoBehaviour
             Vector3 direction = distance.normalized;
             if (!m_Player.TryGetComponent(out BoxCollider boxCollider))
                 return;
-            Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.9f;
+            Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.7f;
             int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
             if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x/2, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == MagnetizedObject.gameObject)
@@ -209,7 +221,7 @@ public class MagnetBehaviour : MonoBehaviour
                         if (PlayerAttachedObject.TryGetComponent(out Collider collider))
                             m_Player.position = collider.ClosestPoint(transform.position) + GetPlayerAttachedObjectNormal * boxCollider.size.y/2;
 
-                        //son player attéri sur une plateforme aimantée
+                        //son player attï¿½ri sur une plateforme aimantï¿½e
                         m_PlatformAttractionImpact.Play();
 
                     }
@@ -233,7 +245,8 @@ public class MagnetBehaviour : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         TravelTimer = 0;
-        
+        play_MagnetImpactLight();
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -255,6 +268,10 @@ public class MagnetBehaviour : MonoBehaviour
                         rigidbody.AddForce(Aim * RepulsiveForce, ForceMode.VelocityChange);
                     
                     other.gameObject.layer = LayerMask.NameToLayer("Player Projectiles");
+
+                    play_MagnetPush();
+
+
                 }
                 else if (magneticObject.polarity == MagneticObject.Polarity.POSITIVE
                       || magneticObject.polarity == MagneticObject.Polarity.NEGATIVE
@@ -276,7 +293,8 @@ public class MagnetBehaviour : MonoBehaviour
             {
                 if (polarity == magneticObject.polarity || magneticObject.polarity == MagneticObject.Polarity.BOTH_REPULSIVE) // Repulse
                 {
-                    Vector3 direction = (m_Player.position - transform.position).normalized;
+                    Vector3 direction = m_Player.position - transform.position;
+                    direction = new Vector3(direction.x, direction.y).normalized;
 
                     if (m_Player.TryGetComponent(out Rigidbody rigidbody))
                     {
@@ -297,7 +315,7 @@ public class MagnetBehaviour : MonoBehaviour
                     {
                         Vector3 distance = transform.position - m_Player.position;
                         Vector3 direction = distance.normalized;
-                        Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.9f;
+                        Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.7f;
                         int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
                         if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x / 2, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == magneticObject.gameObject)
@@ -310,6 +328,7 @@ public class MagnetBehaviour : MonoBehaviour
 
                             //son player attracted (par une plateforme)
                             play_PlayerAttracted();
+                            m_MagnetImpactPlatform.Play();
                         }
                     }
                 }
@@ -332,5 +351,20 @@ public class MagnetBehaviour : MonoBehaviour
 
         int index = UnityEngine.Random.Range(0, m_PlayerRepelledList.Length);
         m_PlayerRepelled.PlayOneShot(m_PlayerRepelledList[index]);
+
+    }
+
+    public void play_MagnetPush()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_MagnetPushList.Length);
+        m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
+    }
+
+    public void play_MagnetImpactLight()
+    {
+
+        int index = UnityEngine.Random.Range(0, m_MagnetImpactLightList.Length);
+        m_MagnetImpactObjectLight.PlayOneShot(m_MagnetImpactLightList[index]);
     }
 }

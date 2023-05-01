@@ -190,7 +190,8 @@ MonoBehaviour:
   - {fileID: 4298666805452483298}
   - {fileID: 4298666806055649736}
   m_AttackRange: 2
-  m_BoxerFstpWalk: {fileID: 1495055497195761202}
+  m_BoxerDetectionSound: {fileID: 2637179881757279134}
+  m_BoxerFstpWalk: {fileID: 0}
   m_BoxerFstpWalkList:
   - {fileID: 8300000, guid: 127b5b7798bd16548893829244d4459f, type: 3}
   - {fileID: 8300000, guid: 144e11cba2585f64d8541393265cb99a, type: 3}
