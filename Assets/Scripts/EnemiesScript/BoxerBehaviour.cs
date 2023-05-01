@@ -6,6 +6,30 @@ public class BoxerBehaviour : EnemyBehaviour
     [SerializeField]
     private float m_AttackRange;
 
+    [SerializeField]
+    private AudioSource m_BoxerDetectionSound;
+
+    [SerializeField]
+    private AudioSource m_BoxerFstpWalk;
+
+    [SerializeField]
+    private AudioClip[] m_BoxerFstpWalkList;
+
+    [SerializeField]
+    private AudioSource m_BoxerFstpRun;
+
+    [SerializeField]
+    private AudioClip[] m_BoxerFstpRunList;
+
+    [SerializeField]
+    private AudioSource m_BoxerPunch;
+
+    [SerializeField]
+    private AudioClip[] m_BoxerPunchList;
+
+    [SerializeField]
+    private AudioSource m_ShieldAttack;
+        
     private void Awake()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
@@ -41,10 +65,16 @@ public class BoxerBehaviour : EnemyBehaviour
                 player.TakeDamage(m_EnemyDamage);
                 m_HitCD = m_HitFrequency;
                 m_Animator.Play("Hit");
+
+                //son du boxeur punch (aléatoire)
+                play_BoxerPunch();
+
+                //son du shield attack (aléatoire) --> les gp doivent faire un script :)
+                m_ShieldAttack.Play();
             }
         }
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -54,9 +84,31 @@ public class BoxerBehaviour : EnemyBehaviour
             m_NavAgent.stoppingDistance = m_AttackRange;
             m_Target = other.gameObject;
 
-            // ms : son detection
+            m_BoxerDetectionSound.Play(); // ms : son detection
 
         }
     }
 
+    // ms : footsteps sound on animator
+    public void play_BoxerFstpWalk()
+    {
+
+        int index = Random.Range(0, m_BoxerFstpWalkList.Length);
+        m_BoxerFstpWalk.PlayOneShot(m_BoxerFstpWalkList[index]);
+    }
+
+    public void play_BoxerFstpRun()
+    {
+
+        int index = Random.Range(0, m_BoxerFstpRunList.Length);
+        m_BoxerFstpRun.PlayOneShot(m_BoxerFstpRunList[index]);
+    }
+
+    public void play_BoxerPunch()
+    {
+
+        int index = Random.Range(0, m_BoxerPunchList.Length);
+        m_BoxerPunch.PlayOneShot(m_BoxerPunchList[index]);
+    }
+      
 }
