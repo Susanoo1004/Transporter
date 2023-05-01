@@ -1,7 +1,9 @@
 using TMPro;
 using Unity.Burst.Intrinsics;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PlayerBehaviour : MonoBehaviour
@@ -701,4 +703,8 @@ public class PlayerBehaviour : MonoBehaviour
         m_DeathSound.Play();
     }
 
+    public void GotoLvl(string level)
+    {
+        SceneManager.LoadScene(level);
+    }
 }

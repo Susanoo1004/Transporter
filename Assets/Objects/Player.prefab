@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 1328452546353917956}
   - component: {fileID: 3085738244475823137}
   - component: {fileID: 6970280929498728888}
+  - component: {fileID: 7542379354250621231}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -107,7 +108,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 104
   m_CollisionDetection: 0
 --- !u!114 &7146066286638838105
 MonoBehaviour:
@@ -420,6 +421,102 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8337c188-46b5-4fa6-80ed-5a385aa93038
     m_ActionName: Trap/Change Polarity
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7542379354250621231}
+        m_TargetAssemblyTypeName: GameManagerBehaviour, Assembly-CSharp
+        m_MethodName: OnOptionPress
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fd547fda-7dfa-4aa2-8aa5-444421848489
+    m_ActionName: Gameplay/Options[/DualShock4GamepadHID/start]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: GotoLvl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Lvl1
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 71b1ee9c-8a5e-4b3b-9eb9-77e4777087d5
+    m_ActionName: Gameplay/Lvl1[/Keyboard/h]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: GotoLvl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Lvl2
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 07c78b7b-ab9b-44f9-a43b-9f1c316d69c9
+    m_ActionName: Gameplay/Lvl2[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: GotoLvl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Lvl3
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 28d8d7fc-3ca8-42ed-b7cc-ff54f7f364e2
+    m_ActionName: Gameplay/Lvl3[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: GotoLvl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Lvl4
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 415007fd-5ee4-43b6-a3f2-9026cb1c4808
+    m_ActionName: Gameplay/Lvl4[/Keyboard/l]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7146066286638838105}
+        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
+        m_MethodName: GotoLvl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Lvl5
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 14a71e64-d11a-4892-b749-3835344ec9e7
+    m_ActionName: Gameplay/Lvl5[/Keyboard/semicolon]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -1309,6 +1406,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7542379354250621231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7146066286638838100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16650ed4a73c56c47a0cff71fd7eb0e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InPause: 0
+  NeedChangeScene: 0
 --- !u!1 &7146066286746599839
 GameObject:
   m_ObjectHideFlags: 0
