@@ -3,6 +3,7 @@ using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -207,10 +208,11 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /*m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
-        m_ArmAnimator.SetBool("Jump", m_IsJumping);
+        m_ArmAnimator.SetBool("Jump", m_IsJumping);*/
 
         //if(m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
         // {
@@ -230,7 +232,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (m_Aim != Vector2.zero)
         {
             Vector3 direction = m_Magnet.position - m_Arm.position;
-
             Quaternion ToRotation = Quaternion.AngleAxis(-Vector3.SignedAngle(Vector3.up, m_Aim, Vector3.forward), transform.right);
             m_Arm.rotation = ToRotation;
             //m_Arm.Rotate(transform.forward, 90);
@@ -239,7 +240,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
             Vector3 direction = m_Magnet.position - transform.position;
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Quaternion ToRotation = Quaternion.LookRotation(direction, Vector3.Cross(direction, Vector3.forward));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080 * Time.deltaTime);
         }
@@ -256,10 +257,10 @@ public class PlayerBehaviour : MonoBehaviour
         // else
         else
         {
-            if (Move != Vector3.zero)
-                m_LastMove = Move;
-            Quaternion ToRotation = Quaternion.LookRotation(m_LastMove, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
+            //if (Move != Vector3.zero)
+            //    m_LastMove = Move;
+            //Quaternion ToRotation = Quaternion.LookRotation(m_LastMove, Vector3.up);
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
         }
 
 
@@ -342,11 +343,12 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
-            if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
+            ////////////////////////////////////////////////////////////////
+            /*if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
                 if ((!m_IsStuckLeft && Mathf.Sign(Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(Move.x) == 1) || IsGrounded)
                     m_Rigidbody.AddForce(Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-            }
+            }*/
         }
         else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
         {
@@ -363,6 +365,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (IsGrounded)
         {
+            /////////////////////////////////////////////////////////////////////////////////////
+            /*
             MaxSpeed = m_BaseMaxSpeed;
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -375,36 +379,41 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             m_Animator.SetBool("Landed", true);
-
+            */
         }
         else
         {
+            /*
             MaxSpeed = m_BaseMaxSpeed - 2;
             m_Animator.SetBool("Landed", false);
+            */
         }
-
+        /*
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
             m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
+            */
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
     {
-        Vector2 move = _context.ReadValue<Vector2>();
-        Move = new Vector3(move.x, 0, 0);
+       /* Vector2 move = _context.ReadValue<Vector2>();
+        Move = new Vector3(move.x, 0, 0);*/
     }
 
     public void OnJump(InputAction.CallbackContext _context)
     {
         if (_context.started && IsGrounded == true)
         {
-            m_IsJumping = true;
+            /*m_IsJumping = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
-            m_PlayerJump.Play();
+            m_PlayerJump.Play();*/
         }
         else
         {
+            /*
             m_IsJumping = false;
+            */
         }
     }
 
@@ -649,6 +658,8 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.IsPlayerAttached = false;
         m_MagnetBehaviour.PlayerAttachedObject = null;
         m_Rigidbody.useGravity = true;
+        Variables.ActiveScene.Set("attracted",false);
+        Variables.ActiveScene.Set("reset",true);
         //son de player quand il se detache de la platforme
     }
 

@@ -216,6 +216,9 @@ public class MagnetBehaviour : MonoBehaviour
                         MagnetizedObject = null;
                         IsPlayerMagnetized = false;
                         IsPlayerAttached = true;
+                        Rigidbody playRigid = m_Player.GetComponent<Rigidbody>();
+                        playRigid.useGravity = false;
+                        Variables.ActiveScene.Set("attracted",true);
                         boxCollider.isTrigger = false;
 
                         if (PlayerAttachedObject.TryGetComponent(out Collider collider))
