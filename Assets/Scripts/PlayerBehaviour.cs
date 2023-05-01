@@ -24,8 +24,6 @@ public class PlayerBehaviour : MonoBehaviour
     private Transform m_Arm;
 
     // Arm
-    private float m_ResetArmPos = 0.75f;
-    private bool m_ResetArm;
     private Vector3 m_ArmBaseLocalScale;
 
     //[HideInInspector]
@@ -55,9 +53,6 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_JumpForce;
 
     private bool m_IsJumping = false;
-
-    [SerializeField]
-    private float m_GravityMultiplier;
 
     [HideInInspector]
     public Vector3 Move = new();
@@ -122,7 +117,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]
     private AudioClip[] m_PlayerDashList;
-    
     [SerializeField]
     private AudioSource m_LifeLose;
 
@@ -133,13 +127,18 @@ public class PlayerBehaviour : MonoBehaviour
     private AudioClip[] m_MagnetPushList;
 
     [SerializeField]
+    private AudioSource m_DeathSound;
+
     private AudioSource m_MagnetBack;
 
     [SerializeField]
     private AudioSource m_MagnetThrow;
 
     [SerializeField]
-    private AudioSource m_PlayerJump;
+    private AudioSource m_PlayerJump;       
+
+    [SerializeField]
+    private AudioSource m_LifeLow;
 
     //[SerializeField]
     //private AudioSource m_MagnetGrabing;
@@ -329,19 +328,6 @@ public class PlayerBehaviour : MonoBehaviour
 
         }
 
-
-        /*
-        if (m_ResetArm)
-        {
-            m_ResetArmPos -= Time.deltaTime;
-            if (m_ResetArmPos <= 0)
-            {
-                m_Arm.position -= Vector3.down / 3.5f;
-                m_ResetArmPos = 0.75f;
-                m_ResetArm = false;
-            }
-        }
-        */
     }
 
     private void FixedUpdate()
@@ -394,7 +380,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
+            m_Rigidbody.velocity += (Vector3.down/10);
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
@@ -408,10 +394,8 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started && IsGrounded == true)
         {
             m_IsJumping = true;
-            m_ResetArm = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
-            //m_Arm.position += Vector3.down / 3.5f;
             m_PlayerJump.Play();
         }
         else
@@ -509,7 +493,11 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetCooldownTimer = m_MagnetCooldownTime;
             transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - DashTimer / m_DashTime);
             m_Rigidbody.velocity = Vector3.zero;
-                                    
+
+
+            // ms : son Dash
+            play_PlayerDash();
+
 
             return;
         }
@@ -665,9 +653,17 @@ public class PlayerBehaviour : MonoBehaviour
     public void TakeDamage(byte damage)
     {
         if (PlayerLife < damage)
+        {
             PlayerLife = 0;
+            m_LifeLow.Stop();
+        }
+
         else
+        {
+            if (PlayerLife - damage <= 2)
+                m_LifeLow.PlayOneShot(m_LifeLow.clip);
             PlayerLife -= damage;
+        }
         m_InvicibilityTimer = m_InvicibilityTime;
         m_Animator.Play("Hurt");
 
@@ -694,5 +690,10 @@ public class PlayerBehaviour : MonoBehaviour
         int index = Random.Range(0, m_MagnetPushList.Length);
         m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
     }
-    
+
+    public void play_DeathSoundFunction()
+    {
+        m_DeathSound.Play();
+    }
+
 }
