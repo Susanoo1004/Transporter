@@ -138,13 +138,7 @@ public class PlayerBehaviour : MonoBehaviour
     private AudioSource m_MagnetThrow;
 
     [SerializeField]
-    private AudioSource m_PlayerJump;
-
-    [SerializeField]
-    private AudioSource m_PlayerWalk;
-
-    [SerializeField]
-    private AudioSource m_PlayerRun;
+    private AudioSource m_PlayerJump;       
 
     [SerializeField]
     private AudioSource m_LifeLow;
@@ -335,20 +329,8 @@ public class PlayerBehaviour : MonoBehaviour
             m_Arm.gameObject.SetActive(true);
 
         }
-
-        if (Mathf.Abs(m_Rigidbody.velocity.x) > 1)
-        {
-            m_PlayerWalk.Stop();
-        }
-        if (Mathf.Abs(m_Rigidbody.velocity.x) > 1 && Mathf.Abs(m_Rigidbody.velocity.x) < 5)
-        {
-            m_PlayerWalk.Play();
-            m_PlayerRun.Stop();
-        }
-        if (Mathf.Abs(m_Rigidbody.velocity.x) > 5)
-        {
-            m_PlayerRun.Play();
-        }
+             
+        
         /*
         if (m_ResetArm)
         {
