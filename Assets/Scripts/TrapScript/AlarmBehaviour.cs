@@ -7,6 +7,9 @@ public class AlarmBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_AreaToDisable;
 
+    [SerializeField]
+    private AudioSource m_AlarmSound;
+
     private bool m_IsEnable;
 
     private AudioSource m_Source;
@@ -32,7 +35,9 @@ public class AlarmBehaviour : MonoBehaviour
 
         if (m_IsEnable) 
         {
-            
+
+            m_AlarmSound.Play(); //Pour les MS : jouer le son de l'alarme ici en loop
+
         }
     }
 

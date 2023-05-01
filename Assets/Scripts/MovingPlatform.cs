@@ -17,7 +17,10 @@ public class MovingPlatform : MonoBehaviour
     private float m_StopDuration;
 
     [SerializeField]
-    private Vector2[] m_PathPositions;
+    private AudioSource m_PlatformMove;
+
+    [SerializeField]
+    private Vector3[] m_PathPositions;
 
     private int m_Index;
 
@@ -62,6 +65,7 @@ public class MovingPlatform : MonoBehaviour
         if (m_StopCooldown > 0)
         {
             m_StopCooldown -= Time.deltaTime;
+            m_PlatformMove.Play();
         }
     }
 
@@ -70,13 +74,13 @@ public class MovingPlatform : MonoBehaviour
         if (m_PathPositions.Length <= 0)
             return;
 
-        Vector2 distance = m_PathPositions[m_Index] - (Vector2)transform.localToWorldMatrix.GetPosition();
-        Vector2 direction = distance.normalized;
+        Vector3 distance = m_PathPositions[m_Index] - (Vector3)transform.localToWorldMatrix.GetPosition();
+        Vector3 direction = distance.normalized;
 
         if ((direction * m_Speed * Time.fixedDeltaTime).sqrMagnitude >= distance.sqrMagnitude)
         {
             m_Rigidbody.velocity = Vector3.zero;
-            transform.position = m_PathPositions[m_Index];
+            transform.position = m_PathPositions[m_Index];            
 
             m_Index++;
             if (m_Index == m_PathPositions.Length)
@@ -85,7 +89,7 @@ public class MovingPlatform : MonoBehaviour
             if (!m_LoopBack && m_Index == 0 && m_PathPositions.Length > 1)
             {
                 System.Array.Reverse(m_PathPositions);
-                m_Index++;
+                m_Index++;                
             }
 
             m_StopCooldown = m_StopDuration;
@@ -93,7 +97,7 @@ public class MovingPlatform : MonoBehaviour
         else if (m_StopCooldown <= 0)
         {
             m_Rigidbody.velocity = (Vector3)direction * m_Speed;
-            //transform.position += (Vector3)direction * m_Speed * Time.fixedDeltaTime;
+            //transform.position += (Vector3)direction * m_Speed * Time.fixedDeltaTime;            
         }
     }
 }
