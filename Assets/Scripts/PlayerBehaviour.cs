@@ -344,11 +344,11 @@ public class PlayerBehaviour : MonoBehaviour
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
             ////////////////////////////////////////////////////////////////
-           if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
+           /*if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
                 if ((!m_IsStuckLeft && Mathf.Sign(Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(Move.x) == 1) || IsGrounded)
                     m_Rigidbody.AddForce(Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-            }
+            }*/
         }
         else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
         {
@@ -366,7 +366,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (IsGrounded)
         {
             /////////////////////////////////////////////////////////////////////////////////////
-            if((bool)Variables.ActiveScene.Get("attracted")){
+            /*if((bool)Variables.ActiveScene.Get("attracted")){
             MaxSpeed = m_BaseMaxSpeed;
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -379,26 +379,26 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             m_Animator.SetBool("Landed", true);
-            }
+            }*/
         }
         else
         {
-            if((bool)Variables.ActiveScene.Get("attracted")){
+           /* if((bool)Variables.ActiveScene.Get("attracted")){
             MaxSpeed = m_BaseMaxSpeed - 2;
             m_Animator.SetBool("Landed", false);
-            }
+            }*/
         }
-        if((bool)Variables.ActiveScene.Get("attracted")){
+        /*if((bool)Variables.ActiveScene.Get("attracted")){
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
             m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
-        }
+        }*/
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
     {
-        if((bool)Variables.ActiveScene.Get("attracted")){
+       /* if((bool)Variables.ActiveScene.Get("attracted")){
        Vector2 move = _context.ReadValue<Vector2>();
-        Move = new Vector3(move.x, 0, 0);}
+        Move = new Vector3(move.x, 0, 0);}*/
     }
 
     public void OnJump(InputAction.CallbackContext _context)
