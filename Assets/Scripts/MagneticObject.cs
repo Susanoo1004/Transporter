@@ -77,7 +77,8 @@ public class MagneticObject : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
-            play_DamageLight();
+            //play_DamageLight();
+            play_DamageHeavy();
         }
         if (gameObject.layer == LayerMask.NameToLayer("Enemy Projectiles") && other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.TryGetComponent(out PlayerBehaviour playerBehaviour))
         {
