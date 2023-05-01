@@ -26,6 +26,8 @@ public class MagneticObject : MonoBehaviour
    
 
 
+    [HideInInspector]
+    public bool DestroyOnCollision;
 
     private int m_DefaultLayer;
 
@@ -33,6 +35,11 @@ public class MagneticObject : MonoBehaviour
 
     public bool AffectPlayer;
     public bool AffectSelf;
+
+    private void Awake()
+    {
+        m_DefaultLayer = gameObject.layer;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +57,7 @@ public class MagneticObject : MonoBehaviour
     {
         if (gameObject.layer == LayerMask.NameToLayer("Player Projectiles") || gameObject.layer == LayerMask.NameToLayer("Enemy Projectiles"))
         {
-            if (TryGetComponent(out Rigidbody rb) && rb.velocity == Vector3.zero)
+            if (TryGetComponent(out Rigidbody rb) && rb.velocity.magnitude < 0.1f)
                 gameObject.layer = m_DefaultLayer;
         }
 
@@ -58,7 +65,7 @@ public class MagneticObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemies") && other.gameObject.TryGetComponent(out EnemyBehaviour enemyBehaviour))
+        if (gameObject.layer == LayerMask.NameToLayer("Player Projectiles") && other.gameObject.layer == LayerMask.NameToLayer("Enemies") && other.gameObject.TryGetComponent(out EnemyBehaviour enemyBehaviour))
         {
             enemyBehaviour.TakeDamage(m_Damage);
 
@@ -71,6 +78,10 @@ public class MagneticObject : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
             play_DamageLight();
+        }
+        if (gameObject.layer == LayerMask.NameToLayer("Enemy Projectiles") && other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.TryGetComponent(out PlayerBehaviour playerBehaviour))
+        {
+            playerBehaviour.TakeDamage(m_Damage);
         }
     }
 

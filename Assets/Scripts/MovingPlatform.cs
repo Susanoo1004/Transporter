@@ -20,7 +20,7 @@ public class MovingPlatform : MonoBehaviour
     private AudioSource m_PlatformMove;
 
     [SerializeField]
-    private Vector2[] m_PathPositions;
+    private Vector3[] m_PathPositions;
 
     private int m_Index;
 
@@ -74,8 +74,8 @@ public class MovingPlatform : MonoBehaviour
         if (m_PathPositions.Length <= 0)
             return;
 
-        Vector2 distance = m_PathPositions[m_Index] - (Vector2)transform.localToWorldMatrix.GetPosition();
-        Vector2 direction = distance.normalized;        
+        Vector3 distance = m_PathPositions[m_Index] - (Vector3)transform.localToWorldMatrix.GetPosition();
+        Vector3 direction = distance.normalized;
 
         if ((direction * m_Speed * Time.fixedDeltaTime).sqrMagnitude >= distance.sqrMagnitude)
         {
