@@ -79,6 +79,10 @@ public class MagneticObject : MonoBehaviour
         {
             playerBehaviour.TakeDamage(m_Damage);
         }
+        /*
+        if (DestroyOnCollision)
+            Destroy();
+        */
     }
 
     public void play_DamageHeavy()
