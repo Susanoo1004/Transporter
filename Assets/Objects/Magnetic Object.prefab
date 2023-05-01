@@ -129,9 +129,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Damage: 1
-  m_DamageHeavy: {fileID: 0}
+  m_DamageHeavy: {fileID: 2229358212381419684}
   m_DamageLight: {fileID: 0}
-  m_DamageHeavyList: []
+  m_DamageHeavyList:
+  - {fileID: 8300000, guid: 3770526e3cdeff044870ae821adbc867, type: 3}
+  - {fileID: 8300000, guid: 3282e85c5b377b34688d65ca916cf4a9, type: 3}
+  - {fileID: 8300000, guid: 6c9e89060cf9bc246a80d621230b8acc, type: 3}
   m_DamageLightList: []
   DestroyOnCollision: 0
   polarity: 1
