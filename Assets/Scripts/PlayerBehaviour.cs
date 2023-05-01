@@ -109,6 +109,40 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_PlayerToMagnetDistance;
 
     private Vector2 m_Aim;
+
+    [SerializeField]
+    private AudioSource m_MagnetSwitchSound;
+
+    [SerializeField]
+    private AudioClip[] m_MagnetSwitchList;
+
+    [SerializeField]
+    private AudioSource m_PlayerDash;
+
+    [SerializeField]
+    private AudioClip[] m_PlayerDashList;
+    
+    [SerializeField]
+    private AudioSource m_LifeLose;
+
+    [SerializeField]
+    private AudioSource m_MagnetPush;
+
+    [SerializeField]
+    private AudioClip[] m_MagnetPushList;
+
+    [SerializeField]
+    private AudioSource m_MagnetBack;
+
+    [SerializeField]
+    private AudioSource m_MagnetThrow;
+
+    [SerializeField]
+    private AudioSource m_PlayerJump;
+
+    //[SerializeField]
+    //private AudioSource m_MagnetGrabing;
+
     
     [HideInInspector]
     public Vector3 SurfaceNormal;
@@ -121,6 +155,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DeathTimer;
     private float m_DeathTime = 2.0f;
 
+    //private bool m_MagnetGrabingSound = true;
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
     public bool IsGrounded
@@ -172,6 +207,12 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
         m_ArmAnimator.SetBool("Jump", m_IsJumping);
+
+        //if(m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
+        // {
+        // m_MagnetGrabing.Play();
+        //m_MagnetGrabingSound= false;
+        //}
 
         if (!m_MagnetBehaviour.IsPlayerAttached && !m_MagnetBehaviour.IsPlayerMagnetized)
         {
@@ -366,6 +407,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
             //m_Arm.position += Vector3.down / 3.5f;
+            m_PlayerJump.Play();
         }
         else
         {
@@ -393,7 +435,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (m_MagnetBehaviour.IsPlayerAttached)
                 DettachPlayer();
-
+            
             if (m_MagnetBehaviour.HasMagnetizedObject)
                 ThrowMagnetizedObject();
             else
@@ -406,6 +448,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         m_MagnetCooldownTimer = m_MagnetCooldownTime;
     }
+
+    
 
     public void OnChangePolarity(InputAction.CallbackContext _context)
     {
@@ -423,11 +467,14 @@ public class PlayerBehaviour : MonoBehaviour
 
 
             //ms : son changement polarity
-
-
+           play_MagnetSwitch();
+          
 
         }
+        
     }
+
+    
 
     public void OnAim(InputAction.CallbackContext _context)
     {
@@ -457,11 +504,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetCooldownTimer = m_MagnetCooldownTime;
             transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - DashTimer / m_DashTime);
             m_Rigidbody.velocity = Vector3.zero;
-
-
-            // ms : son Dash
-
-
+                                    
 
             return;
         }
@@ -473,6 +516,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.HoverTimer = m_DashTime;
             m_MagnetBehaviour.TravelTimer = 0;
             m_PositionBeforeDash = transform.position;
+            play_PlayerDash();
         }
 
     }
@@ -505,6 +549,9 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.PlayerAttractionSpeed = m_PlayerAttractionSpeed;
         m_MagnetBehaviour.IsThrowing = true;
         m_MagnetBehaviour.RepulsiveForce = m_RepulsiveForce;
+
+        //son de MagnetThrow (lancement de l'aimant)
+        m_MagnetThrow.Play();
         
         if (m_Aim == Vector2.zero)
         {
@@ -533,6 +580,9 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.HoverTimer = 0;
         m_MagnetBehaviour.IgnoreObject = null;
         m_MagnetBehaviour.LastPosition = m_Magnet.position;
+
+        //son MagnetBack
+        m_MagnetBack.Play();
     }
 
     private void AttachMagnet()
@@ -540,6 +590,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_Magnet.GetComponent<Rigidbody>().isKinematic = true;
         m_Magnet.position = new Vector3(m_Magnet.position.x, m_Magnet.position.y, 0);
         m_Magnet.SetParent(transform, true);
+                
     }
 
     private void ThrowMagnetizedObject()
@@ -557,6 +608,10 @@ public class PlayerBehaviour : MonoBehaviour
                                                                       m_MagnetBehaviour.MagnetizedObject.position.y,
                                                                       0);
             m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
+            //son
+            play_MagnetPush();
+            //m_MagnetGrabingSound = false;
+           // m_MagnetGrabing.Stop();
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -589,6 +644,9 @@ public class PlayerBehaviour : MonoBehaviour
 
 
         m_MagnetBehaviour.MagnetizedObject = null;
+
+       // m_MagnetGrabingSound = false;
+        //m_MagnetGrabing.Stop();
     }
 
     private void DettachPlayer()
@@ -596,6 +654,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.IsPlayerAttached = false;
         m_MagnetBehaviour.PlayerAttachedObject = null;
         m_Rigidbody.useGravity = true;
+        //son de player quand il se detache de la platforme
     }
 
     public void TakeDamage(byte damage)
@@ -606,5 +665,29 @@ public class PlayerBehaviour : MonoBehaviour
             PlayerLife -= damage;
         m_InvicibilityTimer = m_InvicibilityTime;
         m_Animator.Play("Hurt");
+
+        m_LifeLose.Play();
     }
+
+    public void play_MagnetSwitch()
+    {
+
+        int index = Random.Range(0, m_MagnetSwitchList.Length);
+        m_MagnetSwitchSound.PlayOneShot(m_MagnetSwitchList[index]);
+    }
+
+    public void play_PlayerDash()
+    {
+
+        int index = Random.Range(0, m_PlayerDashList.Length);
+        m_PlayerDash.PlayOneShot(m_PlayerDashList[index]);
+    }
+
+    public void play_MagnetPush()
+    {
+
+        int index = Random.Range(0, m_MagnetPushList.Length);
+        m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
+    }
+    
 }

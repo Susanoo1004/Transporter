@@ -856,28 +856,28 @@ ModelImporter:
       curves: []
       events:
       - time: 0.03373838
-        functionName: PlayWalk
+        functionName: play_KamikazeFtsp
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.26559883
-        functionName: NewEvent
+        functionName: play_KamikazeFtsp
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.5065913
-        functionName: NewEvent
+        functionName: play_KamikazeFtsp
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.77684015
-        functionName: NewEvent
+        functionName: play_KamikazeFtsp
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
