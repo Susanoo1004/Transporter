@@ -23,6 +23,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_Arm;
 
+
     // Arm
     private Vector3 m_ArmBaseLocalScale;
 
@@ -360,6 +361,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (IsGrounded)
         {
+            MaxSpeed = m_BaseMaxSpeed;
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
             {
                 m_Rigidbody.velocity += rigidbody.velocity * Time.fixedDeltaTime;
@@ -484,7 +486,9 @@ public class PlayerBehaviour : MonoBehaviour
             Vector3 halfHeight = Vector3.up * boxCollider.size.y / 2 * 0.7f;
             int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
-            if (Physics.CapsuleCast(m_Magnet.position + halfHeight, transform.position - halfHeight, boxCollider.size.z / 2, direction, distance.magnitude, layer))
+            if (Physics.Raycast(transform.position + halfHeight, direction, distance.magnitude, layer)
+                || Physics.Raycast(transform.position, direction, distance.magnitude, layer) ||
+                Physics.Raycast(transform.position - halfHeight, direction, distance.magnitude, layer))
             {
                 DashTimer = 0;
                 return;
@@ -502,7 +506,7 @@ public class PlayerBehaviour : MonoBehaviour
             return;
         }
 
-        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
+        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance  && !(m_MagnetBehaviour.Aim == Vector3.forward || m_MagnetBehaviour.Aim == Vector3.back)) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
         {
             m_CanDash = false;
             DashTimer = m_DashTime;

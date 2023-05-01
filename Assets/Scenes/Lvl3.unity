@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 69dfe6fefd9c33042a4e7dec69900fb8, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 8fe0e038e3d67ad4b9883f0efc91e8ac, type: 2}
 --- !u!1 &32660363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,38 +2505,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Player '
       objectReference: {fileID: 0}
-    - target: {fileID: 7146066286638838102, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 979945046}
-    - target: {fileID: 7146066286638838102, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_DefaultActionMap
-      value: Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 7146066286638838104, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 7146066286638838105, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: MaxSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7146066286638838105, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_JumpForce
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7146066286638838105, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_Accelerate
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7146066286638838105, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_InvicibilityTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7146066286638838105, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_GravityMultiplier
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 7146066286638838106, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2580,10 +2548,6 @@ PrefabInstance:
     - target: {fileID: 7146066286638838106, guid: d8f5b507d9219144487f262c264e4940, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7146066286746599809, guid: d8f5b507d9219144487f262c264e4940, type: 3}
-      propertyPath: m_Constraints
-      value: 112
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8f5b507d9219144487f262c264e4940, type: 3}

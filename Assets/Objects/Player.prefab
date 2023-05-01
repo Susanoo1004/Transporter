@@ -53,7 +53,6 @@ GameObject:
   - component: {fileID: 6330437250270583338}
   - component: {fileID: 1328452546353917956}
   - component: {fileID: 3085738244475823137}
-  - component: {fileID: 6970280929498728888}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -87,7 +86,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7146066286638838100}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 5843f84eefada1f479b362ff869755c7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -102,12 +101,12 @@ Rigidbody:
   m_GameObject: {fileID: 7146066286638838100}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 2
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &7146066286638838105
 MonoBehaviour:
@@ -127,13 +126,14 @@ MonoBehaviour:
   m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
   IsInForeground: 0
-  m_Accelerate: 20
-  MaxSpeed: 10
+  m_Accelerate: 100
+  MaxSpeed: 15
   m_DashPower: 15
   m_DashDistance: 5
   m_DashTime: 0.4
   DashTimer: 0
-  m_JumpForce: 13
+  m_JumpForce: 40
+  m_GravityMultiplier: 15
   Move: {x: 0, y: 0, z: 0}
   PlayerLife: 10
   m_Magnet: {fileID: 7146066286746599838}
@@ -142,9 +142,9 @@ MonoBehaviour:
   m_HoverTime: 0.2
   m_AttractionTime: 0.1
   m_PlayerAttractionSpeed: 15
-  m_RepulsiveForce: 10
+  m_RepulsiveForce: 20
   m_ThrowForce: 25
-  m_ThrowTime: 0.4
+  m_ThrowTime: 0.8
   m_PullTime: 0.25
   m_PlayerToMagnetDistance: 2
   m_MagnetSwitchSound: {fileID: 1087569064889243272}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_MagnetPushList:
   - {fileID: 8300000, guid: f6457519fa2cc704aae4f6f60dc3c850, type: 3}
   - {fileID: 8300000, guid: 21f85982aa02590428ca7c1de2e8a9e5, type: 3}
-  m_DeathSound: {fileID: 6970280929498728888}
+  m_MagnetBack: {fileID: 6452599080800338257}
   m_MagnetThrow: {fileID: 6284772842241196388}
   m_PlayerJump: {fileID: 7721971932150762321}
   m_LifeLow: {fileID: 6330437250270583338}
@@ -1213,102 +1213,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!82 &6970280929498728888
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7146066286638838100}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 11514238bef552a458c96422b8631cc3, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &7146066286746599839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1497,7 +1401,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!82 &854525981010747231
 AudioSource:
