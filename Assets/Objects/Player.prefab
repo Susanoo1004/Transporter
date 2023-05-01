@@ -166,6 +166,7 @@ MonoBehaviour:
   m_PlayerJump: {fileID: 7721971932150762321}
   m_PlayerWalk: {fileID: 1328452546353917956}
   m_PlayerRun: {fileID: 3085738244475823137}
+  m_LifeLow: {fileID: 6330437250270583338}
   SurfaceNormal: {x: 0, y: 0, z: 0}
   CurrentCheckpoint: {x: 0, y: 0, z: 0}
 --- !u!114 &7146066286638838102
@@ -933,10 +934,10 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7146066286638838100}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 89ad0b5adea7c3e46ac23c53d2d4daf4, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4ef3d119649887a409e8db7a4459cc6b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.493
   m_Pitch: 1
