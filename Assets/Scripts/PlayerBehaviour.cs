@@ -57,9 +57,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool m_IsJumping = false;
 
-    [SerializeField]
-    private float m_GravityMultiplier;
-
     [HideInInspector]
     public Vector3 Move = new();
     private Vector3 m_LastMove = Vector3.right;
