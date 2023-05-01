@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ProutCACA : MonoBehaviour
+public class ScriptMadeByGD : MonoBehaviour
 {
     public RectTransform image;
     public Vector2 Posimage;

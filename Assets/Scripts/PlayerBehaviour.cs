@@ -33,6 +33,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_Accelerate;
 
     public float MaxSpeed;
+    private float m_BaseMaxSpeed;
 
     [SerializeField]
     private float m_DashPower;
@@ -160,6 +161,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_InvicibilityTimer = m_InvicibilityTime;
         m_ArmBaseLocalScale = m_Arm.localScale;
         m_DeathTimer = m_DeathTime;
+        m_BaseMaxSpeed = MaxSpeed;
     }
 
     // Update is called once per frame
@@ -275,6 +277,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         }
 
+
+
         if (m_ResetArm)
         {
             m_ResetArmPos -= Time.deltaTime;
@@ -332,6 +336,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
+            MaxSpeed = m_BaseMaxSpeed - 2;
             m_Animator.SetBool("Landed", false);
         }
 
