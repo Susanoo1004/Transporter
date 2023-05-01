@@ -208,7 +208,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 86a4fca5aab9eda4ea65b6ac121843e1, type: 3}
   - {fileID: 8300000, guid: 5c7f2b10ffbed3f439fae4c355a944c9, type: 3}
   - {fileID: 8300000, guid: 1f75ab0318932504ebba44e8c576ecf5, type: 3}
-  m_ShieldAttack: {fileID: 4678923407711822855}
+  m_ShieldAttack: {fileID: 0}
 --- !u!65 &7765127392699117886
 BoxCollider:
   m_ObjectHideFlags: 0
