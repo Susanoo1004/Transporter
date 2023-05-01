@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2229358212381419680}
   - component: {fileID: 2229358212381419711}
   - component: {fileID: 2229358212381419710}
-  - component: {fileID: 2229358212381419684}
+  - component: {fileID: 7861924582872492266}
   m_Layer: 0
   m_Name: Magnetic Object
   m_TagString: Untagged
@@ -129,15 +129,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Damage: 1
-  m_DamageHeavy: {fileID: 0}
+  m_DamageHeavy: {fileID: 7861924582872492266}
   m_DamageLight: {fileID: 0}
-  m_DamageHeavyList: []
+  m_DamageHeavyList:
+  - {fileID: 8300000, guid: 3770526e3cdeff044870ae821adbc867, type: 3}
+  - {fileID: 8300000, guid: 3282e85c5b377b34688d65ca916cf4a9, type: 3}
+  - {fileID: 8300000, guid: 6c9e89060cf9bc246a80d621230b8acc, type: 3}
   m_DamageLightList: []
   DestroyOnCollision: 0
   polarity: 1
   AffectPlayer: 0
   AffectSelf: 1
---- !u!82 &2229358212381419684
+--- !u!82 &7861924582872492266
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,8 +151,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.867
+  m_PlayOnAwake: 0
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -157,8 +160,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 2.91
+  MaxDistance: 18
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -193,7 +196,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.717
+      value: 0.85
       inSlope: 0
       outSlope: 0
       tangentMode: 0

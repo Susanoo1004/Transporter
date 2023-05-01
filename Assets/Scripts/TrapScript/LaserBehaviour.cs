@@ -76,9 +76,4 @@ public class LaserBehaviour : MonoBehaviour
         }
 
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(m_Shooter.position, m_Shooter.position - (m_Shooter.up * m_Distance));
-    }
 }

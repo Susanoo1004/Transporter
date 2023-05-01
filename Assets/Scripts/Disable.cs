@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Disable : MonoBehaviour
 {
@@ -15,9 +16,13 @@ public class Disable : MonoBehaviour
     [SerializeField]
     private float m_ActivateFrequency;
     private float m_ActivateTimer;
+
     [SerializeField]
     private float m_DisableFrequency;
     private float m_DisableTimer;
+
+    [SerializeField]
+    private VisualEffect m_VisualEffect;
 
 
     // Start is called before the first frame update
@@ -39,6 +44,7 @@ public class Disable : MonoBehaviour
                 if (m_ActivateTimer > 0)
                     return;
 
+                m_VisualEffect.enabled = false;
                 m_LaserToDisable.enabled = false;
 
                 m_ActivateTimer = m_ActivateFrequency;
@@ -50,6 +56,7 @@ public class Disable : MonoBehaviour
                 if (m_DisableTimer > 0)
                     return;
 
+                m_VisualEffect.enabled = true;
                 m_LaserToDisable.enabled = true;
 
                 m_DisableTimer = m_DisableFrequency;
@@ -68,7 +75,14 @@ public class Disable : MonoBehaviour
             }
 
             if(enemyDead == m_EnemyGuardian.Length)
+            {
                 m_LaserToDisable.enabled = false;
+                m_VisualEffect.enabled = false;
+            }
+            else
+            {
+                m_VisualEffect.enabled = true;
+            }
         }
         
     }

@@ -24,8 +24,6 @@ public class PlayerBehaviour : MonoBehaviour
     private Transform m_Arm;
 
     // Arm
-    private float m_ResetArmPos = 0.75f;
-    private bool m_ResetArm;
     private Vector3 m_ArmBaseLocalScale;
 
     //[HideInInspector]
@@ -36,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_Accelerate;
 
     public float MaxSpeed;
+    private float m_BaseMaxSpeed;
 
     [SerializeField]
     private float m_DashPower;
@@ -138,12 +137,15 @@ public class PlayerBehaviour : MonoBehaviour
     private AudioSource m_MagnetThrow;
 
     [SerializeField]
-    private AudioSource m_PlayerJump;
+    private AudioSource m_PlayerJump;       
+
+    [SerializeField]
+    private AudioSource m_LifeLow;
 
     //[SerializeField]
     //private AudioSource m_MagnetGrabing;
 
-    
+
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
@@ -198,6 +200,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_InvicibilityTimer = m_InvicibilityTime;
         m_ArmBaseLocalScale = m_Arm.localScale;
         m_DeathTimer = m_DeathTime;
+        m_BaseMaxSpeed = MaxSpeed;
     }
 
     // Update is called once per frame
@@ -311,7 +314,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             m_Animator.Play("Dead");
             m_Arm.gameObject.SetActive(false);
-            m_PlayerInput.SwitchCurrentActionMap("Menu");
+            m_PlayerInput.SwitchCurrentActionMap("Dead");
 
             m_DeathTimer -= Time.deltaTime;
 
@@ -326,18 +329,7 @@ public class PlayerBehaviour : MonoBehaviour
             m_Arm.gameObject.SetActive(true);
 
         }
-        /*
-        if (m_ResetArm)
-        {
-            m_ResetArmPos -= Time.deltaTime;
-            if (m_ResetArmPos <= 0)
-            {
-                m_Arm.position -= Vector3.down / 3.5f;
-                m_ResetArmPos = 0.75f;
-                m_ResetArm = false;
-            }
-        }
-        */
+
     }
 
     private void FixedUpdate()
@@ -385,6 +377,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
+            MaxSpeed = m_BaseMaxSpeed - 2;
             m_Animator.SetBool("Landed", false);
         }
 
@@ -403,10 +396,8 @@ public class PlayerBehaviour : MonoBehaviour
         if (_context.started && IsGrounded == true)
         {
             m_IsJumping = true;
-            m_ResetArm = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
-            //m_Arm.position += Vector3.down / 3.5f;
             m_PlayerJump.Play();
         }
         else
@@ -660,9 +651,17 @@ public class PlayerBehaviour : MonoBehaviour
     public void TakeDamage(byte damage)
     {
         if (PlayerLife < damage)
+        {
             PlayerLife = 0;
+            m_LifeLow.Stop();
+        }
+
         else
+        {
+            if (PlayerLife - damage <= 2)
+                m_LifeLow.PlayOneShot(m_LifeLow.clip);
             PlayerLife -= damage;
+        }
         m_InvicibilityTimer = m_InvicibilityTime;
         m_Animator.Play("Hurt");
 
