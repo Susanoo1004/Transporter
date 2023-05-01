@@ -492,10 +492,15 @@ public class PlayerBehaviour : MonoBehaviour
                 return;
             Vector3 distance = m_Magnet.position - transform.position;
             Vector3 direction = distance.normalized;
-            Vector3 halfHeight = Vector3.up * boxCollider.size.y / 2 * 0.7f;
-            int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
+            Vector3 halfHeight = Vector3.up * boxCollider.size.y / 2 * 0.6f;
+            int layer = ~(1 << LayerMask.NameToLayer("Player")
+                        | 1 << LayerMask.NameToLayer("Magnet")
+                        | 1 << LayerMask.NameToLayer("Enemies")
+                        | 1 << LayerMask.NameToLayer("Player Projectiles"));
 
-            if (Physics.CapsuleCast(m_Magnet.position + halfHeight, transform.position - halfHeight, boxCollider.size.z / 2, direction, distance.magnitude, layer))
+            if (Physics.Raycast(transform.position + halfHeight, direction, distance.magnitude, layer)
+                || Physics.Raycast(transform.position, direction, distance.magnitude, layer) ||
+                Physics.Raycast(transform.position - halfHeight, direction, distance.magnitude, layer))
             {
                 DashTimer = 0;
                 return;
@@ -509,7 +514,7 @@ public class PlayerBehaviour : MonoBehaviour
             return;
         }
 
-        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
+        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance && !(m_MagnetBehaviour.Aim == Vector3.forward || m_MagnetBehaviour.Aim == Vector3.back)) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
         {
             m_CanDash = false;
             DashTimer = m_DashTime;
