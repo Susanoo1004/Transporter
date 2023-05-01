@@ -193,6 +193,7 @@ public class MagnetBehaviour : MonoBehaviour
         {
             Vector3 distance = transform.position - m_Player.position;
             Vector3 direction = distance.normalized;
+            Variables.ActiveScene.Set("attracted",true);
             if (!m_Player.TryGetComponent(out BoxCollider boxCollider))
                 return;
             Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.4f;
@@ -218,7 +219,7 @@ public class MagnetBehaviour : MonoBehaviour
                         IsPlayerAttached = true;
                         Rigidbody playRigid = m_Player.GetComponent<Rigidbody>();
                         playRigid.useGravity = false;
-                        Variables.ActiveScene.Set("attracted",true);
+                        
                         boxCollider.isTrigger = false;
 
                         if (PlayerAttachedObject.TryGetComponent(out Collider collider))
