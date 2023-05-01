@@ -139,12 +139,15 @@ public class PlayerBehaviour : MonoBehaviour
     private AudioSource m_MagnetThrow;
 
     [SerializeField]
-    private AudioSource m_PlayerJump;
+    private AudioSource m_PlayerJump;       
+
+    [SerializeField]
+    private AudioSource m_LifeLow;
 
     //[SerializeField]
     //private AudioSource m_MagnetGrabing;
 
-    
+
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
@@ -654,9 +657,17 @@ public class PlayerBehaviour : MonoBehaviour
     public void TakeDamage(byte damage)
     {
         if (PlayerLife < damage)
+        {
             PlayerLife = 0;
+            m_LifeLow.Stop();
+        }
+
         else
+        {
+            if (PlayerLife - damage <= 2)
+                m_LifeLow.PlayOneShot(m_LifeLow.clip);
             PlayerLife -= damage;
+        }
         m_InvicibilityTimer = m_InvicibilityTime;
         m_Animator.Play("Hurt");
 
