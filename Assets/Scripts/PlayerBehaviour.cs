@@ -121,7 +121,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]
     private AudioClip[] m_PlayerDashList;
-
+    
     [SerializeField]
     private AudioSource m_LifeLose;
 
@@ -671,5 +671,5 @@ public class PlayerBehaviour : MonoBehaviour
         int index = Random.Range(0, m_MagnetPushList.Length);
         m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
     }
-        
+    
 }
