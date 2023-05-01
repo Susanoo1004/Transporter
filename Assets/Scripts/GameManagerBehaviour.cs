@@ -27,22 +27,12 @@ public class GameManagerBehaviour : MonoBehaviour
         {
             if (NeedChangeScene)
             {
-                SceneManager.UnloadSceneAsync(CurrentGameSceneName);
-                SceneManager.LoadScene("Pause", LoadSceneMode.Additive);
+                SceneManager.LoadScene("GameManager", LoadSceneMode.Single);
+                SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
                 NeedChangeScene = false;
             }
         }
-        else
-        {
-
-            if (NeedChangeScene)
-            {
-                SceneManager.UnloadSceneAsync("Pause");
-                SceneManager.LoadScene(CurrentGameSceneName, LoadSceneMode.Additive);
-                NeedChangeScene = false;
-                CurrentGameSceneName = SceneManager.GetSceneAt(1).name;
-            }
-        }
+      
     }
 
     public void OnOptionPress(InputAction.CallbackContext _context)
@@ -51,7 +41,7 @@ public class GameManagerBehaviour : MonoBehaviour
         {
             Debug.Log("Before" + InPause);
             NeedChangeScene = true;
-            InPause ^= true;
+            InPause = true;
             Debug.Log("After" + InPause);
         }
     }

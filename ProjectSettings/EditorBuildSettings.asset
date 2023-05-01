@@ -5,11 +5,38 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/Pause.unity
-    guid: 23784d82bc8850148954a391a926698b
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Levels.unity
     guid: 62b0d490fe6a5464a99759dabfbad7f8
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 487902aae1c1c144e882cb564212fca1
+  - enabled: 1
+    path: Assets/Scenes/GameManager.unity
+    guid: 32c963ebfc9a4214c96ceb9932192063
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/TUTO.unity
+    guid: 00b7def8dc765fa428a8e03880e750c0
+  - enabled: 1
+    path: Assets/Scenes/Lvl2.unity
+    guid: d488e7b2020e3e242b7c095190ab5805
+  - enabled: 1
+    path: Assets/Scenes/Level 1/Lvl1.unity
+    guid: 2339a1aa5adba264db30c0deaeca20fb
+  - enabled: 1
+    path: Assets/Scenes/Lvl3.unity
+    guid: 9d58f3b19a73a894ea77a2c87ad82c6f
+  - enabled: 1
+    path: Assets/Scenes/Lvl4.unity
+    guid: fe8a71fe3604b58408fcb3111481d273
+  - enabled: 1
+    path: Assets/Scenes/Lvl5.unity
+    guid: 354d6632bf44b214997a6539c403d07a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: eb92935f700f5f84eb4a971d894f96ae, type: 2}
