@@ -21,8 +21,6 @@ public class MagneticObject : MonoBehaviour
     private AudioClip[] m_DamageHeavyList;
     [SerializeField]
     private AudioClip[] m_DamageLightList;
-   
-
 
 
    

@@ -23,8 +23,6 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private Transform m_Arm;
 
-    [SerializeField]
-    private float m_GravityMultiplier;
     // Arm
     private float m_ResetArmPos = 0.75f;
     private bool m_ResetArm;
@@ -138,7 +136,10 @@ public class PlayerBehaviour : MonoBehaviour
     private AudioSource m_MagnetThrow;
 
     [SerializeField]
-    private AudioSource m_PlayerJump;
+    private AudioSource m_PlayerJump;       
+
+    [SerializeField]
+    private AudioSource m_LifeLow;
 
     //[SerializeField]
     //private AudioSource m_MagnetGrabing;
@@ -326,6 +327,8 @@ public class PlayerBehaviour : MonoBehaviour
             m_Arm.gameObject.SetActive(true);
 
         }
+             
+        
         /*
         if (m_ResetArm)
         {
@@ -614,6 +617,8 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
             //son
             play_MagnetPush();
+            //m_MagnetGrabingSound = false;
+           // m_MagnetGrabing.Stop();
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -656,15 +661,23 @@ public class PlayerBehaviour : MonoBehaviour
         m_MagnetBehaviour.IsPlayerAttached = false;
         m_MagnetBehaviour.PlayerAttachedObject = null;
         m_Rigidbody.useGravity = true;
-        //son de player quand il se d�tache de la platforme
+        //son de player quand il se detache de la platforme
     }
 
     public void TakeDamage(byte damage)
     {
         if (PlayerLife < damage)
+        {
             PlayerLife = 0;
+            m_LifeLow.Stop();
+        }
+
         else
+        {
+            if (PlayerLife - damage <= 2)
+                m_LifeLow.PlayOneShot(m_LifeLow.clip);
             PlayerLife -= damage;
+        }
         m_InvicibilityTimer = m_InvicibilityTime;
         m_Animator.Play("Hurt");
 

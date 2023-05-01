@@ -30,6 +30,9 @@ ModelImporter:
   - first:
       74: -2702400367771620057
     second: InAir
+  - first:
+      74: -784702489686931689
+    second: Armature|Dead (1)
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -60,11 +63,19 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
+<<<<<<< HEAD
       name: Armature|Dash
       takeName: Armature|Dash
       internalID: 0
       firstFrame: 0
       lastFrame: 28
+=======
+      name: Armature|Dead (1)
+      takeName: Armature|Dead
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 22
+>>>>>>> L_Liu
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
