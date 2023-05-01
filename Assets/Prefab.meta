@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefab.meta
 guid: 4c728c16609d6d0458801d5f8f815e6b
+========
+guid: ea5b84d3d3eb1f9418b50e5d2d6d4e69
+>>>>>>>> P_Bussy:Assets/UnityPackage/LaserParticule.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
