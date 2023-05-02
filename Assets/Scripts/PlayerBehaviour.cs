@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 
 public class PlayerBehaviour : MonoBehaviour
@@ -499,11 +500,8 @@ public class PlayerBehaviour : MonoBehaviour
             return;
         }
 
-<<<<<<< HEAD
-        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance && !(m_MagnetBehaviour.Aim == Vector3.forward || m_MagnetBehaviour.Aim == Vector3.back)) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
-=======
-        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance  && !(m_MagnetBehaviour.Aim == Vector3.forward || m_MagnetBehaviour.Aim == Vector3.back)) //&& (m_Magnet.position - transform.position).magnitude <= m_DashDistance +1)
->>>>>>> On_retente_de_sauver_le_monde
+
+        else if (m_CanDash && (m_Magnet.position - transform.position).magnitude >= m_DashDistance + m_PlayerToMagnetDistance && !(m_MagnetBehaviour.Aim == Vector3.forward || m_MagnetBehaviour.Aim == Vector3.back))
         {
             m_CanDash = false;
             DashTimer = m_DashTime;

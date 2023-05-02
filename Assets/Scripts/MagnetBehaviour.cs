@@ -316,11 +316,7 @@ public class MagnetBehaviour : MonoBehaviour
                         Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.4f;
                         int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
-<<<<<<< HEAD
-                        if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x / 2 * 0.3f, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == magneticObject.gameObject)
-=======
                         if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x / 2 * 0.4f, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == magneticObject.gameObject)
->>>>>>> On_retente_de_sauver_le_monde
                         {
                             IsPlayerMagnetized = true;
                             MagnetizedObject = magneticObject.transform;
