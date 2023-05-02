@@ -1,13 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Claims;
-using TMPro.EditorUtilities;
+
 using Unity.VisualScripting;
-using UnityEditor;
+
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MagnetBehaviour : MonoBehaviour
 {

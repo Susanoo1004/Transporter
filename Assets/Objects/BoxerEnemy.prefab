@@ -137,7 +137,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7765127392699117884}
-  - component: {fileID: 7765127392699117885}
   - component: {fileID: 7765127392699117886}
   - component: {fileID: 7765127392699117887}
   - component: {fileID: 7765127392699117888}
@@ -148,6 +147,8 @@ GameObject:
   - component: {fileID: 4678923407711822855}
   - component: {fileID: 7020798638095978986}
   - component: {fileID: 8500600117949349152}
+  - component: {fileID: 8991326099909864512}
+  - component: {fileID: 6270188559929448083}
   m_Layer: 7
   m_Name: Boxer
   m_TagString: Untagged
@@ -171,45 +172,6 @@ Transform:
   m_Father: {fileID: 3426745648710591400}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &7765127392699117885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7765127392699117883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b40df6a3103b15d4c8d2a354f8076ff1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HitFrequency: 2
-  m_EnemyLife: 2
-  m_EnemyDamage: 1
-  m_EnemyExplosion: {fileID: 0}
-  m_InvincibilityTime: 0.5
-  m_NavPoints:
-  - {fileID: 4298666805452483298}
-  - {fileID: 4298666806055649736}
-  m_AttackRange: 2
-  m_BoxerDetectionSound: {fileID: 2637179881757279134}
-  m_BoxerFstpWalk: {fileID: 1383518027277503732}
-  m_BoxerFstpWalkList:
-  - {fileID: 8300000, guid: 127b5b7798bd16548893829244d4459f, type: 3}
-  - {fileID: 8300000, guid: 144e11cba2585f64d8541393265cb99a, type: 3}
-  - {fileID: 8300000, guid: 5677a6579c86ddb4baeb5fb69d475207, type: 3}
-  - {fileID: 8300000, guid: a17c88adf858b1c47af6ba95590572d3, type: 3}
-  m_BoxerFstpRun: {fileID: 7020798638095978986}
-  m_BoxerFstpRunList:
-  - {fileID: 8300000, guid: f80d5f02a5400374b94fb53e7787efc8, type: 3}
-  - {fileID: 8300000, guid: 659246a77703719468f7bcfc9595a90b, type: 3}
-  - {fileID: 8300000, guid: d7a6453de8a5b344287c15532e7ac3af, type: 3}
-  m_BoxerPunch: {fileID: 1383518027277503732}
-  m_BoxerPunchList:
-  - {fileID: 8300000, guid: 86a4fca5aab9eda4ea65b6ac121843e1, type: 3}
-  - {fileID: 8300000, guid: 5c7f2b10ffbed3f439fae4c355a944c9, type: 3}
-  - {fileID: 8300000, guid: 1f75ab0318932504ebba44e8c576ecf5, type: 3}
-  m_ShieldAttack: {fileID: 4678923407711822855}
 --- !u!65 &7765127392699117886
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -397,7 +359,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7765127392699117883}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -589,7 +551,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7765127392699117883}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -685,11 +647,136 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7765127392699117883}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &8991326099909864512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765127392699117883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a90bfec535c9841874b370c9883fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitFrequency: 2
+  m_EnemyLife: 1
+  m_EnemyDamage: 1
+  m_EnemyExplosion: {fileID: 6270188559929448083}
+  m_InvincibilityTime: 1
+  m_DetectedSound: {fileID: 2637179881757279134}
+  m_NavPoints:
+  - {fileID: 4298666805452483298}
+  - {fileID: 4298666806055649736}
+  m_AttackRange: 2
+  m_BoxerFstpWalk: {fileID: 1383518027277503732}
+  m_BoxerFstpWalkList: []
+  m_BoxerFstpRun: {fileID: 7020798638095978986}
+  m_BoxerFstpRunList: []
+  m_BoxerPunch: {fileID: 8500600117949349152}
+  m_BoxerPunchList: []
+  m_ShieldAttack: {fileID: 4678923407711822855}
+--- !u!82 &6270188559929448083
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765127392699117883}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c653da2ec0ecadc499ca604c21cc905f, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

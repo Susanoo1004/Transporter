@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.InputSystem.XR.Haptics;
-using UnityEngine.UIElements;
+
 
 public class MovingPlatform : MonoBehaviour
 {
@@ -64,8 +62,9 @@ public class MovingPlatform : MonoBehaviour
     {
         if (m_StopCooldown > 0)
         {
-            m_StopCooldown -= Time.deltaTime;
             m_PlatformMove.Play();
+            m_StopCooldown -= Time.deltaTime;
+
         }
     }
 

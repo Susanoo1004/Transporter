@@ -63,11 +63,19 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
+<<<<<<< HEAD
+      name: Armature|Dash
+      takeName: Armature|Dash
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 28
+=======
       name: Armature|Dead (1)
       takeName: Armature|Dead
       internalID: 0
       firstFrame: 0
       lastFrame: 22
+>>>>>>> L_Liu
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -115,7 +123,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.057663135
+        functionName: play_DeathSoundFunction
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

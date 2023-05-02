@@ -39,7 +39,7 @@ public class MagneticObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_DefaultLayer = gameObject.layer;
+        // m_DefaultLayer = gameObject.layer;
     }
 
     // Update is called once per frame
