@@ -3176,7 +3176,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6626422040191249833}
-  - component: {fileID: 6626422040191249811}
   - component: {fileID: 6626422040191249832}
   - component: {fileID: 6626422040191249813}
   - component: {fileID: 6626422040191249810}
@@ -3187,6 +3186,7 @@ GameObject:
   - component: {fileID: 6129932247860441773}
   - component: {fileID: 6156709619380540261}
   - component: {fileID: 4965458560673653305}
+  - component: {fileID: 5581819055234723004}
   m_Layer: 7
   m_Name: Kamikaze
   m_TagString: Untagged
@@ -3210,42 +3210,6 @@ Transform:
   m_Father: {fileID: 1223766883760807719}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &6626422040191249811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6626422040191249834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77366e8a6c79dfd4d9f004f081c2778d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HitFrequency: 1
-  m_EnemyLife: 1
-  m_EnemyDamage: 2
-  m_EnemyExplosion: {fileID: 0}
-  m_InvincibilityTime: 0.5
-  m_NavPoints:
-  - {fileID: 6626422041097380025}
-  - {fileID: 6626422039393809447}
-  m_DetonationRadius: 5
-  m_JumpForce: 30
-  m_ExplosionKnocknack: 250
-  m_KamikazeExplosion: {fileID: 6129932247860441773}
-  m_KamikazeFtsp: {fileID: 1885889095222472982}
-  m_KamikazeFtspList:
-  - {fileID: 8300000, guid: ba36805ec4e828e48a33a48311607671, type: 3}
-  - {fileID: 8300000, guid: 1abdd9ccc417da047ab5d9195816aea6, type: 3}
-  - {fileID: 8300000, guid: 7584693c781fad646b351dcdd04c6fc4, type: 3}
-  - {fileID: 8300000, guid: 1c4e89e1e6612ba45964cd736cb4aa3f, type: 3}
-  - {fileID: 8300000, guid: 5a11bea243c47c6449441035458bf021, type: 3}
-  - {fileID: 8300000, guid: be6294c28a098db48b3fdb8dc4712f9c, type: 3}
-  - {fileID: 8300000, guid: a4f08fa4896c6c34a9a60f51c29e3d0f, type: 3}
-  m_KamikazeDetectionSound: {fileID: 1543923753164247896}
-  m_KamikazeRollLoop: {fileID: 6156709619380540261}
-  m_KamikazeGoToRoll: {fileID: 4965458560673653305}
 --- !u!195 &6626422040191249832
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3846,6 +3810,43 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5581819055234723004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6626422040191249834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 297ebb865af90934296d7bf3093e5794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitFrequency: 1
+  m_EnemyLife: 1
+  m_EnemyDamage: 2
+  m_EnemyExplosion: {fileID: 6129932247860441773}
+  m_InvincibilityTime: 0.5
+  m_DetectedSound: {fileID: 1543923753164247896}
+  m_NavPoints:
+  - {fileID: 6626422041097380025}
+  - {fileID: 6626422039393809447}
+  m_DetonationRadius: 5
+  m_JumpForce: 30
+  m_ExplosionKnocknack: 250
+  m_KamikazeExplosion: {fileID: 6129932247860441773}
+  m_KamikazeFtsp: {fileID: 1885889095222472982}
+  m_KamikazeFtspList:
+  - {fileID: 8300000, guid: ba36805ec4e828e48a33a48311607671, type: 3}
+  - {fileID: 8300000, guid: 1abdd9ccc417da047ab5d9195816aea6, type: 3}
+  - {fileID: 8300000, guid: 7584693c781fad646b351dcdd04c6fc4, type: 3}
+  - {fileID: 8300000, guid: 1c4e89e1e6612ba45964cd736cb4aa3f, type: 3}
+  - {fileID: 8300000, guid: 5a11bea243c47c6449441035458bf021, type: 3}
+  - {fileID: 8300000, guid: be6294c28a098db48b3fdb8dc4712f9c, type: 3}
+  - {fileID: 8300000, guid: a4f08fa4896c6c34a9a60f51c29e3d0f, type: 3}
+  m_KamikazeDetectionSound: {fileID: 1543923753164247896}
+  m_KamikazeRollLoop: {fileID: 6156709619380540261}
+  m_KamikazeGoToRoll: {fileID: 4965458560673653305}
 --- !u!1 &6626422040630552425
 GameObject:
   m_ObjectHideFlags: 0
