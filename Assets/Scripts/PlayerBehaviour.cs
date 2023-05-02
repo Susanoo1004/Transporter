@@ -1,8 +1,5 @@
-using TMPro;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 using Unity.VisualScripting;
 
 public class PlayerBehaviour : MonoBehaviour
@@ -209,15 +206,15 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /*m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
+        m_Animator.SetFloat("SpeedX", Mathf.Abs(m_Rigidbody.velocity.x / 2));
         m_Animator.SetFloat("SpeedY", m_Rigidbody.velocity.y / 2);
         m_Animator.SetBool("Jump", m_IsJumping);
-        m_ArmAnimator.SetBool("Jump", m_IsJumping);*/
+        m_ArmAnimator.SetBool("Jump", m_IsJumping);
 
-        //if(m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
-        // {
-        // m_MagnetGrabing.Play();
-        //m_MagnetGrabingSound= false;
+        //if (m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
+        //{
+        //    m_MagnetGrabing.Play();
+        //    m_MagnetGrabingSound = false;
         //}
 
         if (!m_MagnetBehaviour.IsPlayerAttached && !m_MagnetBehaviour.IsPlayerMagnetized)
@@ -257,10 +254,10 @@ public class PlayerBehaviour : MonoBehaviour
         // else
         else
         {
-            //if (Move != Vector3.zero)
-            //    m_LastMove = Move;
-            //Quaternion ToRotation = Quaternion.LookRotation(m_LastMove, Vector3.up);
-            //transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
+            if (Move != Vector3.zero)
+                m_LastMove = Move;
+            Quaternion ToRotation = Quaternion.LookRotation(m_LastMove, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, ToRotation, 1080);
         }
 
 
@@ -344,11 +341,11 @@ public class PlayerBehaviour : MonoBehaviour
         if (!m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
         {
             ////////////////////////////////////////////////////////////////
-           /*if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
+           if ((m_Rigidbody.velocity.x >= -MaxSpeed && m_Rigidbody.velocity.x <= MaxSpeed) || (Mathf.Sign(Move.x) != Mathf.Sign(m_Rigidbody.velocity.x)))
             {
                 if ((!m_IsStuckLeft && Mathf.Sign(Move.x) == -1) || (!m_IsStuckRight && Mathf.Sign(Move.x) == 1) || IsGrounded)
                     m_Rigidbody.AddForce(Move * m_Accelerate * Time.fixedDeltaTime, ForceMode.VelocityChange);
-            }*/
+            }
         }
         else if (!m_MagnetBehaviour.IsPlayerMagnetized && m_MagnetBehaviour.IsPlayerAttached)
         {
@@ -367,6 +364,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             /////////////////////////////////////////////////////////////////////////////////////
             /*if((bool)Variables.ActiveScene.Get("attracted")){
+            }*/
             MaxSpeed = m_BaseMaxSpeed;
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -379,42 +377,44 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             m_Animator.SetBool("Landed", true);
-            }*/
         }
         else
         {
            /* if((bool)Variables.ActiveScene.Get("attracted")){
+            }*/
             MaxSpeed = m_BaseMaxSpeed - 2;
             m_Animator.SetBool("Landed", false);
-            }*/
         }
         /*if((bool)Variables.ActiveScene.Get("attracted")){
+        }*/
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
             m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
-        }*/
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
     {
        /* if((bool)Variables.ActiveScene.Get("attracted")){
+       }*/
        Vector2 move = _context.ReadValue<Vector2>();
-        Move = new Vector3(move.x, 0, 0);}*/
+        Move = new Vector3(move.x, 0, 0);
     }
 
     public void OnJump(InputAction.CallbackContext _context)
     {
         if (_context.started && IsGrounded == true)
         {
-            /*m_IsJumping = true;
+            /*
+            */
+            m_IsJumping = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
-            m_PlayerJump.Play();*/
+            m_PlayerJump.Play();
         }
         else
         {
             /*
-            m_IsJumping = false;
             */
+            m_IsJumping = false;
         }
     }
 

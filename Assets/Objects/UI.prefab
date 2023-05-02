@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerBehaviour: {fileID: 0}
   m_HealthBar: {fileID: 8810918052666855097}
-  m_LifeLow: {fileID: 0}
+  m_LifeLow: {fileID: 4211295131735133271}
 --- !u!82 &4211295131735133271
 AudioSource:
   m_ObjectHideFlags: 0
