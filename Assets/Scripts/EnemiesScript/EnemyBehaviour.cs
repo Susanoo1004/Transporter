@@ -118,6 +118,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (m_InvincibilityTimer <= 0)
         {
+
             if (m_EnemyLife < damage)
             {
                 m_EnemyLife = 0;

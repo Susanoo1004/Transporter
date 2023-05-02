@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
+                    "name": "SwitchLvl1",
                     "type": "Button",
                     "id": "358565f5-92b7-405f-9477-2c0001bea2da",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action1",
+                    "name": "SwitchLvl2",
                     "type": "Button",
                     "id": "43406fb0-65b4-4914-a763-f09d0f4376cc",
                     "expectedControlType": "Button",
@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action2",
+                    "name": "SwitchLvl3",
                     "type": "Button",
                     "id": "55aadd5c-a2ef-49f4-8e86-718a8237637b",
                     "expectedControlType": "Button",
@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action3",
+                    "name": "SwitchLvl4",
                     "type": "Button",
                     "id": "17c019c0-0324-464b-b9bd-226ce71be103",
                     "expectedControlType": "Button",
@@ -87,9 +87,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action4",
+                    "name": "SwitchLvl5",
                     "type": "Button",
                     "id": "882b121b-327d-4e4c-9bfb-621c71f21056",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Option",
+                    "type": "Button",
+                    "id": "c0ef7f9f-50ef-4783-b369-a6bb47c8374e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -181,7 +190,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "SwitchLvl1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -192,7 +201,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action1",
+                    "action": "SwitchLvl2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -203,7 +212,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action2",
+                    "action": "SwitchLvl3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -214,7 +223,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action3",
+                    "action": "SwitchLvl4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -225,7 +234,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action4",
+                    "action": "SwitchLvl5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b86843f-fbf2-4856-afe2-6fed92e2f03a",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Option",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

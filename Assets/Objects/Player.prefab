@@ -503,6 +503,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 882b121b-327d-4e4c-9bfb-621c71f21056
     m_ActionName: Gameplay/New action4[/Keyboard/semicolon]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2454186010140851201}
+        m_TargetAssemblyTypeName: MenuBehaviour, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c0ef7f9f-50ef-4783-b369-a6bb47c8374e
+    m_ActionName: Gameplay/Option[/DualShock4GamepadHID/start]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
