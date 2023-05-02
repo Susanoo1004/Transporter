@@ -1,13 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Claims;
-using TMPro.EditorUtilities;
+
 using Unity.VisualScripting;
-using UnityEditor;
+
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MagnetBehaviour : MonoBehaviour
 {
@@ -193,12 +187,12 @@ public class MagnetBehaviour : MonoBehaviour
         {
             Vector3 distance = transform.position - m_Player.position;
             Vector3 direction = distance.normalized;
+            Variables.ActiveScene.Set("attracted",true);
             if (!m_Player.TryGetComponent(out BoxCollider boxCollider))
                 return;
             Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.4f;
             int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
-           
             if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x/2 * 0.3f, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == MagnetizedObject.gameObject)
             {
                 distance = transform.position - m_Player.position;
@@ -217,6 +211,9 @@ public class MagnetBehaviour : MonoBehaviour
                         MagnetizedObject = null;
                         IsPlayerMagnetized = false;
                         IsPlayerAttached = true;
+                        Rigidbody playRigid = m_Player.GetComponent<Rigidbody>();
+                        playRigid.useGravity = false;
+                        
                         boxCollider.isTrigger = false;
 
                         if (PlayerAttachedObject.TryGetComponent(out Collider collider))
@@ -319,7 +316,11 @@ public class MagnetBehaviour : MonoBehaviour
                         Vector3 halfHeight = boxCollider.transform.rotation * Vector3.up * boxCollider.size.y / 2 * 0.4f;
                         int layer = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Magnet"));
 
+<<<<<<< HEAD
                         if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x / 2 * 0.3f, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == magneticObject.gameObject)
+=======
+                        if (!Physics.CapsuleCast(m_Player.position + halfHeight, m_Player.position - halfHeight, boxCollider.size.x / 2 * 0.4f, direction, out RaycastHit hit, distance.magnitude, layer) || hit.transform.gameObject == magneticObject.gameObject)
+>>>>>>> On_retente_de_sauver_le_monde
                         {
                             IsPlayerMagnetized = true;
                             MagnetizedObject = magneticObject.transform;

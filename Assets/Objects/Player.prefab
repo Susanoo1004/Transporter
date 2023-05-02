@@ -53,8 +53,9 @@ GameObject:
   - component: {fileID: 6330437250270583338}
   - component: {fileID: 1328452546353917956}
   - component: {fileID: 3085738244475823137}
-  - component: {fileID: 6970280929498728888}
-  - component: {fileID: 7542379354250621231}
+  - component: {fileID: 1685870977}
+  - component: {fileID: 1685870978}
+  - component: {fileID: 2454186010140851201}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -88,7 +89,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7146066286638838100}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 5843f84eefada1f479b362ff869755c7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -103,12 +104,12 @@ Rigidbody:
   m_GameObject: {fileID: 7146066286638838100}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 2
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 104
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &7146066286638838105
 MonoBehaviour:
@@ -128,13 +129,14 @@ MonoBehaviour:
   m_InvicibilityTimer: 0
   m_Arm: {fileID: 8431649053732184527}
   IsInForeground: 0
-  m_Accelerate: 20
-  MaxSpeed: 10
-  m_DashPower: 15
+  m_Accelerate: 100
+  MaxSpeed: 15
+  m_DashPower: 30
   m_DashDistance: 5
-  m_DashTime: 0.4
+  m_DashTime: 0.2
   DashTimer: 0
-  m_JumpForce: 13
+  m_JumpForce: 40
+  m_GravityMultiplier: 7
   Move: {x: 0, y: 0, z: 0}
   PlayerLife: 10
   m_Magnet: {fileID: 7146066286746599838}
@@ -143,9 +145,9 @@ MonoBehaviour:
   m_HoverTime: 0.2
   m_AttractionTime: 0.1
   m_PlayerAttractionSpeed: 15
-  m_RepulsiveForce: 10
+  m_RepulsiveForce: 25
   m_ThrowForce: 25
-  m_ThrowTime: 0.4
+  m_ThrowTime: 0.2
   m_PullTime: 0.25
   m_PlayerToMagnetDistance: 2
   m_MagnetSwitchSound: {fileID: 1087569064889243272}
@@ -162,7 +164,7 @@ MonoBehaviour:
   m_MagnetPushList:
   - {fileID: 8300000, guid: f6457519fa2cc704aae4f6f60dc3c850, type: 3}
   - {fileID: 8300000, guid: 21f85982aa02590428ca7c1de2e8a9e5, type: 3}
-  m_DeathSound: {fileID: 6970280929498728888}
+  m_DeathSound: {fileID: 0}
   m_MagnetThrow: {fileID: 6284772842241196388}
   m_PlayerJump: {fileID: 7721971932150762321}
   m_LifeLow: {fileID: 6330437250270583338}
@@ -423,57 +425,41 @@ MonoBehaviour:
     m_ActionName: Trap/Change Polarity
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7542379354250621231}
-        m_TargetAssemblyTypeName: GameManagerBehaviour, Assembly-CSharp
-        m_MethodName: OnOptionPress
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: fd547fda-7dfa-4aa2-8aa5-444421848489
-    m_ActionName: Gameplay/Options[/DualShock4GamepadHID/start]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7146066286638838105}
-        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
-        m_MethodName: GotoLvl
+      - m_Target: {fileID: 2454186010140851201}
+        m_TargetAssemblyTypeName: MenuBehaviour, Assembly-CSharp
+        m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Lvl1
+          m_StringArgument: Level_1
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 71b1ee9c-8a5e-4b3b-9eb9-77e4777087d5
-    m_ActionName: Gameplay/Lvl1[/Keyboard/h]
+    m_ActionId: 358565f5-92b7-405f-9477-2c0001bea2da
+    m_ActionName: Gameplay/New action[/Keyboard/h]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7146066286638838105}
-        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
-        m_MethodName: GotoLvl
+      - m_Target: {fileID: 2454186010140851201}
+        m_TargetAssemblyTypeName: MenuBehaviour, Assembly-CSharp
+        m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Lvl2
+          m_StringArgument: Chloe_GAILLARD
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 07c78b7b-ab9b-44f9-a43b-9f1c316d69c9
-    m_ActionName: Gameplay/Lvl2[/Keyboard/j]
+    m_ActionId: 43406fb0-65b4-4914-a763-f09d0f4376cc
+    m_ActionName: Gameplay/New action1[/Keyboard/j]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7146066286638838105}
-        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
-        m_MethodName: GotoLvl
+      - m_Target: {fileID: 2454186010140851201}
+        m_TargetAssemblyTypeName: MenuBehaviour, Assembly-CSharp
+        m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -483,29 +469,29 @@ MonoBehaviour:
           m_StringArgument: Lvl3
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 28d8d7fc-3ca8-42ed-b7cc-ff54f7f364e2
-    m_ActionName: Gameplay/Lvl3[/Keyboard/k]
+    m_ActionId: 55aadd5c-a2ef-49f4-8e86-718a8237637b
+    m_ActionName: Gameplay/New action2[/Keyboard/k]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7146066286638838105}
-        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
-        m_MethodName: GotoLvl
+      - m_Target: {fileID: 2454186010140851201}
+        m_TargetAssemblyTypeName: MenuBehaviour, Assembly-CSharp
+        m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Lvl4
+          m_StringArgument: Level_4
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 415007fd-5ee4-43b6-a3f2-9026cb1c4808
-    m_ActionName: Gameplay/Lvl4[/Keyboard/l]
+    m_ActionId: 17c019c0-0324-464b-b9bd-226ce71be103
+    m_ActionName: Gameplay/New action3[/Keyboard/l]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7146066286638838105}
-        m_TargetAssemblyTypeName: PlayerBehaviour, Assembly-CSharp
-        m_MethodName: GotoLvl
+      - m_Target: {fileID: 2454186010140851201}
+        m_TargetAssemblyTypeName: MenuBehaviour, Assembly-CSharp
+        m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -515,8 +501,24 @@ MonoBehaviour:
           m_StringArgument: Lvl5
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 14a71e64-d11a-4892-b749-3835344ec9e7
-    m_ActionName: Gameplay/Lvl5[/Keyboard/semicolon]
+    m_ActionId: 882b121b-327d-4e4c-9bfb-621c71f21056
+    m_ActionName: Gameplay/New action4[/Keyboard/semicolon]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2454186010140851201}
+        m_TargetAssemblyTypeName: MenuBehaviour, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c0ef7f9f-50ef-4783-b369-a6bb47c8374e
+    m_ActionName: Gameplay/Option[/DualShock4GamepadHID/start]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -1310,103 +1312,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!82 &6970280929498728888
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7146066286638838100}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 11514238bef552a458c96422b8631cc3, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &7542379354250621231
+--- !u!114 &1685870977
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1415,11 +1321,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 7146066286638838100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16650ed4a73c56c47a0cff71fd7eb0e7, type: 3}
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InPause: 0
-  NeedChangeScene: 0
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"actualMovementValue","value":{"$content":0.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"direction","value":{"$content":1,"$type":"System.Int32"},"typeHandle":{"Identification":"System.Int32,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"jumpVelocityScale","value":{"$content":20.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"attracted","value":{"$content":false,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!114 &1685870978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7146066286638838100}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe58df89b5b74a97a123b5ed2b70422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: b0e1882427a91344882f08d3f3f77007, type: 2}
+--- !u!114 &2454186010140851201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7146066286638838100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d5ff6deca444754e9c5d5f62cc6c908, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7146066286746599839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1608,7 +1547,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!82 &854525981010747231
 AudioSource:

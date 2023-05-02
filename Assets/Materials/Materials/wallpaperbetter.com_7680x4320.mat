@@ -60,10 +60,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
 <<<<<<< HEAD
+<<<<<<< HEAD
         m_Texture: {fileID: 0}
 =======
         m_Texture: {fileID: 2800000, guid: 2fdc88fa27285fc4c88193c0ab6d77bb, type: 3}
 >>>>>>> N_Lamesa
+=======
+        m_Texture: {fileID: 0}
+>>>>>>> On_retente_de_sauver_le_monde
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:

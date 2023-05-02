@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Scenes/Level 5 (Natan).unity.meta
 guid: 354d6632bf44b214997a6539c403d07a
 DefaultImporter:
@@ -9,6 +10,11 @@ NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 9100000
 >>>>>>>> 26169638024195781ef45375bca7293f21666b4b:Assets/Animator/ArmAnimator.controller.meta
+=======
+guid: 9d996260eb7bfb24295c2e3f6d32c14b
+DefaultImporter:
+  externalObjects: {}
+>>>>>>> On_retente_de_sauver_le_monde
   userData: 
   assetBundleName: 
   assetBundleVariant: 
