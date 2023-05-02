@@ -136,6 +136,7 @@ MonoBehaviour:
   m_DashTime: 0.2
   DashTimer: 0
   m_JumpForce: 40
+  m_GravityMultiplier: 7
   Move: {x: 0, y: 0, z: 0}
   PlayerLife: 10
   m_Magnet: {fileID: 7146066286746599838}

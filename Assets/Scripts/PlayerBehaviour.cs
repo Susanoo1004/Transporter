@@ -51,6 +51,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private float m_JumpForce;
 
+    [SerializeField]
+    private float m_GravityMultiplier;
+
     private bool m_IsJumping = false;
 
     [HideInInspector]
@@ -138,10 +141,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]
     private AudioSource m_LifeLow;
-
-    //[SerializeField]
-    //private AudioSource m_MagnetGrabing;
-
     
     [HideInInspector]
     public Vector3 SurfaceNormal;
@@ -154,7 +153,6 @@ public class PlayerBehaviour : MonoBehaviour
     private float m_DeathTimer;
     private float m_DeathTime = 2.0f;
 
-    //private bool m_MagnetGrabingSound = true;
     private bool HasMagnet { get { return m_Magnet.parent == transform; } }
 
     public bool IsGrounded
@@ -209,12 +207,6 @@ public class PlayerBehaviour : MonoBehaviour
         m_Animator.SetBool("Jump", m_IsJumping);
         m_ArmAnimator.SetBool("Jump", m_IsJumping);
 
-        //if (m_MagnetBehaviour.HasMagnetizedObject && m_MagnetBehaviour.TravelTimer < 0 && m_MagnetGrabingSound)
-        //{
-        //    m_MagnetGrabing.Play();
-        //    m_MagnetGrabingSound = false;
-        //}
-
         if (!m_MagnetBehaviour.IsPlayerAttached && !m_MagnetBehaviour.IsPlayerMagnetized)
         {
             // Hard Code to know if we're in Foreground not beautiful but time saving
@@ -229,7 +221,6 @@ public class PlayerBehaviour : MonoBehaviour
             Vector3 direction = m_Magnet.position - m_Arm.position;
             Quaternion ToRotation = Quaternion.AngleAxis(-Vector3.SignedAngle(Vector3.up, m_Aim, Vector3.forward), transform.right);
             m_Arm.rotation = ToRotation;
-            //m_Arm.Rotate(transform.forward, 90);
         }
         // Player magnetized towards MagneticObject
         if (m_MagnetBehaviour.IsPlayerMagnetized && !m_MagnetBehaviour.IsPlayerAttached)
@@ -361,8 +352,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (IsGrounded)
         {
             /////////////////////////////////////////////////////////////////////////////////////
-            /*if((bool)Variables.ActiveScene.Get("attracted")){
-            }*/
             MaxSpeed = m_BaseMaxSpeed;
             if (m_StandingOnObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -378,21 +367,16 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-           /* if((bool)Variables.ActiveScene.Get("attracted")){
-            }*/
             MaxSpeed = m_BaseMaxSpeed - 2;
             m_Animator.SetBool("Landed", false);
         }
-        /*if((bool)Variables.ActiveScene.Get("attracted")){
-        }*/
+
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += (Vector3.down/10);
+            m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
     {
-       /* if((bool)Variables.ActiveScene.Get("attracted")){
-       }*/
        Vector2 move = _context.ReadValue<Vector2>();
         Move = new Vector3(move.x, 0, 0);
     }
@@ -401,8 +385,6 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (_context.started && IsGrounded == true)
         {
-            /*
-            */
             m_IsJumping = true;
             m_Rigidbody.AddForce(Vector3.up * m_JumpForce, ForceMode.VelocityChange);
             m_Animator.Play("Jump");
@@ -410,8 +392,6 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            /*
-            */
             m_IsJumping = false;
         }
     }
@@ -617,8 +597,6 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetBehaviour.MagnetizedObject.rotation = new Quaternion(0, 0, 0, 0);
             //son
             play_MagnetPush();
-            //m_MagnetGrabingSound = false;
-           // m_MagnetGrabing.Stop();
 
             if (m_MagnetBehaviour.MagnetizedObject.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -651,9 +629,6 @@ public class PlayerBehaviour : MonoBehaviour
 
 
         m_MagnetBehaviour.MagnetizedObject = null;
-
-       // m_MagnetGrabingSound = false;
-        //m_MagnetGrabing.Stop();
     }
 
     private void DettachPlayer()
