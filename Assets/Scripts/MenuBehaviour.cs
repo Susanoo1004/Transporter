@@ -5,10 +5,7 @@ public class MenuBehaviour : MonoBehaviour
 {
     public void ChangeScene(string sceneName)
     {
-
-        Debug.Log("p");
-        SceneManager.LoadScene("GameManager", LoadSceneMode.Single);
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     public void Quit()

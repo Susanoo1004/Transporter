@@ -7762,6 +7762,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magnetic Object (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2229358212381419710, guid: 3e5ea1e337fe55e4a8ebcdcd5323a9c8, type: 3}
+      propertyPath: AffectSelf
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229358212381419710, guid: 3e5ea1e337fe55e4a8ebcdcd5323a9c8, type: 3}
+      propertyPath: AffectPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229358212381419711, guid: 3e5ea1e337fe55e4a8ebcdcd5323a9c8, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229358212381419711, guid: 3e5ea1e337fe55e4a8ebcdcd5323a9c8, type: 3}
+      propertyPath: m_Constraints
+      value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229358212381419711, guid: 3e5ea1e337fe55e4a8ebcdcd5323a9c8, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e5ea1e337fe55e4a8ebcdcd5323a9c8, type: 3}
 --- !u!4 &1105707703 stripped
