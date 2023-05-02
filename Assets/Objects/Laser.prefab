@@ -382,7 +382,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2546013424871151814}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0203086b394e01040b5c7bd020e77026, type: 3}
   m_Name: 
@@ -447,7 +447,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -463,6 +463,15 @@ AudioSource:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.065870196
+      value: 0.07375693
+      inSlope: -0.3644336
+      outSlope: -0.3644336
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.15164226
     - serializedVersion: 3
       time: 1
       value: 0
@@ -543,7 +552,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -559,6 +568,15 @@ AudioSource:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.08807048
+      value: 0.07873583
+      inSlope: -0.20134486
+      outSlope: -0.20134486
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.14154786
     - serializedVersion: 3
       time: 1
       value: 0

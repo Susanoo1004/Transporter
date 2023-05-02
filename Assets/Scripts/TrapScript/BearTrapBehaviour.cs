@@ -7,6 +7,9 @@ public class BearTrapBehaviour : MonoBehaviour
 {
 
     [SerializeField]
+    private AudioSource m_TrapActivationSound;
+
+    [SerializeField]
     private float m_TrapFrequency;
     private float m_TrapCD;
 
@@ -49,7 +52,7 @@ public class BearTrapBehaviour : MonoBehaviour
             m_OldActionMap = m_Target.GetComponent<PlayerInput>().currentActionMap.name;
             m_Target.GetComponent<PlayerInput>().SwitchCurrentActionMap("Trap");
 
-
+            m_TrapActivationSound.Play();
             // ms : son d'activation du piege 
 
         }

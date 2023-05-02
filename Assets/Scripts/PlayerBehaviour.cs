@@ -53,9 +53,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool m_IsJumping = false;
 
-    [SerializeField]
-    private float m_GravityMultiplier;
-
     [HideInInspector]
     public Vector3 Move = new();
     private Vector3 m_LastMove = Vector3.right;
@@ -119,7 +116,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]
     private AudioClip[] m_PlayerDashList;
-    
     [SerializeField]
     private AudioSource m_LifeLose;
 
@@ -130,6 +126,8 @@ public class PlayerBehaviour : MonoBehaviour
     private AudioClip[] m_MagnetPushList;
 
     [SerializeField]
+    private AudioSource m_DeathSound;
+
     private AudioSource m_MagnetBack;
 
     [SerializeField]
@@ -144,7 +142,7 @@ public class PlayerBehaviour : MonoBehaviour
     //[SerializeField]
     //private AudioSource m_MagnetGrabing;
 
-
+    
     [HideInInspector]
     public Vector3 SurfaceNormal;
 
@@ -388,7 +386,7 @@ public class PlayerBehaviour : MonoBehaviour
         /*if((bool)Variables.ActiveScene.Get("attracted")){
         }*/
         if (!IsGrounded && !m_MagnetBehaviour.IsPlayerAttached)
-            m_Rigidbody.velocity += (Vector3.down/10) * m_GravityMultiplier;
+            m_Rigidbody.velocity += (Vector3.down/10);
     }
 
     public void OnMovement(InputAction.CallbackContext _context)
@@ -509,7 +507,11 @@ public class PlayerBehaviour : MonoBehaviour
             m_MagnetCooldownTimer = m_MagnetCooldownTime;
             transform.position = Vector3.Lerp(m_PositionBeforeDash, m_Magnet.position, 1 - DashTimer / m_DashTime);
             m_Rigidbody.velocity = Vector3.zero;
-                                    
+
+
+            // ms : son Dash
+            play_PlayerDash();
+
 
             return;
         }
@@ -704,5 +706,10 @@ public class PlayerBehaviour : MonoBehaviour
         int index = Random.Range(0, m_MagnetPushList.Length);
         m_MagnetPush.PlayOneShot(m_MagnetPushList[index]);
     }
-    
+
+    public void play_DeathSoundFunction()
+    {
+        m_DeathSound.Play();
+    }
+
 }
